@@ -110,13 +110,13 @@ function Index() {
       }
 
       setSelectedSchooll(_id);
-      handleGetSpecialities(_id);
+      handleGetSpecialities();
 
     }
 
 
-    const handleGetSpecialities = (schoolId: any) => {
-      getPublicSpecialities(schoolId).then((res: any) => {
+    const handleGetSpecialities = () => {
+      getPublicSpecialities().then((res: any) => {
         setSpecialities(res.data.data);
       }).catch((error: any) => {
         console.log('ERROR');
@@ -176,7 +176,7 @@ function Index() {
                 <h1>
                     {t('home_title')}
                 </h1>
-                <p className="home-desc w-[80%] md:w-[%]">
+                <p className="home-desc ">
                   {t('home_descriptioon')}
                 </p>
                 <div className="hero-btns">
