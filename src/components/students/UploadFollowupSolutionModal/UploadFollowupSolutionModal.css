@@ -1,0 +1,8 @@
+
+
+.student-modal-assignment {
+    top: 65% !important;
+}
+.student-modal-assignment .modal-head {
+    background-color: var(--secondary-color) !important;
+}

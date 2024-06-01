@@ -1,0 +1,64 @@
+
+
+.teacher-modal-timetable {
+    top: 75% !important;
+}
+.teacher-modal-timetable .modal-head {
+    background-color: #484848 !important;
+}
+
+.check-container {
+    /* background-color: red; */
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+
+.textarea {
+    width: 100%;
+    border: 1px solid var(--secondary-color);
+}
+
+
+.teacher-modal-timetable button {
+    border-color: #484848 !important;
+    color: #484848 !important;
+}
+
+.speciality-title {
+    color: #484848;
+    font-size: 14px;
+}
+
+.check-container input {
+    height: 15px;
+    width: 15px;
+}
+
+.specialities-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px !important;
+    /* background-color: red; */
+    height: fit-content;
+    max-height: 150px;
+    overflow: scroll !important;
+}
+
+
+.timetable-dates {
+    display: flex;
+    gap: 8px;
+}
+
+.from {
+    flex: 1;
+}
+
+.to {
+    flex: 1;
+}

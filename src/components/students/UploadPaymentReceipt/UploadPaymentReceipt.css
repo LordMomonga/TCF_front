@@ -1,0 +1,13 @@
+
+
+.student-modal-assignment button {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);;
+}
+
+
+
+
+.payment-recipt-modal {
+    top:55% !important;
+}

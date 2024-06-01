@@ -1,0 +1,18 @@
+
+
+.label-link {
+    text-align: center;
+}
+
+.text-primary {
+    color: var(--primary-color);
+}
+
+.select-account-type {
+    width: 100%;
+    height: 50px;
+    /* border: 1px solid var(--primary-light); */
+    /* margin-bottom: 10px; */
+    border-radius: 4px;
+    margin-left: 10px;
+}

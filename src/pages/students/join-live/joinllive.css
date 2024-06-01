@@ -1,0 +1,52 @@
+
+
+.parent-con.student-live {
+    background-color: transparent !important;
+}
+
+
+.session-form {
+    width: 65%;
+    height: max-content;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.student-live-title {
+    color: #1A2D42 !important;
+}
+
+.live-form-input {
+    width: 100%;
+}
+
+.live-form-title {
+    text-align: center;
+    font-size: 28px;
+    color: var(--primary-color);
+}
+
+.student-session-form .primary-btn {
+    background-color: #1A2D42 !important;
+}
+
+@media screen and (max-width: 679px) {
+    .session-form {
+        width: 85%;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .session-form {
+        width: 98%;
+    }
+}

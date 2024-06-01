@@ -1,0 +1,30 @@
+
+
+i {
+    cursor: pointer;
+}
+
+.action a {
+    cursor: pointer;
+}
+
+.info-item {
+    display: flex;
+    gap: 20px;
+}
+
+.item-key {
+    font-size: 18px;
+    color: var(--primary-color);
+}
+
+.item-text {
+    font-size: 18px;
+    color: var(--secondary-color);
+}
+
+.info-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

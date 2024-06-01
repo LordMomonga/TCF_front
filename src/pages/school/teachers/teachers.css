@@ -1,0 +1,12 @@
+
+.select-field {
+    background-color: var(--primary-color) !important;
+    color: var(--color-white);
+    border: transparent !important;
+    border-radius: 2px;
+    height: 35px;
+}
+
+.student-button {
+    background-color: #484848;
+}

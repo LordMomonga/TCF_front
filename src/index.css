@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;300;400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&display=swap');
+:root {
+    --primary-color: #623d91;
+    --primary-dark: #3b2557;
+    --primary-light: #9d94a8;
+    --secondary-color: #1A2C42;
+    --orange-dark: #FFA500;
+    --orange-color: #FFA500;
+    --bg-light: #f8f8f8;
+    --border-color: #D4D8DF;
+    --text: #000;
+    --text-light: #828282;
+    --border-radius: 5px;
+    --white: #fff;
+    --danger: #e9261f;
+    --color-white: #fff;
+    --light-bg: #ECF0F5;
+    --blue: #2F80ED;
+    --green: #219653;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition-duration: .3s;
+  list-style-type: none;
+  border: none;
+  outline: none;
+}
+body {
+    /* font-family: 'Roboto', sans-serif; */
+    background-color: var(--white);
+}
+
+.VsTVUAD89KWleD0YRVsD {
+  background-color: var(--secondary-color) !important;
+}
+
+.TTgLs8cpg66Z6CXgHGVA {
+  background-color: --danger !important;
+}
+
+.j9ygOVxEl2nClTPs77Ta .IughcowXVrJ5wcOf6vH9 {
+  background-color: var(--secondary-color) !important;
+}
+
+.j9ygOVxEl2nClTPs77Ta .mCx2N1NwuMWObjjTeG0q {
+  color: #fff !important;
+  background: #000 !important;
+}
+
+.add-modal-container,.modal-container {
+  width: 60vw !important;
+}
+
+
+@media screen and (max-width: 890px) {
+  .add-modal-container,.modal-container {
+    width: 80vw !important;
+  }
+  
+}
+
+
+
+
+
+.school-info-container {
+  padding: 0 79px;
+}
+
+
+.home-school-sec-title {
+  color: var(--secondary-color);
+  text-align: center;
+  font-size: 2em;
+}
+
+.home-speciality-title {
+  color: var(--secondary-color);
+  text-align: center;
+  font-size: 1.5em;
+}
+
+@media screen and (max-width: 700px) {
+
+  
+.school-info-container {
+  padding: 0 19px;
+}
+
+}
+
+@media screen and (max-width: 500px) {
+  .add-modal-container,.modal-container {
+    width: 90vw !important;
+  }
+
+  .home-school-sec-title {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+  }
+  
+}
+
+
+.school-dashboard .modal-delete .modal-head {
+  background-color: #484848 !important;
+}
+

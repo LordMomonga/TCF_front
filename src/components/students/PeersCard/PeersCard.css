@@ -1,0 +1,32 @@
+
+
+.peers-card {
+    width: 100%;
+    background-color: var(--white);
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.card-content {
+    display: flex;
+    gap: 5px;
+}
+
+.label-text, .value-text {
+    font-size: 1.2em;
+}
+
+.card-image img {
+    width: 100%;
+}
+
+.message-peer-button {
+    border: 1px solid var(--secondary-color);
+    background-color: transparent;
+    color: var(--secondary-color);
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
