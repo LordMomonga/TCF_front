@@ -101,9 +101,9 @@ const Index = () => {
     },[]);
 
 
-    if(getToken() != null) {
+  /*  if(getToken() != null) {
         return <Navigate to="/dashboard" replace/>
-    }
+    }*/
 
     return (
         <AuthLayout subTitle={`${t('create_account_sub')}`} title={`${t('create_account_title')}`} >

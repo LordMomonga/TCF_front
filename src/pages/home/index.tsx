@@ -182,7 +182,7 @@ console.log('les specialité', specialities);
                   {t('home_descriptioon')}
                 </p>
                 <div className="hero-btns">
-                  <Link to="/register" className="btn btn-primary"
+                  <Link to="/register"   className="btn btn-primary text-white"
                     >{t('register_text')}</Link>
                   <Link to="/login" className="btn btn-secondary"
                     >{t('login_text')}</Link>

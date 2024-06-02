@@ -37,9 +37,7 @@ function Index() {
             if(res.ok) {
                 console.log(res);
                 storeToken(res.data.accessToken);
-                if(isTeacher()) {
-                    navigate('/dashboard');
-                }else if(isUser()) {
+                 if(isUser()) {
                     navigate('/students/home')
                 } else {
                     // SCHOOL
@@ -68,9 +66,9 @@ function Index() {
     }
 
 
-    if(getToken() != null) {
+   /* if(getToken() != null) {
         return <Navigate to="/dashboard" replace/>
-    }
+    }*/
 
     return (
         <AuthLayout title={t('welcome_back_text')} subTitle={t('welcome_back_sub')}>
