@@ -303,6 +303,10 @@ section {
     padding-right: 0;
     margin-bottom: 2em;
   }
+  .hero .con .sec-1 p{
+    width: 70%;
+   
+  }
   .hero .con .sec-2 {
     width: 100%;
     display: flex;

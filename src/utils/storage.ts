@@ -60,6 +60,12 @@ const isUser = () => {
     // console.log('USER IN ISCHECK',  user)
     return user?.role == 'user' ? true : false;
 }
+const isAdmin = () => {
+    const token: any =  getToken();
+    let user:any = jwtDecode(token);
+    // console.log('USER IN ISCHECK',  user)
+    return user?.role == 'Admin' ? true : false;
+}
 
 const removeToken =  ()=> {
     try {
@@ -78,5 +84,5 @@ const removeAcademicYear = () => {
 }
 
 
-export { getUser, getToken, removeAcademicYear, removeToken, storeToken, isTeacher, isStudent,isUser, storeAcademicYear, getAcademicYear }
+export { getUser, getToken, removeAcademicYear, removeToken, isAdmin, storeToken, isTeacher, isStudent,isUser, storeAcademicYear, getAcademicYear }
 
