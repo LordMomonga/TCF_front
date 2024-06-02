@@ -210,7 +210,7 @@ function Index() {
                     <div className="top">
                         <div className="span">
                             <select name="" id="" onChange={(e: any) => null} className="select-field school-student-select">
-                                <option value="all">Fillter Status</option>
+                                <option value="all">Filter Status</option>
                                 <option value='active'>Active</option>
                                 <option value='pending'>Pending</option>
                                 <option value='suspended'>Suspended</option>

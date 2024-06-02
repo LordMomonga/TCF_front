@@ -42,7 +42,7 @@ const rows: any = [
       name: 'name'
   },
   {
-      label: 'School',
+      label: 'detail',
       name: 'name'
   },
   {
@@ -110,7 +110,6 @@ function Index() {
       }
 
       setSelectedSchooll(_id);
-      handleGetSpecialities();
 
     }
 
@@ -122,6 +121,7 @@ function Index() {
         console.log('ERROR');
       })
     }
+console.log('les specialité', specialities);
 
     const changeLang = () => {
       if(lang != null) {
@@ -141,6 +141,8 @@ function Index() {
     useEffect(() => {
       handleLangInit();
       getSchools();
+      handleGetSpecialities();
+
     },[])
 
     useEffect(() => {
@@ -176,7 +178,7 @@ function Index() {
                 <h1>
                     {t('home_title')}
                 </h1>
-                <p className="home-desc ">
+                <p className="home-desc w-[100%] md:w-[55%] ">
                   {t('home_descriptioon')}
                 </p>
                 <div className="hero-btns">
@@ -298,8 +300,8 @@ function Index() {
                                     <td className="flex-start">
                                       {data?.code}
                                     </td>
-                                    <td className="flex-start">
-                                      {data?.username}
+                                    <td className="flex-start text-blue-500 font-bold cursor-pointer">
+                                      more...
                                     </td>
 
                                     <td className="flex-start">

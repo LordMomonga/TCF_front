@@ -171,7 +171,7 @@ i18n
       fr: {
         translation: {
             home_welcome: "Bienvenue à",
-            home_title: "  Tolkin est",
+            home_title: "  Tolkin ",
             home_descriptioon: "Vous cherchez à améliorer vos compétences linguistiques et à vous préparer efficacement pour vos examens ? Tolkin est là pour vous aider. Notre application vous offre une multitude de simulations de tests conçues pour vous mettre en situation réelle, vous permettant ainsi de vous évaluer et de progresser à votre rythme.",
             register_text: "S'inscrire",
             login_text: "S'identifier",
