@@ -104,7 +104,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={(<HomePage />)} />
-            <Route path="/CE" element={( <Protected><CE /></Protected>)} />
+            <Route path="/CE" element={( <Protected><CE /> </Protected> )} />
             <Route path="/CO" element={(<Protected><CO /></Protected>)} />
 
             <Route path="/login" element={(<LoginPage />)} />
