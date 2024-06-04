@@ -4,6 +4,10 @@ import api from "./apiClient";
 const createAssessment = (data: any) => {
     return api.post(`/assessment`, data);
 }
+const createElement = (data: any) => {
+    return api.post(`/school/element`, data);
+
+}
 
 const updateAssessment = (id: any, data: any) => {
     return api.post(`/assessment/${id}`, data);
@@ -28,6 +32,7 @@ const studentGetAssessments = (classId: any) => {
 const deleteAssessment = (id: any) => {
     return api.delete(`/assessment/${id}`)
 }
+
 
 const submitAssessmentSolution = (data: any) => {
     let accademicYear = getAcademicYear();
@@ -67,6 +72,7 @@ export {
     getTotalAssessments,
     getClassAssessments,
     submitAssessmentScore,
-    updateAssessment
+    updateAssessment,
+    createElement
 }   
 

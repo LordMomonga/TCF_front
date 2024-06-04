@@ -65,7 +65,7 @@ function Index() {
     const [specialities, setSpecialities] = useState([]);
     const [selectedSchool, setSelectedSchooll] = useState('all');
     const [selectedSchoolCode, setSchoolSelectedCode] = useState('none');
-
+    const [selectedSpecialities, setSelectedSpecialities] = useState('')
     const [loading, setLoading] = useState(false);
 
     const handleTrans = () => {
@@ -96,10 +96,10 @@ function Index() {
      
       let foundMatch = false;
 
-      schools.map((data: any) => {
+      specialities.map((data: any) => {
         console.log(data);
         if(data._id == _id) {
-          setSchoolSelectedCode(data.school_code);
+          setSchoolSelectedCode(data.code);
           foundMatch = true;
         }
       })

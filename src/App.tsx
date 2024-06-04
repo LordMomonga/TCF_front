@@ -118,7 +118,7 @@ function App() {
             <Route path="/pass-exams" element={(<Protected > <PassExamsPage  /> </Protected>)} />
 
            
-            <Route path="/add" element={(<Protected><Ind  /></Protected>  )} />
+            <Route path="/add" element={(<Protected><Ind  />  </Protected>)} />
 
             <Route path="/students/home" element={(<Protected > <StudentsLandingPage /> </Protected>)} />
             <Route path="/students/time-table" element={(<Protected > <StudentsTimeTablePage /> </Protected>)} />

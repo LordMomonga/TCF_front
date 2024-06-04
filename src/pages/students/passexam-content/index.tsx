@@ -7,7 +7,7 @@ import { EditCourseContentModal, DeleteModal  } from '../../../components';
 import UploadAssessmentSolutionModal from '../../../components/students/UploadAssessmentSolutionModal/UploadAssessmentSolution';
 import {  BsPencilSquare } from 'react-icons/bs';
 import { NavLink, Outlet } from 'react-router-dom';
-
+import { BiBlock } from 'react-icons/bi';
 import { IoMdCloudDownload } from 'react-icons/io';
 import { AiFillEye } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -27,42 +27,7 @@ import { VideoPlayerModal } from '../../../components';
 import { getPassExamContents } from '../../../services/passExams';
 import { convertDate } from '../../../utils/date';
 import AcademicYearContext from '../../../contexts/AcademicYearContext';
-
-const rows: any = [
-    {
-        label: '#',
-        name: 'num'
-    },
-    {
-        label: 'Title',
-        name: 'name'
-    },
-    {
-        label: 'Question File',
-        name: 'name'
-    },
-    {
-        label: 'Answer Pdf',
-        name: 'name'
-    },
-    {
-        label: 'Answer Video',
-        name: 'name'
-    },
-    {
-        label: 'Publish Date',
-        name: 'name'
-    },
-    {
-        label: 'Created Date',
-        name: 'name'
-    },
-    {
-        label: 'Action',
-        name: 'action'
-    }
-]
-
+import { getStudentApplications } from '../../../services/student';
 
 const override = {
     marginTop: '20px'
@@ -73,9 +38,10 @@ const override = {
 function Index() {
     const [ showAddModal, setShoowAddModal ] = useState(false);
     const [passexams, setPassExams] = useState([]);
+    let [showTest, setShowTest] = useState({});
     const [showVideoModal, setShowVideoModal] = useState(false);
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
-
+    const [existed, setExisted] = useState(false);
     const [videoUrl, setVideoUrl] = useState('');
 
     const [classes, setClasses] = useState([]);
@@ -85,6 +51,27 @@ function Index() {
         setShoowAddModal(!showAddModal);
     }
 
+    const handleVerify = () =>{
+        getStudentApplications().then((res:any) => {
+            setShowTest(res.data.data[0].status);
+           console.log('bien recupéré',showTest)
+        }).catch((error:any) => {
+            console.log('error a la recuperation')
+        })
+    }  
+    const handleExisted = ()=> {
+        handleVerify();
+        if(showTest === "pending"){
+            setExisted(false)
+        }else if(showTest === "accepted"){
+            setExisted(true)
+            console.log('accepted')
+        }else{
+            console.log("error sur l'existence")
+        }
+       
+    }
+    
     const handleGetClasses = ()  => {
 
         setClasses([]);
@@ -113,41 +100,17 @@ function Index() {
     }
 
 
-    const handleGetPassExamContents = (classId: any) => {
-        setLoading(true);
-        studentGetPassExams(classId).then((res: any) => {
-            console.log("PASS EXAMS RES: ",res);
-            setLoading(false);
-            setPassExams(res.data.data);
-        }).catch((err: any) => {
-            console.log('Error: ', err);
-            setLoading(false);
-        })
-    }
 
-    const handleClassSelected = (value: any) => {
-        try {
-            console.log('CLASS ID:' , value)
-            if(value == 'all') {
-                setPassExams([]);
-                return;
-            }
-
-            handleGetPassExamContents(value);
-        } catch (error) {
-            console.log('error: ', error)
-        }
-    }
-
+   
 
     useEffect(() => {
+        handleExisted()
         console.log('USER EFFECT RAN')
-        handleGetClasses();
-    },[activeAcademyYear]);
+    });
 
     return (
         <StudentLayout title="Pass Simulations And Solutions" pageTitle="Pass Exam">
-      <div className="section">
+      {existed  && <div className="section">
             <div className="parent-con">
                 <div className="data-table">
                     <div className="top">
@@ -220,10 +183,22 @@ function Index() {
                 </div>
             </div>
         </div>
+}
+{!existed && <div className='section'>
+    <div className="parent-con">
+        <div className="data-table">
+            <div className="top">
+                 <span className='text-3xl font-bold text-red-500 text-center w-[100%] '>
+                   Désolé Votre candidature n'a pas été validée !!! <BiBlock size={34}></BiBlock>
+                 </span>
+            </div>
 
-        {showAddModal &&  <UploadAssessmentSolutionModal onContentAdded={handleContentAdded} onClose={toggleAddModal} />}
-        {showVideoModal && <VideoPlayerModal video={videoUrl} onClose={toggleVideoModal}/>}
-        </StudentLayout>
+        </div>
+
+    </div>
+    
+    </div>}
+         </StudentLayout>
     );
 }
 
