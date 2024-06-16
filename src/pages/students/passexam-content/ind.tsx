@@ -7,7 +7,8 @@ import { EditCourseContentModal, DeleteModal  } from '../../../components';
 import UploadAssessmentSolutionModal from '../../../components/students/UploadAssessmentSolutionModal/UploadAssessmentSolution';
 import {  BsPencilSquare } from 'react-icons/bs';
 import { NavLink, Outlet } from 'react-router-dom';
-
+import AddExpressionEcrite from '../../../components/students/UploadAssessmentSolutionModal/AddExpressionEcrite';
+import AddExpressionOrale from '../../../components/students/UploadAssessmentSolutionModal/AddExpressionOrale';
 import { IoMdCloudDownload } from 'react-icons/io';
 import { AiFillEye } from 'react-icons/ai';
 import { toast } from 'react-toastify';
@@ -77,6 +78,10 @@ function Ind() {
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
 
     const [videoUrl, setVideoUrl] = useState('');
+    const [addAudio, setAddAudio] = useState(false);
+    const [addEE, setAddEE] = useState(false);
+    const [addEO, setAddEO]= useState(false);
+
 
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -84,8 +89,19 @@ function Ind() {
     const toggleAddModal = () => {
         setShoowAddModal(!showAddModal);
     }
+    
+    const toggleAddAudio = () =>{
+        setAddAudio(!addAudio)
+    }
 
-    const handleGetClasses = ()  => {
+    const toggleAddEO = () => {
+        setAddEO(!addEO)
+    }
+    const toggleAddEE= ()=>{
+        setAddEE(!addEE)
+
+    }
+        const handleGetClasses = ()  => {
 
         setClasses([]);
         setPassExams([]);
@@ -110,6 +126,12 @@ function Ind() {
 
     const handleContentAdded = ()  => {
         toggleAddModal();
+    }
+    const handleContentEE = ()  => {
+        toggleAddEE()
+    }
+    const handleContentEO = ()  => {
+        toggleAddEO()
     }
 
 
@@ -166,7 +188,9 @@ setShoowAddModal(true)
                                                <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase text-white  text-sm md:text-2md '>Expression Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 '><BiPlus size={30} className="text-white" color="#FFFFFF"></BiPlus></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 'onClick={()=>{
+setAddEE(true)
+      }}><BiPlus size={30} className="text-white" color="#FFFFFF"></BiPlus></button>
       <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
 
       </div> 
@@ -175,8 +199,20 @@ setShoowAddModal(true)
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Expression orale</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><BiPlus className="text-white" size={30} color="#FFFFFF"></BiPlus></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 flex justify-center'onClick={()=>{
+setAddEO(true)
+      }}><BiPlus className="text-white" size={30} color="#FFFFFF"></BiPlus></button>
       <span className='text-[12px] font-bold   text-white'> Durée : 45min</span>
+
+      </div> 
+
+                        </div>
+                        <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
+<h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white' >Enregistrement audio</h1>
+      <div className='flex text-white justify-between mt-5 '>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><BiPlus className="text-white" size={30} color="#FFFFFF" onClick={()=> {
+setAddAudio(true)}
+}></BiPlus></button>
 
       </div> 
 
@@ -201,6 +237,9 @@ setShoowAddModal(true)
         </div>
 
         {showAddModal &&  <UploadAssessmentSolutionModal onContentAdded={handleContentAdded} onClose={toggleAddModal} />}
+        {addAudio && <div></div>}
+        {addEE && <AddExpressionEcrite onContentAdded={handleContentEE} onClose={toggleAddEE} />}
+        {addEO && <AddExpressionOrale onContentAdded={handleContentEO} onClose={toggleAddEO} />}
         {showVideoModal && <VideoPlayerModal video={videoUrl} onClose={toggleVideoModal}/>}
         </SchoolLayout>
     );

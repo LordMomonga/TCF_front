@@ -6,8 +6,61 @@ import { BiError } from 'react-icons/bi'
 import { BiExit } from 'react-icons/bi'
 import { BiSkipNext } from 'react-icons/bi'
 import { NavLink, Outlet } from 'react-router-dom';
-
+import { getUser } from '../../utils/storage'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import './test.css'
 const CO = () => {
+     const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
+    const [user, setUser] = useState<any>(null);
+    const [numb, setNumb] = useState(39)
+
+    useEffect(() => {
+        let usr = getUser();
+        setUser(usr);
+    }, [])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          if (remainingTime > 0) {
+            setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
+          } else {
+            clearInterval(intervalId);
+          }
+        }, 1000); // Update every second
+    
+        return () => clearInterval(intervalId); // Cleanup on unmount
+      }, []);
+
+      const formatTime = (seconds: number): string => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+    
+        return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
+      };
+    
+      useEffect(() => {
+        const items = document.querySelectorAll<HTMLLIElement>('.question-item');
+        let index = 0;
+        const interval = setInterval(() => {
+          items.forEach((item, i) => {
+            if (i === index) {
+              item.classList.add('border-highlight bg-green-500');
+                        setNumb(39 - index);
+
+            } else {
+              item.classList.remove('border-highlight bg-green-500');
+            }
+          });
+
+          index = (index + 1) % items.length;
+
+        }, 10000); // 60000 ms = 1 minute
+    
+        return () => clearInterval(interval);
+      }, []);
+    
+
   return (
     <div className='w-screen relative'>
       <nav className=' px-5 py-5 flex items-center bg-prim '>
@@ -19,11 +72,11 @@ const CO = () => {
             <div className='mt-5 px-1 bg-white  py-2'>
               
                 <ol className=''>{Object.keys(Question).map((Question)=>(
-                    <li  className="py-1 text-white text-sm font-bold text-center px-5 bg-gray-500 rounded-xl mt-1 " key={Question}>{Question}</li>
+                    <li  className=" question-item py-1 text-white text-sm font-bold text-center px-5 bg-gray-500 rounded-xl mt-1 " key={Question}>{Question}</li>
                 ))} </ol>
             </div>
             <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
-                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> restant:</span> </div>
+                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> restant: {numb} </span> </div>
                     <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span> repondu :</span></div>
                     <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiError className=' text-white bg-red-500 rounded-full font-bold  '></BiError><span>Aucune  :</span></div>
                 </div>
@@ -32,16 +85,16 @@ const CO = () => {
               <div className='bg-white px-5  text-gray-600  text-sm text-center rounded-md py-2'>
                 <h1 className='font-bold underline underline-offset-4 '>Mon profil</h1>
                 <div className=' py-3 text-left'>
-                    <span className='font-bold'>Nom : <span className='text-prim font-bolder'>john Doe</span></span>
-                    <span className='block mt-2 font-bold'>Adresse :</span>
+                    <span className='font-bold'>Nom : <span className='text-prim font-bolder'>{user?.username}</span></span>
+                    <span className='block mt-2 font-bold'>Adresse : <span className='text-prim font-bolder'>{user?.email}</span></span>
                     <span className='block mt-2 font-bold'>Partie : Comprehension Orale</span>
-                    <span className='block mt-2 font-bold'>Durée : 45min</span>
+                    <span className='block mt-2 font-bold'>Durée : 35min</span>
 
                 </div>
               </div>
               
             <div className="bg-white text-gray-500 mt-[30%] mb-5 rounded-md px-5 py-2">
-                    <div className='text-[13px] font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> Temps : 0min </span> </div>
+                    <div className='text-[13px] font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> Temps : {formatTime(remainingTime)} </span> </div>
                     <div className='mt-2 text-[13px] font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span>Temps restant :</span></div>
                 </div>
         </div>      

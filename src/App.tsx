@@ -50,7 +50,9 @@ import {
 } from './pages';
 import './App.css';
 import CE from './pages/testLangue/CE';
-import CO from "./pages/testLangue/CO"
+import CO from "./pages/testLangue/CO";
+import EE from "./pages/testLangue/EE";
+import EO from "./pages/testLangue/Eo";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Protected from './components/form/Protected';
@@ -58,6 +60,7 @@ import { useTranslation } from 'react-i18next';
 import AcademicYearContext from './contexts/AcademicYearContext';
 import { getAcademicYear } from './utils/storage';
 import Ind from './pages/students/passexam-content/ind';
+import Presentation from './components/presentation/Presentation';
 function App() {
   const { t, i18n } = useTranslation();
   let [lang, setLang] = useState<any>(null);
@@ -106,6 +109,10 @@ function App() {
             <Route path="/" element={(<HomePage />)} />
             <Route path="/CE" element={( <Protected><CE /> </Protected> )} />
             <Route path="/CO" element={(<Protected><CO /></Protected>)} />
+            <Route path="/EE" element={(<EE />)} />
+             <Route path="/EO" element={(<EO />)} />
+             <Route path="/presentation" element={(<Presentation/>)} />
+
 
             <Route path="/login" element={(<LoginPage />)} />
             <Route path="/register" element={(<SignupPage />)} />

@@ -9,14 +9,16 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import {Question} from './constant'
 import { getUser } from '../../utils/storage'
+import './test.css'
 const CE = () => {
-    const [remainingTime, setRemainingTime] = useState<number>(45 * 60)
+    const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
         let usr = getUser();
         setUser(usr);
     }, [])
+
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -37,6 +39,8 @@ const CE = () => {
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
     
+     
+    
 
   return (
     <div className='w-screen relative'>
@@ -49,7 +53,7 @@ const CE = () => {
             <div className='mt-5 px-1 bg-white  py-2'>
               
                 <ol className='text-white'>{Object.keys(Question).map((Question)=>(
-                    <li  className="py-1 text-sm text-white font-bold text-center px-5 bg-gray-500 rounded-xl mt-1 " key={Question}>{Question}</li>
+                    <li  className="question-item py-1 text-sm text-white font-bold text-center px-5 bg-gray-500 rounded-xl mt-1 " key={Question}>{Question}</li>
                 ))} </ol>
             </div>
             <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
@@ -65,7 +69,7 @@ const CE = () => {
                     <span className='font-bold'>Nom : <span className='text-prim font-bolder'>{user?.username}</span></span>
                     <span className='block mt-2 font-bold'>Adresse : <span className='text-prim font-bolder'>{user?.email}</span></span>
                     <span className='block mt-2 font-bold'>Partie : Comprehension Ecrite</span>
-                    <span className='block mt-2 font-bold'>Durée : 45min</span>
+                    <span className='block mt-2 font-bold'>Durée : 60min</span>
 
                 </div>
               </div>
