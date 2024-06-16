@@ -77,11 +77,11 @@ const Presentation: React.FC = () => {
               <source src='portail.mp4' type='video/mp4' />
             </video>
             <div className='w-full flex justify-center'>
-              <NavLink to='/CO'><button 
+              <button 
                 onClick={handleVideoClick}
                 className='flex gap-5 items-center bg-prim text-white font-bold px-5 py-1 mt-5 rounded-sm'>
               < BiPlayCircle/>  Lire
-              </button></NavLink>
+              </button>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ const Presentation: React.FC = () => {
         <footer className='absolute bottom-3 w-full'>
           <div className='flex justify-between px-10'>
             <button className='bg-red-500 px-2 py-1 text-white font-bold rounded-md'>Quitter</button>
-            <button className='p-2 px-3 bg-transparent border-2 border-gray-500 rounded-md'>Commencer</button>
+            <NavLink to='/CO'>  <button className='p-2 px-3 bg-transparent border-2 border-gray-500 rounded-md'>Commencer</button></NavLink>
           </div>
         </footer>
       </div>
