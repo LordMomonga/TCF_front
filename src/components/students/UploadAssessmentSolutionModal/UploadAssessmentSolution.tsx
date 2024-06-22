@@ -77,7 +77,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const solutionFileRef: any = useRef(null);
     const solutionAudioRef: any = useRef(null);
     const validationSchema = Yup.object().shape({
-        question: Yup.string().required('obligatoire'),
+        question: Yup.string(),
         solution1: Yup.string(),
         solution2: Yup.string(),
         solution3: Yup.string(),
