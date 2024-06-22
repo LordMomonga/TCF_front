@@ -224,13 +224,15 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
             // call submiting solution endpoint
             setLoading(true);
-            console.log(data)
+            console.log(data);
             createElement(data).then((res: any) => {
                 if(res.ok) {
                     toast.success(res.data.message, {
                         pauseOnHover: false,
                         closeOnClick: true,
                     })
+                    
+
                     setLoading(false);
                     onContentAdded();
                 }else {
