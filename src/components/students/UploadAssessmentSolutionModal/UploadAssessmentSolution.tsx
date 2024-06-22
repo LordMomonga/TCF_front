@@ -78,11 +78,10 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const solutionAudioRef: any = useRef(null);
     const validationSchema = Yup.object().shape({
         question: Yup.string().required('obligatoire'),
-        sol1: Yup.string().required(' obligatoire'),
-        sol2: Yup.string().required(' obligatoire'),
-        sol3: Yup.string().required('obligatoire'),
-        sol4: Yup.string().required(' obligatoire'),
-        response: Yup.string().required(' obligatoire'),
+        sol1: Yup.string(),
+        sol2: Yup.string(),
+        sol3: Yup.string(),
+        sol4: Yup.string(),
     });
 
         const handleUploadAudio = (e:any) => {
