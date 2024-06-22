@@ -111,7 +111,7 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
             }else {
                 console.log('#### CHECK FAILED')
             }
-    
+            console.log(data)
              
 
             setLoading(true);
@@ -135,6 +135,10 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                         pauseOnHover: false,
                         closeOnClick: true,
                     })
+                    setSelectTest('')
+                    setSelectTestType('')
+                    setLevel('');
+                    setContenu('');
                 }
             }).catch((err: any) => {   
                 console.log('ERROR Adding: ', err);
