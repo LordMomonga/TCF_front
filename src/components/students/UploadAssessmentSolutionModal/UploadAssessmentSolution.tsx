@@ -224,6 +224,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
             // call submiting solution endpoint
             setLoading(true);
+            console.log(data)
             createElement(data).then((res: any) => {
                 if(res.ok) {
                     toast.success(res.data.message, {
