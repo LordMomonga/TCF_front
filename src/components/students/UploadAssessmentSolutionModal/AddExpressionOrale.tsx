@@ -74,9 +74,9 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const solutionFileRef: any = useRef(null);
 
     const validationSchema = Yup.object().shape({
-        title: Yup.string().required('obligatoire'),
+        title: Yup.string(),
       
-        contenu: Yup.string().required('obligatoire'),
+        contenu: Yup.string()
         
     });
 
@@ -89,10 +89,10 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const handleSubmitSolution = (values: any) => {
      
             let data = {
+                ...values,
                 TypeElement: selectTest,
                 NumeroSujet: selectTestType,
-                titre: level,
-                contenu: contenu,
+                
                
             }
 
@@ -195,11 +195,11 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                          </select>
                       
                         <p className="label-text">Entrer le titre du sujet  </p>
-                        <FormField  name="title" value={level} onChange={(e:any)=> setLevel(e.target.value)} type="text" placeholder="entrer le titre du sujet"/>
+                        <FormField  name="titre"   type="text" placeholder="entrer le titre du sujet"/>
 
 
                         <p className="label-text">Entrer le contenu du sujet  </p>
-                        <FormField  name="contenu" value={contenu} onChange={(e:any)=> setContenu(e.target.value)} type="text" placeholder="question 1) ? "/>
+                        <FormField  name="contenu"  type="text" placeholder="question 1) ? "/>
                         
                            
 
