@@ -30,10 +30,10 @@ import { Divider } from '@chakra-ui/react';
 
 const initialValues= {
     question: '',
-    sol1:'',
-    sol2:'',
-    sol3:"",
-    sol4:'',
+    solution1:'',
+    solution2:'',
+    solution3:"",
+    solution4:'',
 }
 
 const override = {
@@ -78,10 +78,10 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const solutionAudioRef: any = useRef(null);
     const validationSchema = Yup.object().shape({
         question: Yup.string().required('obligatoire'),
-        sol1: Yup.string(),
-        sol2: Yup.string(),
-        sol3: Yup.string(),
-        sol4: Yup.string(),
+        solution1: Yup.string(),
+        solution2: Yup.string(),
+        solution3: Yup.string(),
+        solution4: Yup.string(),
     });
 
         const handleUploadAudio = (e:any) => {
@@ -190,9 +190,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const handleSubmitSolution = (values: any) => {
      
             let data = {
+                ...values,
                 level: selectLevel,
-                question: values.question,
-                solutions: [values.sol1, values.sol2, values.sol3, values.sol4],
                 response: resp,
                 typeElement: selectTestType,
                 imageUrl: imageUrl,
@@ -293,12 +292,12 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
                         <p className="label-text">Entrer les questions: </p>
                         <div className="flex gap-5 justify-between">
-                        <FormField  name="sol1" type="text" placeholder="question 1) ? "/>
-                        <FormField  name="sol2" type="text" placeholder="solution 2)? "/>
+                        <FormField  name="solution1" type="text" placeholder="question 1) ? "/>
+                        <FormField  name="solution2" type="text" placeholder="solution 2)? "/>
              </div>
                         <div className="flex gap-5 justiy7">
-                        <FormField  name="sol3" type="text" placeholder="solution 3) ? "/>
-                        <FormField  name="sol4" type="text" placeholder="solution 4) ? "/>
+                        <FormField  name="solution3" type="text" placeholder="solution 3) ? "/>
+                        <FormField  name="solution4" type="text" placeholder="solution 4) ? "/>
 
                         </div>
                            
