@@ -127,7 +127,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
             },()=> {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setImageUrl(downloadURL);
-                   console.log('image  URL: ', downloadURL);
+                   console.log('image  URL: ', downloadURL, imageUrl);
                    setIsUploadingSolutionPdf(false);
                });
            }
