@@ -48,6 +48,7 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const [level, setLevel] = useState("");
     const [items, setItems] = useState([]);
     const [error, setError] = useState<any>(null);
+    const [contenu, setContenu] = useState('')
     const [selectedClassroom, setSelectedClassroom] = useState<any>('all');
     const [selectedAssessment, setSelectedAssessment] = useState<any>('all');
     const [loading, setLoading] = useState(false);
@@ -90,8 +91,8 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
             let data = {
                 TypeElement: selectTest,
                 NumeroSujet: selectTestType,
-                titre: values.title,
-                contenu: values.contenu,
+                titre: level,
+                contenu: contenu,
                
             }
 
@@ -120,6 +121,10 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                         pauseOnHover: false,
                         closeOnClick: true,
                     })
+                    setSelectTest('')
+                    setSelectTestType('')
+                    setLevel('');
+                    setContenu('');
                     setLoading(false);
                     onContentAdded();
                 }else {
@@ -171,7 +176,7 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                     validationSchema={validationSchema}
                 >
                     <p className='label-text'>Entrer le type de sujet</p>
-                    <select  onChange={(e: any) =>setSelectTestType(e.target.value)}  value={selectTest} >
+                    <select className="select-field-modal" onChange={(e: any) =>setSelectTest(e.target.value)}  value={selectTest} >
                         <option value="all"></option>
                         <option value="expression ecrite">Expression ecrite</option>
                         <option value="expression orale">Expression Orale</option>
@@ -186,11 +191,11 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                          </select>
                       
                         <p className="label-text">Entrer le titre du sujet  </p>
-                        <FormField  name="title" type="text" placeholder="entrer le titre du sujet"/>
+                        <FormField  name="title" value={level} onChange={(e:any)=> setLevel(e.target.value)} type="text" placeholder="entrer le titre du sujet"/>
 
 
                         <p className="label-text">Entrer le contenu du sujet  </p>
-                        <FormField  name="contenu" type="text" placeholder="question 1) ? "/>
+                        <FormField  name="contenu" value={contenu} onChange={(e:any)=> setContenu(e.target.value)} type="text" placeholder="question 1) ? "/>
                         
                            
 
