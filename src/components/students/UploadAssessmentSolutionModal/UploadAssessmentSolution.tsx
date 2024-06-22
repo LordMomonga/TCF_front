@@ -353,12 +353,17 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
  
    </div>
  </div>}
+ {solutionPdfUrl.length > 2 &&
+  <div className="form-field-upload content-upload-right">
+  <p className="label-text" style={{textAlign: 'center'}}>Done</p>
+  </div>
+  }
  
     </div>}
 
 {selectTestType == "comprehension orale" &&  <div className='upload-content-container'>
-    
-    <p className='label'>Uploader l'élement audio: </p>
+    {audioUrl.length < 2 && <div className="form-field-upload content-upload-right">
+        <p className='label'>Uploader l'élement audio: </p>
      <div className='file-drop-upload' onClick={()=> solutionAudioRef.current.click()} >
         {!isUploadingAudio && <FaCloudUploadAlt size={35} color="#FFA500" />}
         <input ref={solutionAudioRef} accept="audio/*" onChange={handleUploadAudio} type="file" style={{width: '100%', height: '100%', display: 'none'}}  />
@@ -374,6 +379,12 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
           </div>}
      </div>
+        </div>}
+        {audioUrl.length > 2 &&
+  <div className="form-field-upload content-upload-right">
+  <p className="label-text" style={{textAlign: 'center'}}>Done</p>
+  </div> }
+    
 {solutionPdfUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
    
   <p className="label-text">Uploader l'élement image : </p>
