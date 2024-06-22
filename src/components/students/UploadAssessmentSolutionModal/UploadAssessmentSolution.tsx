@@ -26,6 +26,7 @@ import { getStudentsClasses, getCourseContent, getAcceptedClasses } from '../../
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { studentGetAssessments, submitAssessmentSolution, createElement } from '../../../services/assessment';
+import { Divider } from '@chakra-ui/react';
 
 const initialValues= {
     question: '',
@@ -38,7 +39,7 @@ const initialValues= {
 const override = {
     marginTop: '20px'
   };
-
+  
 
 
 function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
@@ -52,13 +53,17 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const [selectedClassroom, setSelectedClassroom] = useState<any>('all');
     const [selectedAssessment, setSelectedAssessment] = useState<any>('all');
     const [loading, setLoading] = useState(false);
-
+    const [image, setImage] = useState<File | null>(null);
+    const [imageUrl, setImageUrl] = useState<string>('');
     // ASSIGNMENT SOLUTION
     const [assessmentVideoUrl, setAssessmentVideoUrl] = useState('');
-
+    const [audioUrl, setAudioUrl] = useState('')
     const [solutionPdfUrl, setSolutionPdfUrl] = useState('');
     const [solutionPdfProgress,  setSolutionPdfProgress] = useState(0);
+    const [audioProgress, setAudioProgress] = useState(0)
     const [  isUploadingSolutionPdf, setIsUploadingSolutionPdf] = useState(false);
+    const [  isUploadingAudio, setIsUploadingAudio] = useState(false);
+
     const [selectTestType, setSelectTestType] = useState("")
     const [selectLevel, setSelectLevel] = useState("")
     const [showOrale,setShowOrale] =useState(false)
@@ -70,7 +75,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
     // good
     const solutionFileRef: any = useRef(null);
-
+    const solutionAudioRef: any = useRef(null);
     const validationSchema = Yup.object().shape({
         question: Yup.string().required('obligatoire'),
         sol1: Yup.string().required(' obligatoire'),
@@ -80,7 +85,56 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
         response: Yup.string().required(' obligatoire'),
     });
 
-   
+        const handleUploadAudio = (e:any) => {
+            setIsUploadingAudio(true);
+            const audioFile: any = e.target.files[0];
+             const storageRef = ref(storage, `audio-content/${Date.now()}-${audioFile.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, audioFile);
+
+            uploadTask.on('state_changed', 
+                (snapshot:any) =>{
+                    const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setAudioProgress(+uploadProgress)            
+                }, (error: any) => {
+                    console.log(error);
+                },()=>{
+                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    setAudioUrl(downloadURL);
+                   console.log('audio  URL: ', downloadURL);
+                   setIsUploadingAudio(false);
+               });
+                }
+                
+            )
+
+        }
+
+      const handleUpload = (e:any) => {
+
+        setIsUploadingSolutionPdf(true);
+        const imagefile: any = e.target.files[0];
+
+        const storageRef = ref(storage, `image-content/${Date.now()}-${imagefile.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, imagefile);
+        console.log(uploadTask)
+        console.log(e.target.files[0]);   
+        uploadTask.on('state_changed',
+            (snapshot: any) =>{
+                const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setSolutionPdfProgress(+uploadProgress);
+
+            }, (error: any) => {
+                console.log(error);
+            },()=> {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    setImageUrl(downloadURL);
+                   console.log('image  URL: ', downloadURL);
+                   setIsUploadingSolutionPdf(false);
+               });
+           }
+        )
+
+      }
 
 
     const uploadAnswerPdf = (e: any) => {
@@ -141,7 +195,10 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 question: values.question,
                 solutions: [values.sol1, values.sol2, values.sol3, values.sol4],
                 response: resp,
-                type: selectTestType,
+                typeElement: selectTestType,
+                imageUrl: imageUrl,
+                audioUrl: audioUrl
+                
             }
 
             // console.log('DATA: ', data);
@@ -153,7 +210,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 return;
             }
 
-            if(data.type == null || data.type == 'all') {
+            if(data.typeElement == null || data.typeElement == 'all') {
                 setError('vous devez selectionner le type de cet element');
                 return;
             }else {
@@ -228,8 +285,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                         <p className="label-text">Type de test: </p>
                         <select onChange={(e: any) => setSelectTestType(e.target.value) } value = {selectTestType} className="select-field-modal">
                             <option value="all">Select</option>
-                            <option value="CO">COMPREHENSION ORALE</option>
-                            <option value="CE">COMPREHENSION ECRITE</option>
+                            <option value="comprehension orale">COMPREHENSION ORALE</option>
+                            <option value="comprehension ecrite">COMPREHENSION ECRITE</option>
                          </select>
                         <p className="label-text">Questions (Obligatoire): </p>
                         <FormField  name="question" type="text" placeholder=" question ? (obligatoire)"/>
@@ -275,22 +332,61 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                            
                         </div>
                        
+ {selectTestType == "comprehension ecrite" &&  <div className='upload-content-container'>
+    {solutionPdfUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
+   
+   <p className="label-text">Uploader l'élement image : </p>
+   <div className="file-drop-upload" onClick={() => solutionFileRef.current.click()}>
+   {!isUploadingSolutionPdf && <FaCloudUploadAlt size={35} color="#FFA500" />}
+       <input ref={solutionFileRef} onChange={handleUpload} type="file" style={{width: '100%', height: '100%', display: 'none'}} accept="application/pdf,application/vnd.ms-excel, image/*"/>
+       {isUploadingSolutionPdf &&  <div style={{width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+     <BeatLoader
+           color="#623d91" 
+           loading={isUploadingSolutionPdf}
+           cssOverride={override}
+       />
+       <p style={{fontSize: '14px'}} >Uploading Content</p>
+   
+           <ProgressBar bgcolor={'#6a1b9a'} completed={solutionPdfProgress}/>
+       
+     </div>}
  
+   </div>
+ </div>}
+ 
+    </div>}
 
-{selectTestType == "CO" &&  <div className='upload-content-container'>
+{selectTestType == "comprehension orale" &&  <div className='upload-content-container'>
+    
+    <p className='label'>Uploader l'élement audio: </p>
+     <div className='file-drop-upload' onClick={()=> solutionAudioRef.current.click()} >
+        {!isUploadingAudio && <FaCloudUploadAlt size={35} color="#FFA500" />}
+        <input ref={solutionAudioRef} accept="audio/*" onChange={handleUploadAudio} type="file" style={{width: '100%', height: '100%', display: 'none'}}  />
+        {isUploadingAudio && <div style={{width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <BeatLoader
+          color="#623d91" 
+          loading={isUploadingAudio}
+          cssOverride={override}
+      />
+      <p style={{fontSize: '14px'}}  > Uploading Audio </p>
 
+      <ProgressBar bgcolor={'#6a1b9a'} completed={audioProgress}/>
+
+          </div>}
+     </div>
 {solutionPdfUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
-  <p className="label-text">Upload image element content: </p>
+   
+  <p className="label-text">Uploader l'élement image : </p>
   <div className="file-drop-upload" onClick={() => solutionFileRef.current.click()}>
   {!isUploadingSolutionPdf && <FaCloudUploadAlt size={35} color="#FFA500" />}
-      <input ref={solutionFileRef} onChange={uploadAnswerPdf} type="file" style={{width: '100%', height: '100%', display: 'none'}} accept="application/pdf,application/vnd.ms-excel"/>
+      <input ref={solutionFileRef} onChange={handleUpload} type="file" style={{width: '100%', height: '100%', display: 'none'}} accept="application/pdf,application/vnd.ms-excel, image/*"/>
       {isUploadingSolutionPdf &&  <div style={{width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
     <BeatLoader
           color="#623d91" 
           loading={isUploadingSolutionPdf}
           cssOverride={override}
       />
-      <p style={{fontSize: '14px'}}>Uploading Content</p>
+      <p style={{fontSize: '14px'}} >Uploading Content</p>
   
           <ProgressBar bgcolor={'#6a1b9a'} completed={solutionPdfProgress}/>
       

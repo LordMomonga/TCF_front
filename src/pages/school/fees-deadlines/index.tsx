@@ -27,11 +27,11 @@ const rows: any = [
         name: 'num'
     },
     {
-        label: 'Title',
+        label: 'Titre',
         name: 'name'
     },
     {
-        label: 'Deadline Date',
+        label: 'Date Limite',
         name: 'name'
     },
     {
@@ -39,7 +39,7 @@ const rows: any = [
         name: 'name'
     },
     {
-        label: 'Created Date',
+        label: 'Date de Création',
         name: 'name'
     },
     {

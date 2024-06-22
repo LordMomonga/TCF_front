@@ -25,14 +25,13 @@ import { getStudentsClasses, getCourseContent, getAcceptedClasses } from '../../
 
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import { studentGetAssessments, submitAssessmentSolution, createElement } from '../../../services/assessment';
+import { studentGetAssessments, CreateTestELement } from '../../../services/assessment';
+import { RxValue } from 'react-icons/rx';
 
 const initialValues= {
-    question: '',
-    sol1:'',
-    sol2:'',
-    sol3:"",
-    sol4:'',
+    title: '',
+    contenu:''
+   
 }
 
 const override = {
@@ -60,6 +59,8 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const [solutionPdfProgress,  setSolutionPdfProgress] = useState(0);
     const [  isUploadingSolutionPdf, setIsUploadingSolutionPdf] = useState(false);
     const [selectTestType, setSelectTestType] = useState("")
+    const [selectTest, setSelectTest] = useState("")
+
     const [selectLevel, setSelectLevel] = useState("")
     const [showOrale,setShowOrale] =useState(false)
     const [showEcrite,setShowEcrite] =useState(false)
@@ -72,104 +73,48 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const solutionFileRef: any = useRef(null);
 
     const validationSchema = Yup.object().shape({
-        question: Yup.string().required('obligatoire'),
-        sol1: Yup.string().required(' obligatoire'),
-        sol2: Yup.string().required(' obligatoire'),
-        sol3: Yup.string().required('obligatoire'),
-        sol4: Yup.string().required(' obligatoire'),
-        response: Yup.string().required(' obligatoire'),
+        title: Yup.string().required('obligatoire'),
+      
+        contenu: Yup.string().required('obligatoire'),
+        
     });
 
    
 
 
-    const AddExpressionEcrite = (e: any) => {
-        setIsUploadingSolutionPdf(true);
-      const pdfFile: any = e.target.files[0];
-      const storageRef = ref(storage, `pdf-content/${Date.now()}-${pdfFile.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, pdfFile);
-
-      console.log(e.target.files[0]);   
-  
-    uploadTask.on('state_changed', (snapshot: any)=>{
-        const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-        setSolutionPdfProgress(+uploadProgress);
-
-    }, (error: any) => {
-        console.log(error);
-    },()=> {
-         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setSolutionPdfUrl(downloadURL);
-            console.log('PDF  URL: ', downloadURL);
-            setIsUploadingSolutionPdf(false);
-        });
-    })
-  }
-  const handleGetTestType = () => {
-
-  }
-
-    const handleGetAssessments = (classId: any)  => {
-
-        studentGetAssessments(classId).then((res: any) => {
-            console.log('CONTENT RES', res);
-            if(res.ok) {
-                setAssessments(res.data.data)
-            }
-        }).catch(err => {
-            console.log('Error Getting Course Contents')
-        })
-    }
-
-    const handleSetSelectedClass = (classId: any) => {
-        console.log('class id: ', classId)
-        setSelectedClassroom(classId);
-        if(classId == 'all') {
-            setSelectedAssessment('all');
-            setAssessments([]);
-            return;
-        }
-
-        handleGetAssessments(classId);
-    }
+   
+    
 
     const handleSubmitSolution = (values: any) => {
      
             let data = {
-                level: selectLevel,
-                question: values.question,
-                solutions: [values.sol1, values.sol2, values.sol3, values.sol4],
-                response: resp,
-                type: selectTestType,
+                TypeElement: selectTest,
+                NumeroSujet: selectTestType,
+                titre: values.title,
+                contenu: values.contenu,
+               
             }
 
             // console.log('DATA: ', data);
             
             // return;
             
-            if(data.level == null || data.level == 'all') {
-                setError('vous devez selectionner un niveau pour cet element');
+            if(data.TypeElement == null || data.TypeElement == 'all') {
+                setError(' selectionnez le type de test que vous passez');
                 return;
             }
 
-            if(data.type == null || data.type == 'all') {
-                setError('vous devez selectionner le type de cet element');
+            if(data.NumeroSujet == null || data.NumeroSujet == 'all') {
+                setError('Selectionnez le type de sujet');
                 return;
             }else {
                 console.log('#### CHECK FAILED')
             }
     
-            if(solutionPdfUrl.length < 2) { 
-                setError('Select Solution File');
-                return;
-            }   
+             
 
-            // console.log("FINAL CONTENT: ",data)
-
-            // call submiting solution endpoint
             setLoading(true);
-            createElement(data).then((res: any) => {
+            CreateTestELement(data).then((res: any) => {
                 if(res.ok) {
                     toast.success(res.data.message, {
                         pauseOnHover: false,
@@ -187,7 +132,7 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                     })
                 }
             }).catch((err: any) => {   
-                console.log('ERROR SUBMITING: ', err);
+                console.log('ERROR Adding: ', err);
                 setLoading(false);
                 toast.error("ERROR", {
                     pauseOnHover: false,
@@ -225,6 +170,12 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                     onSubmit={handleSubmitSolution}
                     validationSchema={validationSchema}
                 >
+                    <p className='label-text'>Entrer le type de sujet</p>
+                    <select  onChange={(e: any) =>setSelectTestType(e.target.value)}  value={selectTest} >
+                        <option value="all"></option>
+                        <option value="expression ecrite">Expression ecrite</option>
+                        <option value="expression orale">Expression Orale</option>
+                    </select>
                      <p className="label-text">Entrer le type  de sujet: </p>
                         <select onChange={(e: any) => setSelectTestType(e.target.value) } value = {selectTestType} className="select-field-modal">
                             <option value="all">Select</option>
@@ -235,7 +186,7 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                          </select>
                       
                         <p className="label-text">Entrer le titre du sujet  </p>
-                        <FormField  name="entete" type="text" placeholder="entrer le titre du sujet"/>
+                        <FormField  name="title" type="text" placeholder="entrer le titre du sujet"/>
 
 
                         <p className="label-text">Entrer le contenu du sujet  </p>

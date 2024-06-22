@@ -32,7 +32,7 @@ const rows: any = [
         name: 'name'
     },
     {
-        label: 'Classroom',
+        label: 'specialities',
         name: 'name'
     },
     {

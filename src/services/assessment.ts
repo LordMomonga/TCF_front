@@ -8,7 +8,12 @@ const createElement = (data: any) => {
     return api.post(`/school/element`, data);
 
 }
+// gestion pour les ajouts des test de langues
 
+const CreateTestELement = (data: any) => {
+    return api.post(`/school/add/elem`, data);
+
+}
 const updateAssessment = (id: any, data: any) => {
     return api.post(`/assessment/${id}`, data);
 }
@@ -73,6 +78,7 @@ export {
     getClassAssessments,
     submitAssessmentScore,
     updateAssessment,
-    createElement
+    createElement,
+    CreateTestELement
 }   
 
