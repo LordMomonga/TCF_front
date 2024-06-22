@@ -215,10 +215,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 console.log('#### CHECK FAILED')
             }
     
-            if(imageUrl.length < 2) {
-                setError('Select Solution File');
-                return;
-            }   
+            
 
             // console.log("FINAL CONTENT: ",data)
 
@@ -243,6 +240,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                         pauseOnHover: false,
                         closeOnClick: true,
                     })
+
                 }
             }).catch((err: any) => {   
                 console.log('ERROR SUBMITING: ', err);
