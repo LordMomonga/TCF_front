@@ -224,6 +224,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
             console.log(data);
             createElement(data).then((res: any) => {
                 if(res.ok) {
+                    console.log(data);
+
                     toast.success(res.data.message, {
                         pauseOnHover: false,
                         closeOnClick: true,

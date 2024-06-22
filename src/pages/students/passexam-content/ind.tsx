@@ -174,7 +174,7 @@ function Ind() {
                 <div className="data-table">
                     <div className="top">
                        
-                      <div className="flex gap-[10%] px-[10%]">
+                      <div className="flex gap-[20%] px-[10%]">
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[260px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Comprehension Orale & Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
