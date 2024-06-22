@@ -216,7 +216,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 console.log('#### CHECK FAILED')
             }
     
-            if(solutionPdfUrl.length < 2) {
+            if(imageUrl.length < 2) {
                 setError('Select Solution File');
                 return;
             }   
@@ -332,7 +332,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                         </div>
                        
  {selectTestType == "comprehension ecrite" &&  <div className='upload-content-container'>
-    {solutionPdfUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
+    {imageUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
    
    <p className="label-text">Uploader l'élement image : </p>
    <div className="file-drop-upload" onClick={() => solutionFileRef.current.click()}>
@@ -352,7 +352,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
  
    </div>
  </div>}
- {solutionPdfUrl.length > 2 &&
+ {imageUrl.length > 2 &&
   <div className="form-field-upload content-upload-right">
   <p className="label-text" style={{textAlign: 'center'}}>Done</p>
   </div>
@@ -384,7 +384,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
   <p className="label-text" style={{textAlign: 'center'}}>Done</p>
   </div> }
     
-{solutionPdfUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
+{imageUrl.length < 2 &&  <div className="form-field-upload content-upload-right">
    
   <p className="label-text">Uploader l'élement image : </p>
   <div className="file-drop-upload" onClick={() => solutionFileRef.current.click()}>
@@ -405,7 +405,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
   </div>
 </div>}
 
-{solutionPdfUrl.length > 2 &&
+{imageUrl.length > 2 &&
   <div className="form-field-upload content-upload-right">
   <p className="label-text" style={{textAlign: 'center'}}>Done</p>
   </div>
