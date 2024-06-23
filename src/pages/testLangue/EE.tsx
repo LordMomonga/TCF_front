@@ -135,8 +135,8 @@ const EE: React.FC = () => {
           <div>
             <h1 className='text-center font-bold text-xl'>Tache 1</h1>
             <p className='w-[100%] text-center mt-5'>
-            {sujet1?.title}
-            <span className='block mt-2 font-bold'>{sujet1?.contenu}</span>
+            le titre
+            <span className='block mt-2 font-bold'>le contenu</span>
             </p>
             <div>
               <textarea
@@ -152,9 +152,9 @@ const EE: React.FC = () => {
           <div>
             <h1 className='text-center font-bold text-xl'>Tache 2</h1>
             <p className='w-[100%] text-center mt-5'>
-            {sujet2?.title}
+            le titre
             <span className='block mt-2 font-bold'>          
-                {sujet2?.contenu}
+               le contenu
             </span>
             </p>
             <div>
@@ -171,9 +171,9 @@ const EE: React.FC = () => {
           <div>
             <h1 className='text-center font-bold text-xl'>Tache 3</h1>
             <p className='w-[100%] text-center mt-5'>
-            {sujet3?.title}
+            le titre
               <span className='block mt-2 font-bold text-sm'>
-              {sujet3?.contenu}
+              le contenu
               </span>
             </p>
             <div>
