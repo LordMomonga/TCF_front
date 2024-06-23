@@ -28,7 +28,7 @@ const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
   }, [redirectTo, navigate]);
 
   return (
-    <div className="w-screen h-screen px-[15%] py-[15%] overflow-hidden flex justify-center items-center">
+    <div className="w-screen h-screen px-[5%] py-[5%] overflow-hidden flex justify-center items-center">
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
