@@ -62,9 +62,9 @@ const EE: React.FC = () => {
       console.log('RESPONSE GET: ', res);
       if(res.ok) {
         setData(res.data.data);
-        setSujet1(res.data.data[0]);
-      setSujet2(res.data.data[1])
-      setSujet3(res.data.data[2])
+        setSujet1(res.data.data.selectedSubjects1);
+        setSujet2(res.data.data.selectedSubjects2);
+         setSujet3(res.data.data.selectedSubjects3);
       }
       
       console.log(sujet1, sujet2, sujet3);
