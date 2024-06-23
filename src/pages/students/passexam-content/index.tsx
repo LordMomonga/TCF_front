@@ -16,7 +16,7 @@ import { BiPlay } from 'react-icons/bi'
 import Tippy from '@tippyjs/react';
 import { BiBook } from 'react-icons/bi';
 import 'tippy.js/dist/tippy.css';
-
+import { ImCancelCircle } from 'react-icons/im';
 import { getAcceptedClasses, getStudentsClasses, studentGetPassExams } from '../../../services/student';
 
 import BeatLoader from "react-spinners/BeatLoader";
@@ -38,16 +38,16 @@ const override = {
   const MessageValidation = ({pageUrl, message, onClose}: any) => {
 
     return(
-        <div className='absolute bg-white text-center  top-10 px-10 py-5'>
+        <div className='absolute bg-white left-[20%] text-center  top-5 px-10 py-5 rounded-md'>
             <div className='relative w-full text-center'>
             <p>{message}</p>  
-          <span className='font-bold mt-2 text-[13px] text-gray-500 '>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
+          <span className='font-bold mt-2 text-[13px] text-gray-500  '>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
           <div className='w-full justify-between flex mt-5 '>
-            <button className='bg-red-500 px-2 py-1 '> annuler </button>
-            < NavLink to={pageUrl}><button  className='bg-green-500 px-3 py-1 '>Demarrer</button></NavLink>
+            <button className='bg-red-500 px-2 py-1  rounded-md text-white'> annuler </button>
+            < NavLink to={pageUrl}><button  className='bg-green-500 px-3 py-1 text-white rounded-md'>Demarrer</button></NavLink>
           </div>
-          <div className='absolute top-2 right-4 rounded-full ' onClick={onClose}>
-            <BiTime size={12}/>
+          <div className='absolute top-2 right-1 rounded-full' onClick={onClose}>
+            <ImCancelCircle size={20}/>
           </div>
             </div>
           
