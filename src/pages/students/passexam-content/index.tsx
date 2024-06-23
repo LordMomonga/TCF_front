@@ -189,7 +189,7 @@ function Index() {
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md '>Simulation Complete</h1>
       <div className='flex text-white justify-between mt-5 '>
       <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/presentation'><BiPlay className="text-white"></BiPlay></NavLink></button>
-      <span className='text-[12px] font-bold  text-prim'> Durée : 45min</span>
+      <span className='text-[12px] font-bold  text-prim'> Durée : </span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
       </div> 
