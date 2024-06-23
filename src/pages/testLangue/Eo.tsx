@@ -59,7 +59,7 @@ const handleExpressionOrale = () => {
   setLoading(true)
 
   selectExpresssionOrale().then((res: any) => {
-      console.log('RESPONSE GET : ', res.data.data);
+      console.log('RESPONSE GET : ', res.data.data.selectedSubjects1);
 
       if(res.ok) {
         setData(res.data.data.selectedSubjects1);
@@ -112,10 +112,13 @@ const renderTaskContent = () => {
       return (
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 1</h1>
-          <p className='w-[100%] text-center mt-5'>
-          le titre
-            <span className='block mt-2 font-bold'>le contenu</span>
-          </p>
+          {sujet1?.map((data:any, index:any) => 
+            <p className='w-[100%] text-center mt-5'>
+            {data?.titre}
+              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+            </p>
+          )}
+         
           <div>
           <div>
       <h1>Audio Recorder</h1>
@@ -136,12 +139,13 @@ const renderTaskContent = () => {
       return (
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 2</h1>
-          <p className='w-[100%] text-center mt-5'>
-          le titre
-            <span className='block mt-2 font-bold'>        
-              le contenu
-            </span>
-          </p>
+          
+          {sujet2?.map((data:any, index:any) => 
+            <p className='w-[100%] text-center mt-5'>
+            {data?.titre}
+              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+            </p>
+          )}
           <div>
             <textarea
               placeholder='ecrivez votre redaction ici'
@@ -167,12 +171,12 @@ const renderTaskContent = () => {
       return (
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 3</h1>
-          <p className='w-[100%] text-center mt-5'>
-         le titre
-            <span className='block mt-2 font-bold text-sm'>
-            le contenu
-            </span>
-          </p>
+          {sujet3?.map((data:any, index:any) => 
+            <p className='w-[100%] text-center mt-5'>
+            {data?.titre}
+              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+            </p>
+          )}
           <div>
             <textarea
               placeholder='ecrivez votre redaction ici'
