@@ -89,7 +89,7 @@ const Presentation: React.FC = () => {
         <footer className='absolute bottom-3 w-full'>
           <div className='flex justify-between px-10'>
             <button className='bg-red-500 px-2 py-1 text-white font-bold rounded-md'>Quitter</button>
-            <NavLink to='/CO'>  <button className='p-2 px-3 bg-transparent border-2 border-gray-500 rounded-md'>Commencer</button></NavLink>
+            <NavLink to='/play-co-video'>  <button className='p-2 px-3 bg-transparent border-2 border-gray-500 rounded-md'>Commencer</button></NavLink>
           </div>
         </footer>
       </div>

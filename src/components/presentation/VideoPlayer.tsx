@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+interface VideoProps {
+  videoUrl: string;
+  redirectTo: string;
+}
 
-const VideoPlayer = () => {
+const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleVideoEnd = () => {
+      navigate(redirectTo);
+    };
+
+    if (videoRef.current) {
+      videoRef.current.play();
+      videoRef.current.addEventListener('ended', handleVideoEnd);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('ended', handleVideoEnd);
+      }
+    };
+  }, [redirectTo, navigate]);
 
   return (
-    <div>
-    
+    <div className="w-screen h-screen px-[15%] py-[15%] overflow-hidden flex justify-center items-center">
+      <video
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        autoPlay
+        src={videoUrl}
+      />
     </div>
   );
 };

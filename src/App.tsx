@@ -49,6 +49,7 @@ import {
   StudentChatRoomPage
 } from './pages';
 import './App.css';
+import VideoPlayer from './components/presentation/VideoPlayer';
 import CE from './pages/testLangue/CE';
 import CO from "./pages/testLangue/CO";
 import EE from "./pages/testLangue/EE";
@@ -155,7 +156,17 @@ function App() {
             <Route  path="/school/students-results" element={(<Protected> <SchoolStudentResultsPage /> </Protected>)} />
             <Route  path="/school/result-types" element={(<Protected> <SchoolResultTypesPage /> </Protected>)} />
             <Route  path="/school/fees-deadlines" element={(<Protected> <SchoolFeesDeadlinePage /> </Protected>)} />
+            <Route path="/play-video" element={<VideoPlayer videoUrl="comprehensionEcrite.mp4" redirectTo="/CE" />} />
 
+{/* VideoPlayer before CE */}
+<Route path="/play-video" element={<VideoPlayer videoUrl="comprehensionEcrite.mp4" redirectTo="/CE" />} />
+
+{/* VideoPlayer before CO */}
+<Route path="/play-co-video" element={<VideoPlayer videoUrl="comprehensiono.mp4" redirectTo="/CO" />} />
+{/* VideoPlayer before EE */}
+<Route path="/play-ee-video" element={<VideoPlayer videoUrl="ExpressionEcrite.mp4" redirectTo="/EE" />} />
+{/* VideoPlayer before EO */}
+<Route path="/play-eo-video" element={<VideoPlayer videoUrl="ExpressionOrale.mp4" redirectTo="/EO" />} />
         </Routes>
       </BrowserRouter>
       </AcademicYearContext.Provider>

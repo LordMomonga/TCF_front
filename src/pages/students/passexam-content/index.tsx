@@ -43,7 +43,7 @@ function Index() {
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
     const [existed, setExisted] = useState(false);
     const [videoUrl, setVideoUrl] = useState('');
-
+    const [isStarting, setIsStarting] = useState(false);
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -119,7 +119,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Comprehension Orale</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/CO'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/play-co-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
       <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
@@ -129,7 +129,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-white   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white '>Comprehension Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/CO'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/play-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
       <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
@@ -139,7 +139,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase text-white  text-sm md:text-2md '>Expression Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 '><NavLink to='/EE'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 '><NavLink to='/play-ee-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
       <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
@@ -149,7 +149,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Expression orale</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to=''><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/play-eo-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
       <span className='text-[12px] font-bold   text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2 text-white rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
