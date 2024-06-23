@@ -40,7 +40,7 @@ const override = {
     return(
         <div className='absolute bg-white left-[25%] text-center  top-1 px-10 py-5 rounded-md'>
             <div className='relative w-full text-center'>
-            <p className='block mt-2'>{message}</p>  
+            <p className='block mt-5'>{message}</p>  
           <span className='font-bold mt-2 text-[13px] text-gray-500  '>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
           <div className='w-full justify-between flex mt-5 '>
             <button onClick={onClose} className='bg-red-500 px-2 py-1  rounded-md text-white'> annuler </button>
