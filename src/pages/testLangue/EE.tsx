@@ -51,10 +51,10 @@ const EE: React.FC = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
 
-  const [sujet1, setSujet1]= useState<any>(null)
-  const [sujet2, setSujet2]= useState<any>(null)
+  const [sujet1, setSujet1]= useState([])
+  const [sujet2, setSujet2]= useState([])
 
-  const [sujet3, setSujet3]= useState<any>(null)
+  const [sujet3, setSujet3]= useState([])
 
   const handleExpressionEcrite = () => {
     setLoading(true)

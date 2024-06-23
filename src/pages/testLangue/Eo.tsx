@@ -50,9 +50,9 @@ const Eo : React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<string>('tache1'); // default task
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({})
-  const [sujet1, setSujet1]= useState<any>(null)
-  const [sujet2, setSujet2]= useState<any>(null)
-  const [sujet3, setSujet3]= useState<any>(null)
+  const [sujet1, setSujet1]= useState([])
+  const [sujet2, setSujet2]= useState([])
+  const [sujet3, setSujet3]= useState([])
 
 
 const handleExpressionOrale = () => {
@@ -113,8 +113,8 @@ const renderTaskContent = () => {
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 1</h1>
           <p className='w-[100%] text-center mt-5'>
-          {sujet1?.title}
-            <span className='block mt-2 font-bold'>{sujet1?.contenu}</span>
+          le titre
+            <span className='block mt-2 font-bold'>le contenu</span>
           </p>
           <div>
           <div>
@@ -137,9 +137,9 @@ const renderTaskContent = () => {
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 2</h1>
           <p className='w-[100%] text-center mt-5'>
-          {sujet2?.title}
+          le titre
             <span className='block mt-2 font-bold'>        
-              {sujet2?.contenu}
+              le contenu
             </span>
           </p>
           <div>
@@ -168,9 +168,9 @@ const renderTaskContent = () => {
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 3</h1>
           <p className='w-[100%] text-center mt-5'>
-          {sujet3?.title}
+         le titre
             <span className='block mt-2 font-bold text-sm'>
-            {sujet3?.contenu}
+            le contenu
             </span>
           </p>
           <div>
