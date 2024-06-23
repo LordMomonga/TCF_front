@@ -60,7 +60,7 @@ const handleExpressionOrale = () => {
   setLoading(true)
 
   selectExpresssionOrale().then((res: any) => {
-      console.log('RESPONSE GET: ', res);
+      console.log('RESPONSE GET: ', res.data);
       if(res.ok) {
         setData(res.data.data);
         setSujet1(res.data.data[0]);
@@ -68,7 +68,7 @@ const handleExpressionOrale = () => {
       setSujet3(res.data.data[2])
 
       }
-      console.log(sujet1, sujet2, sujet3);
+      console.log(sujet1, sujet2, sujet3, data);
       setLoading(false);
   }).catch(err => {
     console.log('error', err)

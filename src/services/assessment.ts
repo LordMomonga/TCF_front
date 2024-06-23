@@ -8,6 +8,7 @@ const createElement = (data: any) => {
     return api.post(`/school/element`, data);
 
 }
+//grap all the expression element 
 const selectExpresssionEcrite = () =>{
     return api.get(`/school/elemEcrite`);
 }
@@ -15,6 +16,16 @@ const selectExpresssionEcrite = () =>{
 const selectExpresssionOrale = () =>{
     return api.get(`/school/elemOrale`);
 }
+
+//grap all the comprehension test element
+const selectComprehensionOrale = () =>{
+    return api.get(`school/select/compo`);
+}
+const selectComprehensionEcrite = ()=>{
+    return api.get(`school/select/compe`);
+
+}
+
 // gestion pour les ajouts des test de langues
 
 const CreateTestELement = (data: any) => {
@@ -88,6 +99,9 @@ export {
     createElement,
     CreateTestELement,
     selectExpresssionEcrite,
-    selectExpresssionOrale
+    selectExpresssionOrale,
+    selectComprehensionOrale,
+    selectComprehensionEcrite
+    
 }   
 

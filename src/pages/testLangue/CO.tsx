@@ -9,13 +9,42 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { selectComprehensionOrale } from '../../services/assessment'
 import './test.css'
 const CO = () => {
      const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
     const [user, setUser] = useState<any>(null);
     const [numb, setNumb] = useState(39)
+    const [loading, setLoading] = useState(false)
+    const [selectListeningA1, setSelectListeningA1]= useState<any>(null)
+    const [selectListeningA2, setSelectListeningA2]= useState<any>(null)
+    const [selectListeningB1, setSelectListeningB1]= useState<any>(null)
+    const [selectListeningB2, setSelectListeningB2]= useState<any>(null)
+    const [selectListeningC1, setSelectListeningC1]= useState<any>(null)
+    const [selectListeningC2, setSelectListeningC2]= useState<any>(null)
 
+
+    const handleComprehensionOrale = () => {
+      setLoading(true)
+      selectComprehensionOrale().then((res: any) => {
+        console.log('RESPONSE GET: ', res);
+        if(res.ok) {
+          setSelectListeningA1(res.data.data[0]);
+          setSelectListeningA2(res.data.data[1]);
+          setSelectListeningB1(res.data.data[2]);
+          setSelectListeningB2(res.data.data[3]);
+          setSelectListeningC1(res.data.data[4]);
+          setSelectListeningC2(res.data.data[5])
+        }
+        console.log(setSelectListeningA1);
+        setLoading(false);
+      }).catch(err => {
+        console.log('error', err)
+        setLoading(false);
+      })
+    }
     useEffect(() => {
+      handleComprehensionOrale();
         let usr = getUser();
         setUser(usr);
     }, [])
