@@ -63,11 +63,12 @@ const handleExpressionOrale = () => {
       console.log('RESPONSE GET: ', res);
       if(res.ok) {
         setData(res.data.data);
+        setSujet1(res.data.data[0]);
+      setSujet2(res.data.data[1])
+      setSujet3(res.data.data[2])
 
       }
-      setSujet1(data[0]);
-      setSujet2(data[1])
-      setSujet3(data[2])
+      console.log(sujet1, sujet2, sujet3);
       setLoading(false);
   }).catch(err => {
     console.log('error', err)
