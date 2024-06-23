@@ -38,15 +38,15 @@ const override = {
   const MessageValidation = ({pageUrl, message, onClose}: any) => {
 
     return(
-        <div className='absolute bg-white left-[20%] text-center  top-5 px-10 py-5 rounded-md'>
+        <div className='absolute bg-white left-[25%] text-center  top-2 px-10 py-5 rounded-md'>
             <div className='relative w-full text-center'>
             <p>{message}</p>  
           <span className='font-bold mt-2 text-[13px] text-gray-500  '>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
           <div className='w-full justify-between flex mt-5 '>
-            <button className='bg-red-500 px-2 py-1  rounded-md text-white'> annuler </button>
+            <button onClick={onClose} className='bg-red-500 px-2 py-1  rounded-md text-white'> annuler </button>
             < NavLink to={pageUrl}><button  className='bg-green-500 px-3 py-1 text-white rounded-md'>Demarrer</button></NavLink>
           </div>
-          <div className='absolute top-2 right-1 rounded-full' onClick={onClose}>
+          <div className='absolute top-0 right-1 rounded-full' onClick={onClose}>
             <ImCancelCircle size={20}/>
           </div>
             </div>
@@ -66,6 +66,10 @@ function Index() {
     const [existed, setExisted] = useState(false);
     const [videoUrl, setVideoUrl] = useState('');
     const [isStartingCo, setIsStartingcO] = useState(false);
+    const [isStartingCe, setIsStartingce] = useState(false);
+    const [isStartingEo, setIsStartingEo] = useState(false);
+    const [isStartingEe, setIsStartingEe] = useState(false);
+
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -151,7 +155,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-white   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white '>Comprehension Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/play-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 ' onClick={() => setIsStartingce(true)}><BiPlay className="text-white"></BiPlay></button>
       <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
@@ -161,7 +165,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase text-white  text-sm md:text-2md '>Expression Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 '><NavLink to='/play-ee-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 ' onClick={() => setIsStartingEe(true)}><BiPlay className="text-white"></BiPlay></button>
       <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
@@ -171,7 +175,7 @@ function Index() {
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Expression orale</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/play-eo-video'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 'onClick={() => setIsStartingEo(true)}><BiPlay className="text-white"></BiPlay></button>
       <span className='text-[12px] font-bold   text-white'> Durée : 45min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2 text-white rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
@@ -206,7 +210,11 @@ function Index() {
             </div>
         </div>
 }
-{isStartingCo && <MessageValidation  pageUrl='/play-co-video' message='voulez vous demarrer cette simulation ?' onClose={() => setIsStartingcO(!isStartingCo)} />}
+{isStartingCo && <MessageValidation  pageUrl='/play-co-video' message='voulez vous demarrer cette simulation de comprehension orale ?' onClose={() => setIsStartingcO(!isStartingCo)} />}
+{isStartingCe && <MessageValidation  pageUrl='/play-video' message='voulez vous demarrer cette simulation de comprehension ecrite ?' onClose={() => setIsStartingce(!isStartingCe)} />}
+{isStartingEe && <MessageValidation  pageUrl='/play-ee-video' message="voulez vous demarrer cette simulation d'expression ecrite ?" onClose={() => setIsStartingEe(!isStartingEe)} />}
+{isStartingEo && <MessageValidation  pageUrl='/play-eo-video' message="voulez vous demarrer cette simulation d'expression orale ?" onClose={() => setIsStartingEo(!isStartingEo)} />}
+
 {!existed && <div className='section'>
     <div className="parent-con">
         <div className="data-table">
