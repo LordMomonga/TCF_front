@@ -60,10 +60,11 @@ const handleExpressionOrale = () => {
   setLoading(true)
 
   selectExpresssionOrale().then((res: any) => {
-      console.log('RESPONSE GET new: ', res.data.data[0]);
+      console.log('RESPONSE GET new: ', res.data.data[0].contenu);
+      setSujet1(res.data.data[0]);
+
       if(res.ok) {
         setData(res.data.data);
-        setSujet1(res.data.data[0]);
       setSujet2(res.data.data[1])
       setSujet3(res.data.data[2])
 
