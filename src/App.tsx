@@ -110,9 +110,9 @@ function App() {
             <Route path="/" element={(<HomePage />)} />
             <Route path="/CE" element={( <Protected><CE /> </Protected> )} />
             <Route path="/CO" element={(<Protected><CO /></Protected>)} />
-            <Route path="/EE" element={(<EE />)} />
-             <Route path="/EO" element={(<EO />)} />
-             <Route path="/presentation" element={(<Presentation/>)} />
+            <Route path="/EE" element={(<Protected><EE /></Protected>)} />
+             <Route path="/EO" element={(<Protected><EO /></Protected>)} />
+             <Route path="/presentation" element={(<Protected><Presentation/></Protected>)} />
 
 
             <Route path="/login" element={(<LoginPage />)} />
@@ -156,17 +156,16 @@ function App() {
             <Route  path="/school/students-results" element={(<Protected> <SchoolStudentResultsPage /> </Protected>)} />
             <Route  path="/school/result-types" element={(<Protected> <SchoolResultTypesPage /> </Protected>)} />
             <Route  path="/school/fees-deadlines" element={(<Protected> <SchoolFeesDeadlinePage /> </Protected>)} />
-            <Route path="/play-video" element={<VideoPlayer videoUrl="comprehensionEcrite.mp4" redirectTo="/CE" />} />
+            <Route path="/play-video" element={<Protected><VideoPlayer videoUrl="comprehensionEcrite.mp4" redirectTo="/CE" /></Protected>} />
 
 {/* VideoPlayer before CE */}
-<Route path="/play-video" element={<VideoPlayer videoUrl="comprehensionEcrite.mp4" redirectTo="/CE" />} />
 
 {/* VideoPlayer before CO */}
-<Route path="/play-co-video" element={<VideoPlayer videoUrl="comprehensiono.mp4" redirectTo="/CO" />} />
+<Route path="/play-co-video" element={<Protected><VideoPlayer videoUrl="comprehensiono.mp4" redirectTo="/CO" /></Protected>} />
 {/* VideoPlayer before EE */}
-<Route path="/play-ee-video" element={<VideoPlayer videoUrl="ExpressionEcrite.mp4" redirectTo="/EE" />} />
+<Route path="/play-ee-video" element={<Protected><VideoPlayer videoUrl="ExpressionEcrite.mp4" redirectTo="/EE" /></Protected>} />
 {/* VideoPlayer before EO */}
-<Route path="/play-eo-video" element={<VideoPlayer videoUrl="ExpressionOrale.mp4" redirectTo="/EO" />} />
+<Route path="/play-eo-video" element={<Protected><VideoPlayer videoUrl="ExpressionOrale.mp4" redirectTo="/EO" /></Protected>} />
         </Routes>
       </BrowserRouter>
       </AcademicYearContext.Provider>
