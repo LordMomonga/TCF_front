@@ -8,6 +8,13 @@ const createElement = (data: any) => {
     return api.post(`/school/element`, data);
 
 }
+const selectExpresssionEcrite = () =>{
+    return api.get(`/school/elemEcrite`);
+}
+
+const selectExpresssionOrale = () =>{
+    return api.get(`/school/elemOrale`);
+}
 // gestion pour les ajouts des test de langues
 
 const CreateTestELement = (data: any) => {
@@ -79,6 +86,8 @@ export {
     submitAssessmentScore,
     updateAssessment,
     createElement,
-    CreateTestELement
+    CreateTestELement,
+    selectExpresssionEcrite,
+    selectExpresssionOrale
 }   
 

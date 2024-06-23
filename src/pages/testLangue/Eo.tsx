@@ -13,7 +13,7 @@ import { AudioRecorder } from 'react-audio-voice-recorder';
 import { storage } from '../../utils/firebaseConfig'
 import { getDownloadURL } from 'firebase/storage'
 import { uploadBytesResumable, ref } from 'firebase/storage'
-
+import { selectExpresssionOrale } from '../../services/assessment'
 const addAudioElement = async (blob: Blob) => {
   const url = URL.createObjectURL(blob);
   const audio = document.createElement("audio");
@@ -48,8 +48,23 @@ const Eo : React.FC = () => {
   const [record, setRecord] = useState(false)
   const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
   const [selectedTask, setSelectedTask] = useState<string>('tache1'); // default task
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState({})
 
+const handleExpressionOrale = () => {
+  setLoading(true)
 
+  selectExpresssionOrale().then((res: any) => {
+      console.log('RESPONSE GET: ', res);
+      if(res.ok) {
+        setData(res.data.data);
+      }
+      setLoading(false);
+  }).catch(err => {
+    console.log('error', err)
+    setLoading(false);
+  })
+}
   const startRecording = () => {
     setRecord(true);
   }
@@ -78,6 +93,7 @@ const Eo : React.FC = () => {
   };
 
   useEffect(() => {
+    handleExpressionOrale();
     let usr = getUser();
     setUser(usr);
 }, [])

@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
-
+import { selectExpresssionEcrite } from '../../services/assessment'
+import { Console } from 'console'
+import { BeatLoader } from 'react-spinners'
 interface ConfirmationDialogProps {
   message: string;
   onConfirm: () => void;
@@ -46,8 +48,26 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ message, onConf
 const EE: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
+  const [data, setData] = useState({})
+  const [loading, setLoading] = useState(false);
 
+  const handleExpressionEcrite = () => {
+    setLoading(true)
+    selectExpresssionEcrite().then((res: any) =>{
+      console.log('RESPONSE GET: ', res);
+      if(res.ok) {
+        setData(res.data.data);
+      }
+      setLoading(false);
+
+    }).catch(err => {
+      console.log('error: ', err);
+      setLoading(false);
+    })
+  }
+  
   useEffect(() => {
+    handleExpressionEcrite();
     const intervalId = setInterval(() => {
       if (remainingTime > 0) {
         setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
