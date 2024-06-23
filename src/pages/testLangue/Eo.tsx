@@ -49,7 +49,12 @@ const Eo : React.FC = () => {
   const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
   const [selectedTask, setSelectedTask] = useState<string>('tache1'); // default task
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState({})
+  const [data, setData] = useState([])
+  const [sujet1, setSujet1]= useState<any>(null)
+  const [sujet2, setSujet2]= useState<any>(null)
+
+  const [sujet3, setSujet3]= useState<any>(null)
+
 
 const handleExpressionOrale = () => {
   setLoading(true)
@@ -58,7 +63,11 @@ const handleExpressionOrale = () => {
       console.log('RESPONSE GET: ', res);
       if(res.ok) {
         setData(res.data.data);
+
       }
+      setSujet1(data[0]);
+      setSujet2(data[1])
+      setSujet3(data[2])
       setLoading(false);
   }).catch(err => {
     console.log('error', err)
@@ -104,8 +113,8 @@ const renderTaskContent = () => {
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 1</h1>
           <p className='w-[100%] text-center mt-5'>
-            Ecrire une lettre a votre amis pour le prevenir que vous viendrez le voir dans une semaine pour participer a un festival 
-            <span className='block mt-2 font-bold'>ecrivez une lettre pour inviter votre ami</span>
+          {sujet1?.title}
+            <span className='block mt-2 font-bold'>{sujet1?.contenu}</span>
           </p>
           <div>
           <div>
@@ -128,8 +137,10 @@ const renderTaskContent = () => {
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 2</h1>
           <p className='w-[100%] text-center mt-5'>
-            il y'a un evenement traditionnelle dans votre village et vous avez eu a participer a cette evenement 
-            <span className='block mt-2 font-bold'>Raconter et decrire l'evenement</span>
+          {sujet2?.title}
+            <span className='block mt-2 font-bold'>        
+              {sujet2?.contenu}
+            </span>
           </p>
           <div>
             <textarea
@@ -157,9 +168,9 @@ const renderTaskContent = () => {
         <div>
           <h1 className='text-center font-bold text-xl'>Tache 3</h1>
           <p className='w-[100%] text-center mt-5'>
-            L'éducation en ligne est-elle une solution viable pour l'avenir de l'enseignement 
+          {sujet3?.title}
             <span className='block mt-2 font-bold text-sm'>
-              Vous rédigerez un texte argumentatif en présentant votre point de vue sur l'éducation en ligne. Vous discuterez des avantages et des inconvénients de cette méthode d'enseignement, et conclurez en donnant votre opinion sur son potentiel pour remplacer ou compléter l'éducation traditionnelle.
+            {sujet3?.contenu}
             </span>
           </p>
           <div>
