@@ -46,9 +46,7 @@ const override = {
             <button onClick={onClose} className='bg-red-500 px-2 py-1  rounded-md text-white'> annuler </button>
             < NavLink to={pageUrl}><button  className='bg-green-500 px-3 py-1 text-white rounded-md'>Demarrer</button></NavLink>
           </div>
-          <div className='absolute top-0  right-0 rounded-full' onClick={onClose}>
-            <ImCancelCircle size={20}/>
-          </div>
+         
             </div>
           
         </div>
