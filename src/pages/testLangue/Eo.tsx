@@ -49,10 +49,9 @@ const Eo : React.FC = () => {
   const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
   const [selectedTask, setSelectedTask] = useState<string>('tache1'); // default task
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState([])
+  const [data, setData] = useState({})
   const [sujet1, setSujet1]= useState<any>(null)
   const [sujet2, setSujet2]= useState<any>(null)
-
   const [sujet3, setSujet3]= useState<any>(null)
 
 
@@ -61,13 +60,10 @@ const handleExpressionOrale = () => {
 
   selectExpresssionOrale().then((res: any) => {
       console.log('RESPONSE GET new: ', res.data.data);
-      setSujet1(res.data.data[0]);
 
       if(res.ok) {
-        setData(res.data.data);
-      setSujet2(res.data.data[1])
-      setSujet3(res.data.data[2])
-
+        setData(res.data.data.selectedSubjects1);
+      
       }
       console.log(sujet1, sujet2, sujet3, data);
       setLoading(false);
