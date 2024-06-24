@@ -220,6 +220,7 @@ function Index() {
                                 loading={loading}
                                 cssOverride={override}
                         />
+                        is loading ...
                     </div>
                        </div>) :
 (
