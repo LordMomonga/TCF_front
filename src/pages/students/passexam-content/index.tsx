@@ -81,6 +81,8 @@ function Index() {
         getStudentApplications().then((res:any) => {
             setShowTest(res.data.data[0].status);
            console.log('bien recupéré',showTest)
+            setLoading(false)
+
         }).catch((error:any) => {
             console.log('error a la recuperation')
         })
@@ -88,7 +90,6 @@ function Index() {
     const handleExisted = ()=> {
         handleVerify();
         if(showTest === "pending"){
-            setLoading(false)
             setExisted(false)
         }else if(showTest === "accepted"){
             setExisted(true)
@@ -226,7 +227,7 @@ function Index() {
                        </div>) :
 (
                  <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
-                   Désolé Votre candidature n'a pas été validée !!! <BiBlock size={34}></BiBlock>
+                   Désolé Votre candidature n'a pas été validée...  <BiBlock size={34}></BiBlock>
                  </span>)}
             </div>
 
