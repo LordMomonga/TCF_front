@@ -40,7 +40,7 @@ const override = {
     return(
         <div className='absolute bg-white left-[25%] text-center  top-1 px-10 py-5 rounded-md'>
             <div className='relative w-full text-center'>
-            <p className='block mt-5'>{message}</p>  
+            <p className='block mt-5 p-2 bg-gray-500'>{message}</p>  
           <span className='font-bold mt-2 text-[13px] text-gray-500  '>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
           <div className='w-full justify-between flex mt-5 '>
             <button onClick={onClose} className='bg-red-500 px-2 py-1  rounded-md text-white'> annuler </button>
@@ -213,7 +213,7 @@ function Index() {
     <div className="parent-con">
         <div className="data-table">
             <div className="top">
-           {loading && <div className="table-con">
+           {loading ? (<div className="table-con">
                     <div style={{textAlign: 'center',}}>
                         <BeatLoader
                                 color="#623d91" 
@@ -221,11 +221,11 @@ function Index() {
                                 cssOverride={override}
                         />
                     </div>
-                       </div>}
-{!loading &&
+                       </div>) :
+(
                  <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
                    Désolé Votre candidature n'a pas été validée !!! <BiBlock size={34}></BiBlock>
-                 </span>}
+                 </span>)}
             </div>
 
         </div>
