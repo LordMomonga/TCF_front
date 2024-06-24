@@ -314,8 +314,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                             <option value="C2">C2</option>
                             <option value="B1">B1</option>
                             <option value="B2">B2</option>
-                            <option value="A1">B1</option>
-                            <option value="A2">B2</option>
+                            <option value="A1">A1</option>
+                            <option value="A2">A2</option>
 
 
                         </select>

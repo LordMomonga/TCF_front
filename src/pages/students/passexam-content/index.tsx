@@ -84,14 +84,18 @@ function Index() {
         })
     }  
     const handleExisted = ()=> {
+        setLoading(true)
         handleVerify();
         if(showTest === "pending"){
+            setLoading(false)
             setExisted(false)
         }else if(showTest === "accepted"){
             setExisted(true)
+            setLoading(false)
             console.log('accepted')
         }else{
             console.log("error sur l'existence")
+            setLoading(false)
         }
        
     }
@@ -134,10 +138,31 @@ function Index() {
 
     return (
         <StudentLayout title="Pass Simulations And Solutions" pageTitle="Pass Exam">
+            {loading && <div className='section'>
+                <div className="parent-con">
+                    <div className="data-table">
+                        <div className="top">
+                        <div className="table-con">
+                    <div style={{textAlign: 'center',}}>
+                        <BeatLoader
+                                color="#623d91" 
+                                loading={loading}
+                                cssOverride={override}
+                        />
+                    </div>
+                       </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>}
+                {!loading && <>
       {existed  && <div className="section">
             <div className="parent-con">
                 <div className="data-table">
                     <div className="top">
+                   
+
                        
                       <div className="flex gap-2">
                         <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
@@ -194,26 +219,17 @@ function Index() {
 
                         </div>
 
-                    <div className="table-con">
-                    <div style={{textAlign: 'center',}}>
-                        <BeatLoader
-                                color="#623d91" 
-                                loading={loading}
-                                cssOverride={override}
-                        />
-                    </div>
-                       </div>
-
+                  
                 </div>
             </div>
         </div>
-}
+}</>}
 {isStartingCo && <MessageValidation  pageUrl='/play-co-video' message='voulez vous demarrer cette simulation de comprehension orale ?' onClose={() => setIsStartingcO(!isStartingCo)} />}
 {isStartingCe && <MessageValidation  pageUrl='/play-video' message='voulez vous demarrer cette simulation de comprehension ecrite ?' onClose={() => setIsStartingce(!isStartingCe)} />}
 {isStartingEe && <MessageValidation  pageUrl='/play-ee-video' message="voulez vous demarrer cette simulation d'expression ecrite ?" onClose={() => setIsStartingEe(!isStartingEe)} />}
 {isStartingEo && <MessageValidation  pageUrl='/play-eo-video' message="voulez vous demarrer cette simulation d'expression orale ?" onClose={() => setIsStartingEo(!isStartingEo)} />}
 
-{!existed && <div className='section'>
+{!loading && <>{!existed && <div className='section'>
     <div className="parent-con">
         <div className="data-table">
             <div className="top">
@@ -226,8 +242,8 @@ function Index() {
 
     </div>
     
-    </div>}
-         </StudentLayout>
+    </div>} </>
+}         </StudentLayout>
     );
 }
 

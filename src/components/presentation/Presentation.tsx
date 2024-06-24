@@ -80,7 +80,7 @@ const Presentation: React.FC = () => {
               <button 
                 onClick={handleVideoClick}
                 className='flex gap-5 items-center bg-prim text-white font-bold px-5 py-1 mt-5 rounded-sm'>
-              < BiPlayCircle/>  Lire
+              < BiPlayCircle className='text-white' color='#ffffff'/>  Lire
               </button>
             </div>
           </div>

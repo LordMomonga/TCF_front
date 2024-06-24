@@ -146,13 +146,7 @@ const renderTaskContent = () => {
               <span className='block mt-2 font-bold'>{data?.contenu}</span>
             </p>
           )}
-          <div>
-            <textarea
-              placeholder='ecrivez votre redaction ici'
-              className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
-            >
-            </textarea>
-          </div>
+         
           <div>
       <h1>Audio Recorder</h1>
       <AudioRecorder 
@@ -177,13 +171,7 @@ const renderTaskContent = () => {
               <span className='block mt-2 font-bold'>{data?.contenu}</span>
             </p>
           )}
-          <div>
-            <textarea
-              placeholder='ecrivez votre redaction ici'
-              className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
-            >
-            </textarea>
-          </div>
+         
           <div>
       <h1>Audio Recorder</h1>
       <AudioRecorder 
