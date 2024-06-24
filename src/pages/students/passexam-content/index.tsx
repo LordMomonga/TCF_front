@@ -76,6 +76,8 @@ function Index() {
     }
 
     const handleVerify = () =>{
+        setLoading(true)
+
         getStudentApplications().then((res:any) => {
             setShowTest(res.data.data[0].status);
            console.log('bien recupéré',showTest)
@@ -84,7 +86,6 @@ function Index() {
         })
     }  
     const handleExisted = ()=> {
-        setLoading(true)
         handleVerify();
         if(showTest === "pending"){
             setLoading(false)
