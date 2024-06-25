@@ -227,9 +227,7 @@ function Index() {
                     </div>
                        </div>}
 
-                 {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
-                    <BiBlock size={44}></BiBlock>  Désolé Votre candidature n'a pas été validée...  
-                 </span>}
+                 
             </div>
 
         </div>
