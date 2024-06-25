@@ -7,7 +7,7 @@ const Presentation: React.FC = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const isExiting = useRef(false);
-
+const [outVideo, setOutVideo] = useState(false);
   const handleVideoClick = () => {
     if (videoRef.current && !isFullScreen) {
       videoRef.current.requestFullscreen();
@@ -55,6 +55,9 @@ const Presentation: React.FC = () => {
       document.removeEventListener('keydown', handleKeyDown);
       videoElement?.removeEventListener('ended', handleVideoEnd);
       videoElement?.removeEventListener('pause', () => videoElement.play());
+      if(outVideo) {
+        videoElement?.addEventListener('ended', handleVideoEnd)
+      }
     };
   }, [isFullScreen]);
 
@@ -88,7 +91,7 @@ const Presentation: React.FC = () => {
       
         <footer className='absolute bottom-3 w-full'>
           <div className='flex justify-between px-10'>
-            <button className='bg-red-500 px-2 py-1 text-white font-bold rounded-md'>Quitter</button>
+            <button className='bg-red-500 px-2 py-1 text-white font-bold rounded-md' onClick={() => setOutVideo(true)}>Quitter</button>
             <NavLink to='/play-co-video'>  <button className='p-2 px-3 bg-transparent border-2 border-gray-500 rounded-md'>Commencer</button></NavLink>
           </div>
         </footer>

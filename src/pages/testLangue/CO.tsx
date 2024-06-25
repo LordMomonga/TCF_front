@@ -16,12 +16,12 @@ const CO = () => {
     const [user, setUser] = useState<any>(null);
     const [numb, setNumb] = useState(39)
     const [loading, setLoading] = useState(false)
-    const [selectListeningA1, setSelectListeningA1]= useState<any>(null)
-    const [selectListeningA2, setSelectListeningA2]= useState<any>(null)
-    const [selectListeningB1, setSelectListeningB1]= useState<any>(null)
-    const [selectListeningB2, setSelectListeningB2]= useState<any>(null)
-    const [selectListeningC1, setSelectListeningC1]= useState<any>(null)
-    const [selectListeningC2, setSelectListeningC2]= useState<any>(null)
+    const [selectListeningA1, setSelectListeningA1]= useState([])
+    const [selectListeningA2, setSelectListeningA2]= useState([])
+    const [selectListeningB1, setSelectListeningB1]= useState([])
+    const [selectListeningB2, setSelectListeningB2]= useState([])
+    const [selectListeningC1, setSelectListeningC1]= useState([])
+    const [selectListeningC2, setSelectListeningC2]= useState([])
 
 
     const handleComprehensionOrale = () => {
@@ -29,12 +29,12 @@ const CO = () => {
       selectComprehensionOrale().then((res: any) => {
         console.log('RESPONSE GET: ', res);
         if(res.ok) {
-          setSelectListeningA1(res.data.data[0]);
-          setSelectListeningA2(res.data.data[1]);
-          setSelectListeningB1(res.data.data[2]);
-          setSelectListeningB2(res.data.data[3]);
-          setSelectListeningC1(res.data.data[4]);
-          setSelectListeningC2(res.data.data[5])
+          setSelectListeningA1(res.data.data.selectListeningA1);
+          setSelectListeningA2(res.data.data.selectListeningA2);
+          setSelectListeningB1(res.data.data.selectListeningB1);
+          setSelectListeningB2(res.data.data.selectListeningB2);
+          setSelectListeningC1(res.data.data.selectListeningC1);
+          setSelectListeningC2(res.data.data.selectListeningC2)
         }
         console.log(setSelectListeningA1);
         setLoading(false);
