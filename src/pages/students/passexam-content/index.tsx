@@ -140,91 +140,105 @@ function Index() {
 
     return (
         <StudentLayout title="Pass Simulations And Solutions" pageTitle="Pass Exam">
-        {loading ? (
-            <div className='section'>
-                <div className="parent-con">
-                    <div className="data-table">
-                        <div className="top">
-                            <div className="table-con">
-                                <div style={{ textAlign: 'center' }}>
-                                    <BeatLoader color="#623d91" loading={loading} cssOverride={override} />
-                                    is loading ...
-                                </div>
-                            </div>
+            
+      {existed  && <div className="section">
+            <div className="parent-con">
+                <div className="data-table">
+                    <div className="top">
+                       
+                      <div className="flex gap-2">
+                        <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
+<h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Comprehension Orale</h1>
+      <div className='flex text-white justify-between mt-5 '>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 ' onClick={() => setIsStartingcO(true)}><BiPlay className="text-white"></BiPlay></button>
+      <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
+
+      <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
+      </div> 
+
                         </div>
-                    </div>
+                        <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-white   px-2 md:px-5 py-3 md:py-5 rounded-md'>
+<h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white '>Comprehension Ecrite</h1>
+      <div className='flex text-white justify-between mt-5 '>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 ' onClick={() => setIsStartingce(true)}><BiPlay className="text-white"></BiPlay></button>
+      <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
+
+      <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
+      </div> 
+
+                        </div>
+                        <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
+<h1 className=' text-center font-bold uppercase text-white  text-sm md:text-2md '>Expression Ecrite</h1>
+      <div className='flex text-white justify-between mt-5 '>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 ' onClick={() => setIsStartingEe(true)}><BiPlay className="text-white"></BiPlay></button>
+      <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
+
+      <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
+      </div> 
+
+                        </div>
+                        <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
+<h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Expression orale</h1>
+      <div className='flex text-white justify-between mt-5 '>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 'onClick={() => setIsStartingEo(true)}><BiPlay className="text-white"></BiPlay></button>
+      <span className='text-[12px] font-bold   text-white'> Durée : 45min</span>
+
+      <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2 text-white rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
+      </div> 
+
+                        </div>
+                        </div>               
+                  
+                      </div>
+                      <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
+<h1 className=' text-center font-bold uppercase  text-sm md:text-2md '>Simulation Complete</h1>
+      <div className='flex text-white justify-between mt-5 '>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/presentation'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <span className='text-[12px] font-bold  text-prim'> Durée : </span>
+
+      <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
+      </div> 
+
+                        </div>
+
+                  
                 </div>
             </div>
-        ) : existed ? (
-            <div className="section">
-                <div className="parent-con">
-                    <div className="data-table">
-                        <div className="top">
-                            <div className="flex gap-2">
-                                <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500 px-2 md:px-5 py-3 md:py-5 rounded-md'>
-                                    <h1 className='text-center font-bold uppercase text-sm md:text-2md text-white'>Comprehension Orale</h1>
-                                    <div className='flex text-white justify-between mt-5 '>
-                                        <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3' onClick={() => setIsStartingcO(true)}><BiPlay className="text-white" /></button>
-                                        <span className='text-[12px] font-bold text-white'> Durée : 45min</span>
-                                        <button className='test-[12px] md:test-md font-bold bg-green-500 p-2 rounded-md absolute bottom-2 right-3 text-white'><BiBook /></button>
-                                    </div>
-                                </div>
-                                <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-white px-2 md:px-5 py-3 md:py-5 rounded-md'>
-                                    <h1 className='text-center font-bold uppercase text-sm md:text-2md text-white'>Comprehension Ecrite</h1>
-                                    <div className='flex text-white justify-between mt-5 '>
-                                        <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3' onClick={() => setIsStartingce(true)}><BiPlay className="text-white" /></button>
-                                        <span className='text-[12px] font-bold text-white'> Durée : 45min</span>
-                                        <button className='test-[12px] md:test-md font-bold bg-green-500 p-2 rounded-md absolute bottom-2 right-3 text-white'><BiBook /></button>
-                                    </div>
-                                </div>
-                                <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500 px-2 md:px-5 py-3 md:py-5 rounded-md'>
-                                    <h1 className='text-center font-bold uppercase text-white text-sm md:text-2md'>Expression Ecrite</h1>
-                                    <div className='flex text-white justify-between mt-5 '>
-                                        <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3' onClick={() => setIsStartingEe(true)}><BiPlay className="text-white" /></button>
-                                        <span className='text-[12px] font-bold text-white'> Durée : 45min</span>
-                                        <button className='test-[12px] md:test-md font-bold bg-green-500 p-2 rounded-md absolute bottom-2 right-3 text-white'><BiBook /></button>
-                                    </div>
-                                </div>
-                                <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500 px-2 md:px-5 py-3 md:py-5 rounded-md'>
-                                    <h1 className='text-center font-bold uppercase text-sm md:text-2md text-white'>Expression orale</h1>
-                                    <div className='flex text-white justify-between mt-5 '>
-                                        <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3' onClick={() => setIsStartingEo(true)}><BiPlay className="text-white" /></button>
-                                        <span className='text-[12px] font-bold text-white'> Durée : 45min</span>
-                                        <button className='test-[12px] md:test-md font-bold bg-green-500 p-2 text-white rounded-md absolute bottom-2 right-3'><BiBook /></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500 px-2 md:px-5 py-3 md:py-5 rounded-md'>
-                                <h1 className='text-center font-bold uppercase text-sm md:text-2md'>Simulation Complete</h1>
-                                <div className='flex text-white justify-between mt-5 '>
-                                    <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3'><NavLink to='/presentation'><BiPlay className="text-white" /></NavLink></button>
-                                    <span className='text-[12px] font-bold text-prim'> Durée : </span>
-                                    <button className='test-[12px] md:test-md font-bold bg-green-500 p-2 rounded-md absolute bottom-2 right-3'><BiBook /></button>
-                                </div>
-                            </div>
-                        </div>
+        </div>
+}
+{isStartingCo && <MessageValidation  pageUrl='/play-co-video' message='voulez vous demarrer cette simulation de comprehension orale ?' onClose={() => setIsStartingcO(!isStartingCo)} />}
+{isStartingCe && <MessageValidation  pageUrl='/play-video' message='voulez vous demarrer cette simulation de comprehension ecrite ?' onClose={() => setIsStartingce(!isStartingCe)} />}
+{isStartingEe && <MessageValidation  pageUrl='/play-ee-video' message="voulez vous demarrer cette simulation d'expression ecrite ?" onClose={() => setIsStartingEe(!isStartingEe)} />}
+{isStartingEo && <MessageValidation  pageUrl='/play-eo-video' message="voulez vous demarrer cette simulation d'expression orale ?" onClose={() => setIsStartingEo(!isStartingEo)} />}
+
+{!existed && <div className='section'>
+    
+    <div className="parent-con">
+        <div className="data-table">
+            <div className="top">
+           {loading && <div className="table-con">
+                    <div style={{textAlign: 'center',}}>
+                        <BeatLoader
+                                color="#623d91" 
+                                loading={loading}
+                                cssOverride={override}
+                        />
+                        is loading ...
                     </div>
-                </div>
+                       </div>}
+
+                 {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
+                   Désolé Votre candidature n'a pas été validée...  <BiBlock size={34}></BiBlock>
+                 </span>}
             </div>
-        ) : (
-            <div className='section'>
-                <div className="parent-con">
-                    <div className="data-table">
-                        <div className="top">
-                            <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5'>
-                                Désolé Votre candidature n'a pas été validée... <BiBlock size={34} />
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )}
-        {isStartingCo && <MessageValidation pageUrl='/play-co-video' message='voulez vous demarrer cette simulation de comprehension orale ?' onClose={() => setIsStartingcO(!isStartingCo)} />}
-        {isStartingCe && <MessageValidation pageUrl='/play-video' message='voulez vous demarrer cette simulation de comprehension ecrite ?' onClose={() => setIsStartingce(!isStartingCe)} />}
-        {isStartingEe && <MessageValidation pageUrl='/play-ee-video' message="voulez vous demarrer cette simulation d'expression ecrite ?" onClose={() => setIsStartingEe(!isStartingEe)} />}
-        {isStartingEo && <MessageValidation pageUrl='/play-eo-video' message="voulez vous demarrer cette simulation d'expression orale ?" onClose={() => setIsStartingEo(!isStartingEo)} />}
-    </StudentLayout>
-);
+
+        </div>
+
+    </div>
+    
+    </div>}
+         </StudentLayout>
+    );
 }
 
 export default Index;
