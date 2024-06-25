@@ -69,7 +69,7 @@ function Index() {
     const [isStartingEe, setIsStartingEe] = useState(false);
 
     const [classes, setClasses] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const toggleAddModal = () => {
         setShoowAddModal(!showAddModal);
@@ -84,6 +84,8 @@ function Index() {
             setLoading(false)
 
         }).catch((error:any) => {
+            setLoading(false)
+
             console.log('error a la recuperation')
         })
     }  
@@ -216,7 +218,7 @@ function Index() {
     <div className="parent-con">
         <div className="data-table">
             <div className="top">
-           {loading && <div className="table-con">
+           <div className="table-con">
                     <div style={{textAlign: 'center',}}>
                         <BeatLoader
                                 color="#623d91" 
@@ -225,7 +227,7 @@ function Index() {
                         />
                         is loading ...
                     </div>
-                       </div>}
+                       </div>
 
                        {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
                     <BiBlock size={44}></BiBlock>  Désolé Votre candidature n'a pas été validée...  
