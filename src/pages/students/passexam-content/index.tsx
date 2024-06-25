@@ -69,7 +69,7 @@ function Index() {
     const [isStartingEe, setIsStartingEe] = useState(false);
 
     const [classes, setClasses] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const toggleAddModal = () => {
         setShoowAddModal(!showAddModal);
@@ -227,7 +227,9 @@ function Index() {
                     </div>
                        </div>}
 
-                 
+                       {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
+                    <BiBlock size={44}></BiBlock>  Désolé Votre candidature n'a pas été validée...  
+                 </span>}
             </div>
 
         </div>
