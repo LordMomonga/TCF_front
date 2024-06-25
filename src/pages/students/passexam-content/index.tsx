@@ -95,11 +95,9 @@ function Index() {
             setExisted(false)
         }else if(showTest === "accepted"){
             setExisted(true)
-            setLoading(false)
             console.log('accepted')
         }else{
             console.log("error sur l'existence")
-            setLoading(false)
         }
        
     }
