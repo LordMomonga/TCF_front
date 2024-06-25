@@ -27,19 +27,20 @@ const CO = () => {
     const handleComprehensionOrale = () => {
       setLoading(true)
       selectComprehensionOrale().then((res: any) => {
-        console.log('RESPONSE GET: ', res);
+        console.log('RESPONSE GET: ', res.data);
         if(res.ok) {
           setSelectListeningA1(res.data.data.selectListeningA1);
           setSelectListeningA2(res.data.data.selectListeningA2);
           setSelectListeningB1(res.data.data.selectListeningB1);
           setSelectListeningB2(res.data.data.selectListeningB2);
           setSelectListeningC1(res.data.data.selectListeningC1);
-          setSelectListeningC2(res.data.data.selectListeningC2)
+          setSelectListeningC2(res.data.data.selectListeningC2);
+          console.log('selection of comprehension orale')
         }
         console.log(setSelectListeningA1);
         setLoading(false);
       }).catch(err => {
-        console.log('error', err)
+        console.log('error error', err)
         setLoading(false);
       })
     }
