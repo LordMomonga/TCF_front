@@ -53,6 +53,12 @@ const EE: React.FC = () => {
 
   const [sujet1, setSujet1]= useState([])
   const [sujet2, setSujet2]= useState([])
+  //solution de chaque epreuve de l'expression ecrite 
+
+  const [contenu1, setContenu1] = useState<string>('');
+  const [contenu2, setContenu2] = useState<string>('');
+  const [contenu3, setContenu3] = useState<string>('');
+
 
   const [sujet3, setSujet3]= useState([])
 
@@ -74,6 +80,17 @@ const EE: React.FC = () => {
       console.log('error: ', err);
       setLoading(false);
     })
+  }
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const data = {
+      contenu1,
+      contenu2,
+      contenu3,
+    };
+    const userId = user._id;
+
   }
   
   useEffect(() => {
@@ -144,6 +161,8 @@ const EE: React.FC = () => {
               <textarea
                 placeholder='ecrivez votre redaction ici'
                 className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
+                value={contenu1}
+                onChange={(e) => setContenu1(e.target.value)}
               >
               </textarea>
             </div>
@@ -163,6 +182,8 @@ const EE: React.FC = () => {
               <textarea
                 placeholder='ecrivez votre redaction ici'
                 className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
+                value={contenu2}
+                onChange={(e) => setContenu2(e.target.value)}
               >
               </textarea>
             </div>
@@ -182,6 +203,8 @@ const EE: React.FC = () => {
               <textarea
                 placeholder='ecrivez votre redaction ici'
                 className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
+                value={contenu3}
+                onChange={(e) => setContenu3(e.target.value)}
               >
               </textarea>
             </div>

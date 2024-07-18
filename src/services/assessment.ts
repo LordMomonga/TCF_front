@@ -19,11 +19,20 @@ const selectExpresssionOrale = () =>{
 
 //grap all the comprehension test element
 const selectComprehensionOrale = () =>{
-    return api.get(`school/select/compo`);
+    return api.get(`/school/select/compo`);
 }
 const selectComprehensionEcrite = ()=>{
-    return api.get(`school/select/compe`);
+    return api.get(`/school/select/compe`);
 
+}
+//gestion de recuperation des solutions des tests de langue 
+
+const setSolutionExpressionEcrite = (data:any) => {
+    return api.post('/addEcrit');
+}
+
+const setSolutionExpressionOrale = (data:any) => {
+    return api.post('/addAudio')
 }
 
 // gestion pour les ajouts des test de langues
@@ -101,7 +110,9 @@ export {
     selectExpresssionEcrite,
     selectExpresssionOrale,
     selectComprehensionOrale,
-    selectComprehensionEcrite
+    selectComprehensionEcrite,
+    setSolutionExpressionEcrite, 
+    setSolutionExpressionOrale
     
 }   
 

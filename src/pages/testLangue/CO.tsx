@@ -22,20 +22,24 @@ const CO = () => {
     const [selectListeningB2, setSelectListeningB2]= useState([])
     const [selectListeningC1, setSelectListeningC1]= useState([])
     const [selectListeningC2, setSelectListeningC2]= useState([])
-
+    const [currentList, setCurrentList] = useState<any>([]);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [data, setData] = useState<any>(null);
 
     const handleComprehensionOrale = () => {
       setLoading(true)
       selectComprehensionOrale().then((res: any) => {
         console.log('RESPONSE GET: ', res.data);
         if(res.ok) {
+          setData(res.data.data);
           setSelectListeningA1(res.data.data.selectListeningA1);
+         
           setSelectListeningA2(res.data.data.selectListeningA2);
           setSelectListeningB1(res.data.data.selectListeningB1);
           setSelectListeningB2(res.data.data.selectListeningB2);
           setSelectListeningC1(res.data.data.selectListeningC1);
           setSelectListeningC2(res.data.data.selectListeningC2);
-          console.log('selection of comprehension orale')
+          console.log('selection of comprehension orale', data)
         }
         console.log(setSelectListeningA1);
         setLoading(false);
@@ -68,7 +72,35 @@ const CO = () => {
     
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
+      useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentIndex(prevIndex => {
+                const nextIndex = prevIndex + 1;
+                if (currentList && nextIndex >= currentList.length) {
+                  if (currentList === data.selectListeningA1) {
+                      setCurrentList(data.selectListeningA2);
+                  } else if (currentList === data.selectListeningA2) {
+                      setCurrentList(data.selectListeningB1);
+                  } else if (currentList === data.selectListeningB1) {
+                      setCurrentList(data.selectListeningB2);
+                  } else if (currentList === data.selectListeningB2) {
+                      setCurrentList(data.selectListeningC1);
+                  } else if (currentList === data.selectListeningC1) {
+                      setCurrentList(data.selectListeningC2);
+                  } else {
+                      clearInterval(intervalId); // Stop the interval when all lists are finished
+                  }
+                  return 0; // Reset index for the next list
+              }
+              console.log(currentList);
+              return nextIndex;
+
+            });
+        }, 60000); // Update every 60 seconds (60000 ms)
+        return () => clearInterval(intervalId); 
+    }, [currentList, data]);
     
+
       useEffect(() => {
         const items = document.querySelectorAll<HTMLLIElement>('.question-item');
         let index = 0;

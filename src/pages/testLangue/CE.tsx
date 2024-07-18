@@ -10,6 +10,7 @@ import { useState } from 'react'
 import {Question} from './constant'
 import { getUser } from '../../utils/storage'
 import './test.css'
+
 const CE = () => {
     const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
@@ -22,6 +23,7 @@ const CE = () => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
+          
           if (remainingTime > 0) {
             setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
           } else {
