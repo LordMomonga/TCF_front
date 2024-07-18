@@ -24,7 +24,7 @@ const CO = () => {
     const [selectListeningC2, setSelectListeningC2]= useState([])
     const [currentList, setCurrentList] = useState<any>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [data, setData] = useState<any>();
+    const [data, setData] = useState<any>({});
 
     const handleComprehensionOrale = () => {
       setLoading(true)
