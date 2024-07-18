@@ -107,13 +107,14 @@ const CO = () => {
         const interval = setInterval(() => {
           items.forEach((item, i) => {
             if (i === index) {
-              item.classList.add('border-highlight bg-green-500');
-                        setNumb(39 - index);
+              item.classList.add('border-highlight', 'bg-green-500');
+                    
 
             } else {
-              item.classList.remove('border-highlight bg-green-500');
+              item.classList.remove('border-highlight', 'bg-green-500');
             }
           });
+              setNumb(39 - index);
 
           index = (index + 1) % items.length;
 
