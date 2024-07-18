@@ -35,6 +35,7 @@ const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
         autoPlay
         src={videoUrl}
       />
+      <button className='bg-gray-500 p-2 absolute right-2 bottom-5 '>passer</button>
     </div>
   );
 };

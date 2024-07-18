@@ -31,7 +31,7 @@ const CO = () => {
       selectComprehensionOrale().then((res: any) => {
         console.log('RESPONSE GET: ', res.data);
         if(res.ok) {
-          setData(res.data.data);
+          setData(res.data);
           setSelectListeningA1(res.data.data.selectListeningA1);
          
           setSelectListeningA2(res.data.data.selectListeningA2);
