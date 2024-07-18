@@ -30,8 +30,9 @@ const CO = () => {
       setLoading(true)
       selectComprehensionOrale().then((res: any) => {
         console.log('RESPONSE GET: ', res.data);
+        setData(res.data);
         if(res.ok) {
-          setData(res.data);
+         
           setSelectListeningA1(res.data.data.selectListeningA1);
          
           setSelectListeningA2(res.data.data.selectListeningA2);
@@ -39,9 +40,9 @@ const CO = () => {
           setSelectListeningB2(res.data.data.selectListeningB2);
           setSelectListeningC1(res.data.data.selectListeningC1);
           setSelectListeningC2(res.data.data.selectListeningC2);
-          console.log('selection of comprehension orale', data)
+          console.log('selection of comprehension orale', data, selectListeningC1)
         }
-        console.log(setSelectListeningA1);
+        console.log(data);
         setLoading(false);
       }).catch(err => {
         console.log('error error', err)
