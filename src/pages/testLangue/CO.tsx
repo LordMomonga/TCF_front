@@ -24,13 +24,13 @@ const CO = () => {
     const [selectListeningC2, setSelectListeningC2]= useState([])
     const [currentList, setCurrentList] = useState<any>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<any>({});
 
     const handleComprehensionOrale = () => {
       setLoading(true)
       selectComprehensionOrale().then((res: any) => {
         console.log('RESPONSE GET: ', res.data);
-        setData(res.data);
+        setData(res.data.data);
         if(res.ok) {
          
           setSelectListeningA1(res.data.data.selectListeningA1);
@@ -42,7 +42,7 @@ const CO = () => {
           setSelectListeningC2(res.data.data.selectListeningC2);
           console.log('selection of comprehension orale', data, selectListeningC1)
         }
-        console.log(data);
+        console.log(data, 'les data doivent safficher ici');
         setLoading(false);
       }).catch(err => {
         console.log('error error', err)
