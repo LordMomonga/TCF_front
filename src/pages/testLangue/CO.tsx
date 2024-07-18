@@ -92,7 +92,7 @@ const CO = () => {
                   }
                   return 0; // Reset index for the next list
               }
-              console.log(currentList);
+              console.log("la liste en cour", currentList);
               return nextIndex;
 
             });
