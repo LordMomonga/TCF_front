@@ -9,7 +9,7 @@ interface VideoProps {
 const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
-
+const [skip, setSkip] = useState(false)
   useEffect(() => {
     const handleVideoEnd = () => {
       navigate(redirectTo);
@@ -27,6 +27,14 @@ const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
     };
   }, [redirectTo, navigate]);
 
+  const handleSkip = () => {
+    if (videoRef.current) {
+      videoRef.current.pause(); // Pause the video
+    }
+    navigate(redirectTo);
+    
+  };
+
   return (
     <div className="w-screen h-screen px-[5%] py-[5%] overflow-hidden flex justify-center items-center">
       <video
@@ -35,7 +43,7 @@ const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
         autoPlay
         src={videoUrl}
       />
-      <button className='bg-gray-500 p-2 absolute right-2 bottom-5 '>passer</button>
+      <button className='bg-gray-500 p-2 absolute right-2 bottom-5 text-white '  onClick={handleSkip} >passer</button>
     </div>
   );
 };
