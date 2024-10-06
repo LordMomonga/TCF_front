@@ -204,7 +204,7 @@ function AddExpressionEcrite({ onClose, onContentAdded } : any) {
         <div>
             <div  className='modal-container student-modal-assignment'>
                 <div className='modal-head'>
-                    <p className="modal-title">Upload Assessment Solution</p>
+                    <p className="modal-title">Upload Test Element</p>
                     <ImCancelCircle style={{cursor: 'pointer'}} onClick={onClose} size={22} color="#fff"/>
                 </div>
                 <div className='modal-content'>

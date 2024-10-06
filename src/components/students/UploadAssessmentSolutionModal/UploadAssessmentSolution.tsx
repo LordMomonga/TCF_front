@@ -45,7 +45,6 @@ const override = {
 function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const [classes, setClasses] = useState([]);
     const [assessments, setAssessments] = useState([]);
-    const [question, setQuestion] = useState('');
     const [resp, setResp] = useState('');
     const [level, setLevel] = useState("");
     const [items, setItems] = useState([]);
@@ -127,6 +126,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
             },()=> {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setImageUrl(downloadURL);
+                    console.log(imageUrl);
+                    
                    console.log('image  URL: ', downloadURL, imageUrl);
                    setIsUploadingSolutionPdf(false);
                });
@@ -212,7 +213,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 setError('vous devez selectionner le type de cet element');
                 return;
             }else {
-                console.log('#### CHECK FAILED')
+                console.log('#### CHECK ok')
             }
     
             
@@ -223,6 +224,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
             setLoading(true);
             console.log(data);
             createElement(data).then((res: any) => {
+                console.log(res);
+                
                 if(res.ok) {
                     console.log(data);
 
@@ -264,7 +267,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
         <div>
             <div  className='modal-container student-modal-assignment'>
                 <div className='modal-head'>
-                    <p className="modal-title">Upload Assessment Solution</p>
+                    <p className="modal-title">Upload Test Element</p>
                     <ImCancelCircle style={{cursor: 'pointer'}} onClick={onClose} size={22} color="#fff"/>
                 </div>
                 <div className='modal-content'>
@@ -284,8 +287,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                     validationSchema={validationSchema}
                 >
                         <p className="label-text">Type de test: </p>
-                        <select onChange={(e: any) => setSelectTestType(e.target.value) } value = {selectTestType} className="select-field-modal">
-                            <option value="all">Select</option>
+                        <select onChange={(e: any) => setSelectTestType(e.target.value) } value = {selectTestType} className="select-field-modal px-3">
+                            <option value="all" className='px-2'>Select</option>
                             <option value="comprehension orale">COMPREHENSION ORALE</option>
                             <option value="comprehension ecrite">COMPREHENSION ECRITE</option>
                          </select>

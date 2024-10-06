@@ -5,7 +5,7 @@ const createAssessment = (data: any) => {
     return api.post(`/assessment`, data);
 }
 const createElement = (data: any) => {
-    return api.post(`/school/element`, data);
+    return api.post("/school/element", data);
 
 }
 //grap all the expression element 
@@ -26,13 +26,12 @@ const selectComprehensionEcrite = ()=>{
 
 }
 //gestion de recuperation des solutions des tests de langue 
-
 const setSolutionExpressionEcrite = (data:any) => {
-    return api.post('/addEcrit');
+    return api.post('/addEcrit', data);
 }
 
 const setSolutionExpressionOrale = (data:any) => {
-    return api.post('/addAudio')
+    return api.post('/addAudio', data)
 }
 
 // gestion pour les ajouts des test de langues

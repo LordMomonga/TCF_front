@@ -10,7 +10,10 @@ import { useState } from 'react'
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
 import { selectExpresssionEcrite } from '../../services/assessment'
-import { Console } from 'console'
+import { setSolutionExpressionEcrite } from '../../services/assessment'
+import { toast } from 'react-toastify';
+import { Console, log } from 'console'
+import { Link } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners'
 interface ConfirmationDialogProps {
   message: string;
@@ -58,8 +61,13 @@ const EE: React.FC = () => {
   const [contenu1, setContenu1] = useState<string>('');
   const [contenu2, setContenu2] = useState<string>('');
   const [contenu3, setContenu3] = useState<string>('');
-
-
+  const [wordCount, setWordCount] = useState<number>(0);
+  const [wordCount1, setWordCount1] = useState<number>(0);
+  const [wordCount2, setWordCount2] = useState<number>(0);
+  const [contenu1_id, setcontenu1_id] = useState<string | null>(null);
+  const [contenu2_id, setcontenu2_id] = useState<string | null>(null);
+  const [contenu3_id, setcontenu3_id] = useState<string | null>(null);
+  const locate = useNavigate();
   const [sujet3, setSujet3]= useState([])
 
   const handleExpressionEcrite = () => {
@@ -71,6 +79,9 @@ const EE: React.FC = () => {
         setSujet1(res.data.data.selectedSubjects1);
         setSujet2(res.data.data.selectedSubjects2);
          setSujet3(res.data.data.selectedSubjects3);
+         setcontenu1_id( res.data.data.selectedSubjects1[0]._id)
+         setcontenu2_id( res.data.data.selectedSubjects2[0]._id)
+         setcontenu3_id( res.data.data.selectedSubjects3[0]._id)
       }
       
       console.log(sujet1, sujet2, sujet3);
@@ -81,15 +92,66 @@ const EE: React.FC = () => {
       setLoading(false);
     })
   }
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleTextareaChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    setContenu1(text);
+    
+    // Compter les mots
+    const words = text.trim().split(/\s+/); // Diviser par les espaces
+    setWordCount1(words.filter(word => word.length > 0).length); // Filtrer les mots vides
+  };
+  const handleTextareaChange2 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    setContenu2(text);
+    
+    // Compter les mots
+    const words = text.trim().split(/\s+/); // Diviser par les espaces
+    setWordCount2(words.filter(word => word.length > 0).length); // Filtrer les mots vides
+  };
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    setContenu3(text);
+    
+    // Compter les mots
+    const words = text.trim().split(/\s+/); // Diviser par les espaces
+    setWordCount(words.filter(word => word.length > 0).length); // Filtrer les mots vides
+  };
+
+  const handleSubmit =  (event: React.FormEvent) => {
     event.preventDefault();
 
     const data = {
       contenu1,
       contenu2,
       contenu3,
+      contenu1_id,
+      contenu2_id,
+      contenu3_id
     };
-    const userId = user._id;
+    console.log(data);
+    
+    setSolutionExpressionEcrite(data).then((res: any) => {
+      console.log(res)
+      if(res.ok) {
+        toast.success("Submit with succes", {
+            pauseOnHover: false,
+            closeOnClick: true,
+        })
+        locate('/students/passexams')
+    }else {
+        toast.error("Error while submitting the Test", {
+            pauseOnHover: false,
+            closeOnClick: true,
+        })
+    }
+    }).catch(err => {   
+      console.log('ERROR CREATING: ', err);
+
+      toast.error("ERROR", {
+          pauseOnHover: false,
+          closeOnClick: true,
+      })
+  })
 
   }
   
@@ -162,9 +224,12 @@ const EE: React.FC = () => {
                 placeholder='ecrivez votre redaction ici'
                 className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
                 value={contenu1}
-                onChange={(e) => setContenu1(e.target.value)}
+                onChange={handleTextareaChange1}
               >
               </textarea>
+              <div className='mt-2 text-end mr-7'>
+        Nombre de mots : {wordCount1}
+      </div>
             </div>
           </div>
         );
@@ -183,9 +248,12 @@ const EE: React.FC = () => {
                 placeholder='ecrivez votre redaction ici'
                 className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
                 value={contenu2}
-                onChange={(e) => setContenu2(e.target.value)}
+                onChange={handleTextareaChange2}
               >
               </textarea>
+              <div className='mt-2 text-end mr-7'>
+          Nombre de mots : {wordCount2}
+            </div>
             </div>
           </div>
         );
@@ -204,9 +272,12 @@ const EE: React.FC = () => {
                 placeholder='ecrivez votre redaction ici'
                 className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
                 value={contenu3}
-                onChange={(e) => setContenu3(e.target.value)}
+                onChange={handleTextareaChange}
               >
               </textarea>
+              <div className='mt-2 text-end mr-7'>
+        Nombre de mots : {wordCount}
+      </div>
             </div>
           </div>
         );
@@ -263,20 +334,20 @@ const EE: React.FC = () => {
         </div>
       </div>
       <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-3 px-[10%]'>
-        <div
+       <div
           className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer'
-          onClick={handleSkipTest}
+          onClick={handleSubmit}
         >
           <BiSkipNext className='text-md bg-green-500 text-white' />
           <span>submit this test</span>
-        </div>
-        <div
+        </div> 
+        <Link to="/home">  <div
           className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer'
           onClick={handleQuitExam}
         >
           <BiExit className='text-md bg-red-500 text-white' />
           <span>quit the examination</span>
-        </div>
+        </div></Link>
       </div>
       <div className='bg-white h-[80%] w-[70%] py-2 left-[12%] px-5 text-gray-700 fixed z-0'>
         <div className='mt-5'>{renderTaskContent()}</div>

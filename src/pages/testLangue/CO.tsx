@@ -11,6 +11,20 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { selectComprehensionOrale } from '../../services/assessment'
 import './test.css'
+
+interface Question {
+  level: string;
+  question: string;
+  solution1: string;
+  solution2: string;
+  solution3: string;
+  solution4: string;
+  response: string;
+  typeElement: string;
+  imageUrl: string;
+  audioUrl: string;
+}
+
 const CO = () => {
      const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
     const [user, setUser] = useState<any>(null);
@@ -22,8 +36,20 @@ const CO = () => {
     const [selectListeningB2, setSelectListeningB2]= useState([])
     const [selectListeningC1, setSelectListeningC1]= useState([])
     const [selectListeningC2, setSelectListeningC2]= useState([])
+    const [allQuestion, setAllQuestion] = useState<any>([])
+    const [CO, setCO] = useState<any>("still");
+    const [question1, setQuestion1] = useState<any>("error network response charging");
+    const [question2, setQuestion2] = useState<any>("error network response charging");
+
+    const [question3, setQuestion3] = useState<any>("error network response charging");
+    const [question4, setQuestion4] = useState<any>("error network response charging");
+
+    const [qst, setqst] = useState("");
+
+    const [question, setQuestion] = useState("")
     const [currentList, setCurrentList] = useState<any>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [Index, setIndex] = useState<number>(0);
     const [data, setData] = useState<any>({});
 
     const handleComprehensionOrale = () => {
@@ -40,9 +66,26 @@ const CO = () => {
           setSelectListeningB2(res.data.data.selectListeningB2);
           setSelectListeningC1(res.data.data.selectListeningC1);
           setSelectListeningC2(res.data.data.selectListeningC2);
-          console.log('selection of comprehension orale', data)
+          
         }
-        console.log(data, 'les data doivent safficher ici');
+        const allQuestions = [
+          ...res.data.data.selectListeningA1,
+          ...res.data.data.selectListeningA2,
+          ...res.data.data.selectListeningB1,
+          ...res.data.data.selectListeningB2
+        ];
+        setAllQuestion(allQuestions)
+       
+     
+        console.log("le premier listening", selectListeningA2, allQuestions);
+        setCO(allQuestions[0].question)
+        setQuestion1(allQuestions[0].solution1)
+        setQuestion2(allQuestions[0].solution2)
+        setQuestion3(allQuestions[0].solution3)
+        setQuestion4(allQuestions[0].solution4)
+        setqst(allQuestions[0].imageUrl)
+        console.log("ou je veux en venir",CO, question1, qst);
+        
         setLoading(false);
       }).catch(err => {
         console.log('error error', err)
@@ -73,34 +116,33 @@ const CO = () => {
     
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
-      useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentIndex(prevIndex => {
-                const nextIndex = prevIndex + 1;
-                if (currentList && nextIndex >= currentList.length) {
-                  if (currentList === data.selectListeningA1) {
-                      setCurrentList(data.selectListeningA2);
-                  } else if (currentList === data.selectListeningA2) {
-                      setCurrentList(data.selectListeningB1);
-                  } else if (currentList === data.selectListeningB1) {
-                      setCurrentList(data.selectListeningB2);
-                  } else if (currentList === data.selectListeningB2) {
-                      setCurrentList(data.selectListeningC1);
-                  } else if (currentList === data.selectListeningC1) {
-                      setCurrentList(data.selectListeningC2);
-                  } else {
-                      clearInterval(intervalId); // Stop the interval when all lists are finished
-                  }
-                  return 0; // Reset index for the next list
-              }
-              console.log("la liste en cour", currentList);
-              return nextIndex;
 
-            });
-        }, 60000); // Update every 60 seconds (60000 ms)
-        return () => clearInterval(intervalId); 
-    }, [currentList, data]);
+     const nextVideo = () =>  {
+
+     }
     
+   
+     useEffect(() => {
+      let index = 0
+      const interval = setInterval(() => {
+        if(index == allQuestion.length + 1) return
+        index ++
+        setCO(allQuestion[index].question)
+        setQuestion1(allQuestion[index].solution1)
+        setQuestion2(allQuestion[index].solution2)
+        setQuestion3(allQuestion[index].solution3)
+        setQuestion4(allQuestion[index].solution4)
+        setqst(allQuestion[index].imageUrl)
+        console.log("ou si ca marche",CO, question1, qst);
+        
+        
+
+      }, 10000); // 60000 ms = 1 minute
+  
+      return () => clearInterval(interval);
+    }, []);
+  
+   
 
       useEffect(() => {
         const items = document.querySelectorAll<HTMLLIElement>('.question-item');
@@ -173,27 +215,28 @@ const CO = () => {
             </div>
             <div className='w-full relative'>
                 <div className='flex justify-center'>
-                <img className=' w-[30%] ' src="cuate.png" alt="" />
+                <img className=' w-[30%] ' src={qst} alt="" />
                 </div>
                 <div className='pl-[15%] justify-center '>
+
                 <span className='block  mb-5 font-bold'>
-                    1- Qui a laissé la porte ouverte pour les clients 
-                </span>
+                  {CO}
+                 </span>
                 <div className='flex gap-5 mb-2'>
                     <input type="radio" />
-                    <label htmlFor="">a- Du père de monsieur Frederick</label>
+                    <label htmlFor="">a- {question1}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
                     <input type="radio" />
-                    <label htmlFor="">b- Du voisin de monsieur Frederick</label>
+                    <label htmlFor="">b- {question2}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
                     <input type="radio" />
-                    <label htmlFor="">c- Du voisin de monsieur Frederick</label>
+                    <label htmlFor="">c- {question3}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
                     <input type="radio" />
-                    <label htmlFor="">d- Du voisin de monsieur Frederick</label>
+                    <label htmlFor="">d- {question4}</label>
                 </div>
                 </div>
 

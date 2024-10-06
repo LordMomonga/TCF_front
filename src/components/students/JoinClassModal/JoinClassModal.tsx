@@ -8,6 +8,7 @@ import ErrorMessage from '../../form/components/ErrorMessage/ErrorMessage';
 import { ImCancelCircle } from 'react-icons/im';
 import BeatLoader from "react-spinners/BeatLoader";
 import { getPublicSpecialities } from '../../../services/public';
+import { setSolutionExpressionEcrite } from '../../../services/assessment';
 import { toast } from 'react-toastify';
 import Tippy from '@tippyjs/react';
 import { joinClass, joinSchool } from '../../../services/student';
