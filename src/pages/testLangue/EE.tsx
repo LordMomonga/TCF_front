@@ -125,7 +125,7 @@ const EE: React.FC = () => {
 
   const handleSkipTest = () => {
     setShowConfirmation(true);
-    setConfirmationAction(() => () => navigate('/Eorale'));
+    setConfirmationAction(() => () => navigate('/home'));
   };
 
   const handleQuitExam = () => {
@@ -268,7 +268,7 @@ const EE: React.FC = () => {
           onClick={handleSkipTest}
         >
           <BiSkipNext className='text-md bg-green-500 text-white' />
-          <span>skip this test</span>
+          <span>submit this test</span>
         </div>
         <div
           className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext }  from 'react';
 import './passexam-content.css';
-
+import { motion } from 'framer-motion';
 import StudentLayout from '../../../components/StudentLayout/StudentLayout';
 
 import { EditCourseContentModal, DeleteModal  } from '../../../components';
@@ -139,8 +139,8 @@ function Index() {
     });
 
     return (
-        <StudentLayout title="Pass Simulations And Solutions" pageTitle="Pass Exam">
-            
+        <StudentLayout title="Pass Simulations And Solutions" pageTitle="Pass Simulation">
+           
       {existed  && <div className="section">
             <div className="parent-con">
                 <div className="data-table">
@@ -223,12 +223,12 @@ function Index() {
                                 loading={loading}
                                 cssOverride={override}
                         />
-                        is loading ...
+                       
                     </div>
                        </div>
 
-                       {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 '>
-                    <BiBlock size={44}></BiBlock>  Désolé Votre candidature n'a pas été validée...  
+                       {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 items-center '>
+                    <BiBlock size={44} className='text-red-500'></BiBlock>  Désolé Votre candidature n'a pas été validée...  
                  </span>}
             </div>
 

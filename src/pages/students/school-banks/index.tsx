@@ -21,7 +21,7 @@ const rows: any = [
         name: 'num'
     },
     {
-        label: 'Bank Name',
+        label: 'Account Name',
         name: 'name'
     },
     {
@@ -77,7 +77,7 @@ function Index() {
     },[activeAcademyYear]);
 
     return (
-        <StudentLayout title=" Tolkin Bank Accounts" pageTitle="School Banks">
+        <StudentLayout title=" Tolkin Payement Accounts" pageTitle="Payement Account">
       <div className="section">
             <div className="parent-con">
                 <div className="data-table">

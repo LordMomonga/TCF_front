@@ -6,11 +6,11 @@ import StudentLayout from '../../../components/StudentLayout/StudentLayout';
 import { AddClassModal, DeleteModal } from '../../../components';
 import JoinClassModal from '../../../components/students/JoinClassModal/JoinClassModal';
 import AcademicYearContext from '../../../contexts/AcademicYearContext';
-
+import { motion } from 'framer-motion';
 import { AiOutlineCopy } from 'react-icons/ai';
-
+import { BiMoney } from 'react-icons/bi';
 import { toast } from 'react-toastify';
-
+import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
@@ -100,7 +100,22 @@ function Index() {
     },[activeAcademyYear]);
 
     return (
-        <StudentLayout title="Spécialité" pageTitle="Home">
+        <StudentLayout title="Ajouter un abonnement " pageTitle="Home">
+             <div>
+             <Link to="/students/school-banks"> 
+              <motion.button 
+               
+               
+                 animate={{
+                    x: [0, -10, 10, -10, 5, 0], // Déplace de gauche à droite pour l'effet de vibration
+                  }}
+                  transition={{
+                    repeat: Infinity, // Répète l'animation à l'infini
+                    repeatType: "loop", // Boucle l'animation
+                    duration: 0.7, // Durée de chaque cycle de vibration
+                  }}
+               className='mb-2  select-field px-2  flex text-white items-center gap-2'> <BiMoney className='text-white text-2xl'/>Gerer payement</motion.button></Link>
+            </div>
               <div className="section">
                         <div className="parent-con">
                             <div className="data-table">

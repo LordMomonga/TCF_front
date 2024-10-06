@@ -123,7 +123,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
 
                     <NavLink className="link" to="/students/course-contents">
                     <i><MdContentPaste size={20}/></i>
-                        <span>Test Content</span>
+                        <span>Strategie Content</span>
                     </NavLink>
 
                    
@@ -180,7 +180,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
                     
                     <NavLink className="link" to="/students/school-banks">
                     <i><BsBank2 size={20}/></i>
-                        <span> Banks</span>
+                        <span> Payement Accounts</span>
                     </NavLink>
 
                 
