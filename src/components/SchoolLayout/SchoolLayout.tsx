@@ -136,12 +136,12 @@ function SchoolLayout({ title, children, pageTitle } : any) {
 
                     <NavLink className="link" to="/school/result-types">
                     <i><GoMortarBoard size={20}/></i>
-                        <span>Results Type</span>
+                        <span>Results Users</span>
                     </NavLink>
 
                     <NavLink className="link" to="/school/students-results">
                     <i><GoMortarBoard size={20}/></i>
-                        <span>Results</span>
+                        <span>Users</span>
                     </NavLink>
 
 

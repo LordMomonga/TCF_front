@@ -33,7 +33,41 @@ const setSolutionExpressionEcrite = (data:any) => {
 const setSolutionExpressionOrale = (data:any) => {
     return api.post('/addAudio', data)
 }
+// gestion de la gestion des correction
 
+const getCorrectionStudent = () => {
+    return api.get("/getAudio");
+}
+
+const getCorrectionStudentEcrit = () => {
+    return api.get("/getEcrit");
+}
+
+const getCorrectionStudentOne = (elementID: any) => {
+    return api.get(`/getOne/${elementID}`, elementID);
+}
+
+const getCorrectionStudentOneEcrit = (elementID: any) => {
+    return api.get(`/getOneEcrit/${elementID}`, elementID);
+}
+
+const getEcritAndUpdate = ( data: any) => {
+    return api.post(`/getOneEcritAndUpdate}`, data);
+}
+
+
+const getAudioAndUpdate = ( data: any) => {
+    return api.post(`/getOneAndUpdate`, data);
+}
+
+const getMyResults = ( ) => {
+    return api.get(`/student/getOne`);
+}
+
+const getMyResultsEcrit = ( ) => {
+    return api.get(`/getEcritStudent`);
+}
+// fin de la gestion des correction vu et afficherpour le correcteur 
 // gestion pour les ajouts des test de langues
 
 const CreateTestELement = (data: any) => {
@@ -111,7 +145,16 @@ export {
     selectComprehensionOrale,
     selectComprehensionEcrite,
     setSolutionExpressionEcrite, 
-    setSolutionExpressionOrale
+    setSolutionExpressionOrale, 
+    getCorrectionStudent,
+    getCorrectionStudentOne,
+    getCorrectionStudentOneEcrit,
+    getCorrectionStudentEcrit,
+    getEcritAndUpdate,
+    getAudioAndUpdate,
+    getMyResults,
+    getMyResultsEcrit
+
     
 }   
 

@@ -20,6 +20,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { convertDate } from '../../../utils/date';
 import AcademicYearContext from '../../../contexts/AcademicYearContext';
 import { FaTrash } from 'react-icons/fa';
+import { getMyResults } from '../../../services/assessment';
 
 const rows: any = [
     {
@@ -62,25 +63,30 @@ const override = {
 function Index() {
     const [ showAddModal, setShoowAddModal ] = useState(false);
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
-
+   
+    const [openModal, setOpenModal] = useState(false)
 
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [user, setUser] = useState<any>();
     const toggleAddModal = () => {
         setShoowAddModal(!showAddModal);
     }
 
-
-    const handleGetReports = ()  => {
-        setLoading(true);
-
-        setReports([]);
-
-        getStudentReports().then((res: any) => {
-            if(res.ok) {
-                setReports(res.data.data);
+    const toggleOpenModal = () => {
+        setOpenModal(!openModal);
+    }
+    
+    const handleShowResults = () =>{
+        setLoading(true)
+        console.log("telechargement en cours");
+        
+        getMyResults().then((res:any) => {
+            if(res.ok){
+                setUser(res.data.data)
             }
+            console.log(user);
+            
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -88,13 +94,18 @@ function Index() {
         })
     }
 
+ 
+
     const handleContentAdded = ()  => {
         toggleAddModal();
-        handleGetReports();
+        
     }
+    useEffect(() => {
+       handleShowResults()
+    },[]);
 
     useEffect(() => {
-        handleGetReports();
+       handleShowResults()
     },[activeAcademyYear]);
 
     return (
@@ -126,7 +137,7 @@ function Index() {
                             </thead>
                         
                             <tbody>
-                                {reports?.map((data: any, index: any) => <tr>
+                                {user?.map((data: any, index: any) => <tr>
                                     <td className="flex-center">{index + 1}</td>
                                     <td className="flex-start">
                                         <p>{data?.school_id?.username}</p>

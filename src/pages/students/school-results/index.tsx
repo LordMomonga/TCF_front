@@ -22,34 +22,33 @@ import { VideoPlayerModal } from '../../../components';
 import { convertDate } from '../../../utils/date';
 import AcademicYearContext from '../../../contexts/AcademicYearContext';
 import { getStudentResults } from '../../../services/results';
-
+import { getMyResults } from '../../../services/assessment';
+import { getMyResultsEcrit } from '../../../services/assessment';
+import { HandPlatter } from 'lucide-react';
 const rows: any = [
     {
         label: '#',
         name: 'num'
     },
     {
-        label: 'Result Type',
+        label: 'Niveau',
         name: 'name'
     },
     {
         label: 'Average',
         name: 'name'
     },
-    {
-        label: 'Total Average',
-        name: 'name'
-    },
+    
     {
         label: 'Remark',
         name: 'name'
     },
     {
-        label: 'Created Date',
+        label: 'etat',
         name: 'name'
     },
     {
-        label: 'Action',
+        label: 'created Date',
         name: 'name'
     },
 ]
@@ -60,25 +59,39 @@ const override = {
   };
 
 
+const showModal1 = ( data : any) => {
 
+
+     return(
+        <div>
+                {data}
+        </div>
+     )
+
+}
 function Index() {
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
 
 
     const [announcements, setAnnouncements] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [showmodal, setShowModal] = useState(false)
+    const [loading1, setLoading1] = useState(false);
+    const [userSolution, SetUserSolution] = useState<any>();
+    const [user, SetUser] = useState<any>();
 
 
-    const handleGetAnnouncement = ()  => {
-        setLoading(true);
-
-        setAnnouncements([]);
-
-        getStudentResults().then((res: any) => {
-            if(res.ok) {
-                // console.log('RESULTS:', res)
-                setAnnouncements(res.data.data);
+    
+    const handleShowResults = () =>{
+        setLoading(true)
+        console.log("telechargement en cours");
+        
+        getMyResults().then((res:any) => {
+            if(res.ok){
+                SetUserSolution(res.data.data)
             }
+            console.log(userSolution);
+            
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -86,13 +99,38 @@ function Index() {
         })
     }
 
+const handleToggle = () =>{
+    setShowModal(!showmodal)
+}
+
+    const handleShowResults2 = () =>{
+        setLoading1(true)
+        console.log("telechargement en cours");
+        
+        getMyResultsEcrit().then((res:any) => {
+            if(res.ok){
+                SetUser(res.data.data)
+            }
+            console.log(user);
+            
+            setLoading1(false);
+        }).catch(err => {
+            setLoading(false);
+            console.log('error: ', err);
+        })
+    }
+
+
+
 
     useEffect(() => {
-        handleGetAnnouncement();
+        handleShowResults()
+        handleShowResults2()
+    
     },[activeAcademyYear]);
 
     return (
-        <StudentLayout title="Result Slips" pageTitle="Results">
+        <StudentLayout title="My Results " pageTitle="Results test">
       <div className="section">
             <div className="parent-con">
                 <div className="data-table">
@@ -119,19 +157,54 @@ function Index() {
                             </thead>
                         
                             <tbody>
-                                {announcements?.map((data: any, index: any) => <tr>
+                                {userSolution?.map((data: any, index: any) => <tr>
                                     <td className="flex-center">{index + 1}</td>
+                                    <td className="flex-start font-bold text-black text-2xl">
+                                        <p>{data?.note}</p>
+                                    </td>
+                                    <td>
+                                        <p>{data?.contenu1_id?.TypeElement}</p>
+                                    </td>
+                                    <td onClick={handleToggle} className='text-blue-500 hover:underline cursor-pointer'>
+                                        <p>{data?.commentaire}</p>
+                                    </td>
+                                    <td>
+                                        <p>{data?.note ? "corrected" : "pending"}</p>
+                                    </td>
+                                    {/* <td className="flex-start">{data?.active_to}</td> */}
+                                
                                     <td className="flex-start">
-                                        <p>{data?.result_type?.name}</p>
+                                        <p>{convertDate(data?.createdAt)}</p>
+                                    </td>
+                                     
+            
+                                    <td className="flex-center">
+                                        <div className="action">
+                                        <Tippy  content="Download Result Slip"  animation="fade">
+                                        <a target="_blank" href={data?.result_file} onClick={() => {
+                                               
+                                            }} className="see"> 
+                                            <IoMdCloudDownload onClick={() => null} size={14}/>
+                                            </a>
+                                        </Tippy>
+                                    </div>
+                                    </td>
+
+                                </tr> )}
+
+                                {user?.map((data: any, index: any) => <tr>
+                                    <td className="flex-center">{index + 1}</td>
+                                    <td className="flex-start font-bold text-black text-2xl">
+                                        <p>{data?.note}</p>
                                     </td>
                                     <td>
-                                        <p>{data?.average}</p>
+                                        <p>{data?.contenu1_id?.TypeElement}</p>
+                                    </td>
+                                    <td className='text-blue-500 hover:underline cursor-pointer'>
+                                        <p>{data?.commentaire}</p>
                                     </td>
                                     <td>
-                                        <p>{data?.total_average}</p>
-                                    </td>
-                                    <td>
-                                        <p>{data?.remark}</p>
+                                        <p>{data?.note ? "corrected" : "pending"}</p>
                                     </td>
                                     {/* <td className="flex-start">{data?.active_to}</td> */}
                                 
@@ -159,9 +232,9 @@ function Index() {
 
                 </div>
             </div>
+            
         </div>
 
-       
         </StudentLayout>
     );
 }
