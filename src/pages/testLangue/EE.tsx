@@ -341,9 +341,8 @@ const EE: React.FC = () => {
           <BiSkipNext className='text-md bg-green-500 text-white' />
           <span>submit this test</span>
         </div> 
-        <Link to="/home">  <div
+        <Link to="/students/course-contents">  <div
           className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer'
-          onClick={handleQuitExam}
         >
           <BiExit className='text-md bg-red-500 text-white' />
           <span>quit the examination</span>

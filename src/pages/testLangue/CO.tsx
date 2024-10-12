@@ -9,6 +9,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { selectComprehensionOrale } from '../../services/assessment'
 import './test.css'
 
@@ -40,17 +41,25 @@ const CO = () => {
     const [CO, setCO] = useState<any>("still");
     const [question1, setQuestion1] = useState<any>("error network response charging");
     const [question2, setQuestion2] = useState<any>("error network response charging");
-
+    const [score, setScore] = useState(0);
     const [question3, setQuestion3] = useState<any>("error network response charging");
     const [question4, setQuestion4] = useState<any>("error network response charging");
-
+    const [response, setResponse] = useState<any>();
+    const [hasAnswered, setHasAnswered] = useState<boolean>(false);
     const [qst, setqst] = useState("");
+    const locate = useNavigate();
 
     const [question, setQuestion] = useState("")
     const [currentList, setCurrentList] = useState<any>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [Index, setIndex] = useState<number>(0);
     const [data, setData] = useState<any>({});
+    const [array, setArray] = useState([])
+    const [selectedValue, setSelectedValue] = useState<any>('');
+
+    const handleExit = () => {
+      locate("/students/passexams")
+    }
 
     const handleComprehensionOrale = () => {
       setLoading(true)
@@ -68,6 +77,8 @@ const CO = () => {
           setSelectListeningC2(res.data.data.selectListeningC2);
           
         }
+
+
         const allQuestions = [
           ...res.data.data.selectListeningA1,
           ...res.data.data.selectListeningA2,
@@ -84,8 +95,8 @@ const CO = () => {
         setQuestion3(allQuestions[0].solution3)
         setQuestion4(allQuestions[0].solution4)
         setqst(allQuestions[0].imageUrl)
+        setResponse(allQuestions[0].response)
         console.log("ou je veux en venir",CO, question1, qst);
-        
         setLoading(false);
       }).catch(err => {
         console.log('error error', err)
@@ -133,6 +144,7 @@ const CO = () => {
         setQuestion3(allQuestion[index].solution3)
         setQuestion4(allQuestion[index].solution4)
         setqst(allQuestion[index].imageUrl)
+        
         console.log("ou si ca marche",CO, question1, qst);
         
         
@@ -144,10 +156,47 @@ const CO = () => {
   
    
 
+ 
+
+
+const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
+  const target = e.target as HTMLInputElement;
+  setSelectedValue(target.value);
+  if (!hasAnswered) {
+    setHasAnswered(true);
+  }
+  console.log(target.value,score ); // Affiche la valeur sélectionnée
+};
+
+useEffect(() => {
+  // Timer to check the answer after 1 minute
+  const timer = setTimeout(() => {
+    if (hasAnswered && selectedValue) {
+      if (selectedValue === response) {
+        setScore((prevScore) => prevScore + 1);
+        
+        console.log(score, "this is the score");
+      } else {
+        console.log("Incorrect answer.");
+      }
+    }
+    
+    // Reset the state after checking
+    setHasAnswered(false);
+    setSelectedValue(null); // Clear the selected value if needed
+  }, 10000); // 60000 ms = 1 minute
+
+  return () => clearTimeout(timer); // Cleanup the timer
+}, [hasAnswered, selectedValue]); // Dependency on hasAnswered and selectedValue
+
+
+
       useEffect(() => {
         const items = document.querySelectorAll<HTMLLIElement>('.question-item');
         let index = 0;
         const interval = setInterval(() => {
+        
+        
           items.forEach((item, i) => {
             if (i === index) {
               item.classList.add('border-highlight', 'bg-green-500');
@@ -160,7 +209,7 @@ const CO = () => {
               setNumb(39 - index);
 
           index = (index + 1) % items.length;
-
+        
         }, 10000); // 60000 ms = 1 minute
     
         return () => clearInterval(interval);
@@ -207,7 +256,7 @@ const CO = () => {
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
            
         <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center'><NavLink to='/compecrite' className='flex items-center gap-2'><BiSkipNext className='text-md bg-green-500 text-white'></BiSkipNext>skip this test</NavLink></div>
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><NavLink to='/home'className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</NavLink></div></div>
+        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
        
         <div className='bg-white h-[80%] w-[68%] py-2 left-[13.5%] px-5 text-gray-700 fixed z-0'>
         <div className="text-sm font-bold text-center">
@@ -222,22 +271,25 @@ const CO = () => {
                 <span className='block  mb-5 font-bold'>
                   {CO}
                  </span>
-                <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">a- {question1}</label>
+                 <form action="">
+                 <div className='flex gap-5 mb-2'>
+                 <input type="radio" name="question" value="1" onClick={handleChange} id="option-a" />
+                 <label htmlFor="option-a">a- {question1}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">b- {question2}</label>
+                <input type="radio" name="question" value="2" onClick={handleChange} id="option-b" />
+                <label htmlFor="option-b">b- {question2}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">c- {question3}</label>
+                <input type="radio" name="question" value="3" onClick={handleChange} id="option-c" />
+                <label htmlFor="option-c">c- {question3}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">d- {question4}</label>
+                    <input type="radio" name="question" value="4" onClick={handleChange} id="option-d" />
+                    <label htmlFor="option-d">d- {question4}</label>
                 </div>
+                 </form>
+              
                 </div>
 
             </div>

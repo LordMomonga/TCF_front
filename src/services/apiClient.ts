@@ -4,7 +4,7 @@ const apiUrlTest  = 'http://localhost:8070';
 const  apiUrlLive  =  'https://tolkin-chi.vercel.app/';
 
 const api =  create({
-    baseURL: apiUrlLive,
+    baseURL: apiUrlTest,
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'

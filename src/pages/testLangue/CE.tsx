@@ -7,19 +7,113 @@ import { BiSkipNext } from 'react-icons/bi'
 import { NavLink, Outlet } from 'react-router-dom';
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {Question} from './constant'
 import { getUser } from '../../utils/storage'
 import './test.css'
-
+import { selectComprehensionEcrite } from '../../services/assessment'
 const CE = () => {
     const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
 
+    const [question1, setQuestion1] = useState<any>("error network response charging");
+    const [question2, setQuestion2] = useState<any>("error network response charging");
+    const [score, setScore] = useState(0);
+    const [question3, setQuestion3] = useState<any>("error network response charging");
+    const [question4, setQuestion4] = useState<any>("error network response charging");
+    const [response, setResponse] = useState<any>();
+    const [hasAnswered, setHasAnswered] = useState<boolean>(false);
+    const [qst, setqst] = useState("");
+    const [loading, setLoading] = useState(false)
+    const [selectListeningA1, setSelectListeningA1]= useState<any>([])
+    const [selectListeningA2, setSelectListeningA2]= useState<any>([])
+    const [selectListeningB1, setSelectListeningB1]= useState<any>([])
+    const [selectListeningB2, setSelectListeningB2]= useState<any>([])
+    const [selectListeningC1, setSelectListeningC1]= useState<any>([])
+    const [selectListeningC2, setSelectListeningC2]= useState<any>([])
+    const [allQuestion, setAllQuestion] = useState<any>([])
+    const [CO, setCO] = useState<any>("still");
+    const [data, setData] = useState<any>({});
+    const [selectedValue, setSelectedValue] = useState<any>('');
+    const locate = useNavigate();
     useEffect(() => {
         let usr = getUser();
         setUser(usr);
     }, [])
 
+    const handleComprehensionOrale = () => {
+      setLoading(true)
+      selectComprehensionEcrite().then((res: any) => {
+        console.log('RESPONSE GET: ', res.data);
+        setData(res.data.data);
+        if(res.ok) {
+         
+          setSelectListeningA1(res.data.data.selectListeningA1);
+         
+          setSelectListeningA2(res.data.data.selectListeningA2);
+          setSelectListeningB1(res.data.data.selectListeningB1);
+          setSelectListeningB2(res.data.data.selectListeningB2);
+          setSelectListeningC1(res.data.data.selectListeningC1);
+          setSelectListeningC2(res.data.data.selectListeningC2);
+          
+        }
+
+        
+        const allQuestions = [
+          ...res.data.data.selectListeningA1,
+          ...res.data.data.selectListeningA2,
+          ...res.data.data.selectListeningB1,
+          ...res.data.data.selectListeningB2
+        ];
+        setAllQuestion(allQuestions)
+       
+     
+        console.log("le premier listening", selectListeningA2, allQuestions);
+        setCO(allQuestions[0].question)
+        setQuestion1(allQuestions[0].solution1)
+        setQuestion2(allQuestions[0].solution2)
+        setQuestion3(allQuestions[0].solution3)
+        setQuestion4(allQuestions[0].solution4)
+        setqst(allQuestions[0].imageUrl)
+        setResponse(allQuestions[0].response)
+        console.log("ou je veux en venir",CO, question1, qst);
+        setLoading(false);
+      }).catch(err => {
+        console.log('error error', err)
+        setLoading(false);
+      })
+    }
+
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        if (remainingTime > 0) {
+          setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 1000); // Update every second
+  
+      return () => clearInterval(intervalId); // Cleanup on unmount
+    }, []);
+
+     
+    const handleExit = () => {
+      locate("/students/passexams")
+    }
+    useEffect(() => {
+      handleComprehensionOrale();
+        let usr = getUser();
+        setUser(usr);
+    }, [])
+    const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
+      const target = e.target as HTMLInputElement;
+      setSelectedValue(target.value);
+      if (!hasAnswered) {
+        setHasAnswered(true);
+      }
+      console.log(target.value,score ); // Affiche la valeur sélectionnée
+    };
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -83,7 +177,7 @@ const CE = () => {
         </div>      
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
         <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center'><NavLink to='/Eorale' className='flex items-center gap-2'><BiSkipNext className='text-md bg-green-500 text-white'></BiSkipNext>skip this test</NavLink></div>
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><NavLink to='/home'className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</NavLink></div></div>
+        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
        
         <div className='bg-white h-[80%] w-[68%] py-2 left-[14%] px-5 text-gray-700 fixed z-0'>
         <div className="text-sm font-bold text-center">
@@ -97,22 +191,24 @@ const CE = () => {
                 <span className='block  mb-5 font-bold'>
                     1- De qui il s'agit dans le text 
                 </span>
-                <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">a- Du père de monsieur Frederick</label>
+                <form action="">
+                 <div className='flex gap-5 mb-2'>
+                 <input type="radio" name="question" value="1" onClick={handleChange} id="option-a" />
+                 <label htmlFor="option-a">a- {question1}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">b- Du voisin de monsieur Frederick</label>
+                <input type="radio" name="question" value="2" onClick={handleChange} id="option-b" />
+                <label htmlFor="option-b">b- {question2}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">c- Du voisin de monsieur Frederick</label>
+                <input type="radio" name="question" value="3" onClick={handleChange} id="option-c" />
+                <label htmlFor="option-c">c- {question3}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" />
-                    <label htmlFor="">d- Du voisin de monsieur Frederick</label>
+                    <input type="radio" name="question" value="4" onClick={handleChange} id="option-d" />
+                    <label htmlFor="option-d">d- {question4}</label>
                 </div>
+                 </form>
                 </div>
 
             </div>
