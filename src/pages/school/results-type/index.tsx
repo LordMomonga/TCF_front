@@ -65,6 +65,7 @@ const SolutionModal = ({message1, solution, data,  onClose}: any) => {
   const [user, setUser] = useState<any>()
   const [comment, setComment] = useState<any>();
     const [level, setLevel] = useState<any>();
+    const [AudioId, setAudioId] = useState<any>();
     const status = "accepted"
 const handleAudio = () =>  {
 
@@ -85,15 +86,17 @@ const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault(); // Empêche le rechargement de la page
     console.log('Commentaire:', comment);
     console.log('Niveau:', level);
+    console.log('id:', data);
+    setAudioId(data)
    
     try {
         const data2 = {
+            _idAudio: data,
             commentaire: comment,
-            note:level,
-     
+            note:level
         }
 
-        getAudioAndUpdate( data2).then((res: any) => {
+        getAudioAndUpdate(data2).then((res: any) => {
             console.log(res);
             if(res.ok){
                 toast.success("Submit with succes", {
@@ -102,6 +105,8 @@ const handleSubmit = (event: React.FormEvent) => {
                 }) 
                 onClose()
             }else{
+                console.log(res);
+                
                 toast.error("Error while correcting the Test", {
                     pauseOnHover: false,
                     closeOnClick: true,
@@ -289,16 +294,18 @@ const handleSubmit = (event: React.FormEvent) => {
     console.log('Commentaire:', comment);
     console.log('Niveau:', level);
     console.log('statsus:', status);
+    console.log('id:', data);
    
     try {
         const data2 = {
+            _id: data,
             commentaire: comment,
             note:level,
-            _id: data,
+            
             status: status
         }
 
-        getEcritAndUpdate( data2).then((res: any) => {
+        getEcritAndUpdate(data2).then((res: any) => {
             console.log(data2);
             if(res.ok){
                 toast.success("Submit with succes", {
@@ -661,7 +668,7 @@ const handleSolutionStudent2 = () => {
                                         </div>
                                     </td>
                                     <td className="flex-start">
-                                        <p>{data?.Solution ? "corrected": "pending"}</p>
+                                        <p>{data?.commentaire ? "corrected": "pending"}</p>
                                     </td>
                                     <td className="flex-start">
                                         <p>{convertDate(data?.createdAt)}</p>

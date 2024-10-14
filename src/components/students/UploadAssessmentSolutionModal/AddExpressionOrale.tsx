@@ -76,7 +76,9 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const validationSchema = Yup.object().shape({
         title: Yup.string(),
       
-        contenu: Yup.string()
+        contenu: Yup.string(),
+        document1: Yup.string(),
+        document2: Yup.string()
         
     });
 
@@ -197,11 +199,19 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                         <p className="label-text">Entrer le titre du sujet  </p>
                         <FormField  name="titre"   type="text" placeholder="entrer le titre du sujet"/>
 
-
+                    
                         <p className="label-text">Entrer le contenu du sujet  </p>
-                        <FormField  name="contenu"  type="text" placeholder="question 1) ? "/>
-                        
-                           
+                        <FormField  name="contenu"  type="text" placeholder="entrer le contenu du sujet ? "/>
+              
+                        {(selectTestType === "sujet3" && selectTest === "expression ecrite" ) && (
+                            <>
+                                <p className="label-text">Entrer le document 1</p>
+                                <FormField name="document1" type="text" placeholder="entrer le document 1" />
+
+                                <p className="label-text">Entrer le document 2</p>
+                                <FormField name="document2" type="text" placeholder="entrer le document 2" />
+                            </>
+)}  
 
                         
  

@@ -215,8 +215,8 @@ const EE: React.FC = () => {
             <h1 className='text-center font-bold text-xl'>Tache 1</h1>
             {sujet1?.map((data:any, index:any) => 
             <p className='w-[100%] text-center mt-5'>
-            {data?.titre}
-              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+           <span> {data?.titre}</span>
+              <span className='block mt-2 '>{data?.contenu}</span>
             </p>
           )}
             <div>
@@ -239,8 +239,8 @@ const EE: React.FC = () => {
             <h1 className='text-center font-bold text-xl'>Tache 2</h1>
             {sujet2?.map((data:any, index:any) => 
               <p className='w-[100%] text-center mt-5'>
-              {data?.titre}
-                <span className='block mt-2 font-bold'>{data?.contenu}</span>
+                <span> {data?.titre}</span>
+                <span className='block mt-2 '>{data?.contenu}</span>
               </p>
             )}
             <div>
@@ -262,9 +262,14 @@ const EE: React.FC = () => {
           <div>
             <h1 className='text-center font-bold text-xl'>Tache 3</h1>
             {sujet3?.map((data:any, index:any) => 
-            <p className='w-[100%] text-center mt-5'>
-            {data?.titre}
-              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+            <p className='w-[100%] text-center mt-5  '>
+           <span className='font-semibold mt-2'>{data?.titre}</span> 
+              <span className='block mt-2  '>{data?.contenu}</span>
+
+              <div>
+                <div className='mb-5'><span className='block font-semifold'>Document 1</span>{data?.document1}</div>
+                <div className=''><span className='block font-semifold'>Document 2</span>{data?.document2}</div>
+              </div>
             </p>
           )}
             <div>
@@ -275,6 +280,8 @@ const EE: React.FC = () => {
                 onChange={handleTextareaChange}
               >
               </textarea>
+
+
               <div className='mt-2 text-end mr-7'>
         Nombre de mots : {wordCount}
       </div>

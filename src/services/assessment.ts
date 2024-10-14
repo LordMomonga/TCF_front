@@ -52,12 +52,12 @@ const getCorrectionStudentOneEcrit = (elementID: any) => {
 }
 
 const getEcritAndUpdate = ( data: any) => {
-    return api.post(`/getOneEcritAndUpdate}`, data);
+    return api.post(`/getOneEcritAndUpdate`, data);
 }
 
 
 const getAudioAndUpdate = ( data: any) => {
-    return api.post(`/getOneAndUpdate`, data);
+    return api.post('/getOneAndUpdate', data);
 }
 
 const getMyResults = ( ) => {
