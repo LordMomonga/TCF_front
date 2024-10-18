@@ -13,6 +13,7 @@ import {Question} from './constant'
 import { getUser } from '../../utils/storage'
 import './test.css'
 import { selectComprehensionEcrite } from '../../services/assessment'
+import { Console } from 'console'
 const CE = () => {
     const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
@@ -33,9 +34,13 @@ const CE = () => {
     const [selectListeningC1, setSelectListeningC1]= useState<any>([])
     const [selectListeningC2, setSelectListeningC2]= useState<any>([])
     const [allQuestion, setAllQuestion] = useState<any>([])
+    const [timeLeft, setTimeLeft] = useState(60); 
     const [CO, setCO] = useState<any>("still");
-    const [data, setData] = useState<any>({});
+    const [data, setData] = useState<any>();
+    const [result, setResult] = useState(0)
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
+    const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
     const locate = useNavigate();
     useEffect(() => {
         let usr = getUser();
@@ -50,7 +55,6 @@ const CE = () => {
         if(res.ok) {
          
           setSelectListeningA1(res.data.data.selectListeningA1);
-         
           setSelectListeningA2(res.data.data.selectListeningA2);
           setSelectListeningB1(res.data.data.selectListeningB1);
           setSelectListeningB2(res.data.data.selectListeningB2);
@@ -64,12 +68,17 @@ const CE = () => {
           ...res.data.data.selectListeningA1,
           ...res.data.data.selectListeningA2,
           ...res.data.data.selectListeningB1,
-          ...res.data.data.selectListeningB2
+          ...res.data.data.selectListeningB2,
+          ...res.data.data.selectListeningC1,
+          ...res.data.data.selectListeningC2
+
+
         ];
+        
         setAllQuestion(allQuestions)
        
      
-        console.log("le premier listening", selectListeningA2, allQuestions);
+        console.log("le premier listening", allQuestions);
         setCO(allQuestions[0].question)
         setQuestion1(allQuestions[0].solution1)
         setQuestion2(allQuestions[0].solution2)
@@ -85,6 +94,44 @@ const CE = () => {
       })
     }
 
+    const currentQuestion = allQuestion[currentIndex];
+    
+    
+    
+
+    const moveToNextQuestion = () => {
+      if (selectedAnswer && selectedAnswer === currentQuestion.solution) {
+        setScore(score + 1);
+        
+      }
+  
+      setSelectedAnswer(null); // Reset selected answer
+      setTimeLeft(60); // Reset timer for the next question
+      
+      if (currentIndex < allQuestion.length - 1) {
+        
+        setCurrentIndex(currentIndex + 1);
+        console.log(currentIndex, score, result);
+         // Move to next question
+      } else {
+        console.log(score, result,"obtenu");
+      }
+    };
+
+    useEffect(() => {
+      if (timeLeft === 0) {
+        moveToNextQuestion();
+        return;
+      }
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    }, [timeLeft]);
+
+    useEffect(() => {
+      // This will run each time the score is updated
+      console.log('Score updated:', score);
+    }, [score]);
+
     useEffect(() => {
       const intervalId = setInterval(() => {
         if (remainingTime > 0) {
@@ -97,7 +144,7 @@ const CE = () => {
       return () => clearInterval(intervalId); // Cleanup on unmount
     }, []);
 
-     
+
     const handleExit = () => {
       locate("/students/passexams")
     }
@@ -106,13 +153,26 @@ const CE = () => {
         let usr = getUser();
         setUser(usr);
     }, [])
-    const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
-      const target = e.target as HTMLInputElement;
-      setSelectedValue(target.value);
-      if (!hasAnswered) {
-        setHasAnswered(true);
+
+    const checkAnswer = () => {
+      const currentQuestion = allQuestion[currentIndex];
+      if (selectedValue === currentQuestion?.response) {
+        let points = 1;
+        if (currentIndex >= 10 && currentIndex < 15) {
+          points = 3;
+        } else if (currentIndex >= 15) {
+          points = 5;
+        }
+        setScore((prevScore) => prevScore + points);
       }
-      console.log(target.value,score ); // Affiche la valeur sélectionnée
+    };  
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //  setSelectedValue(e.target.value);
+      setSelectedAnswer(e.target.value);
+      setHasAnswered(true);
+      console.log(selectedAnswer);
+      
     };
 
     useEffect(() => {
@@ -136,6 +196,8 @@ const CE = () => {
       };
     
      
+    
+    
     
 
   return (
@@ -185,28 +247,36 @@ const CE = () => {
             </div>
             <div className='w-full relative'>
                 <div className='flex justify-center'>
-                <img className=' w-[30%] ' src="images/image1.png" alt="" />
+                <img className=' w-[50%] ' src={currentQuestion?.imageUrl} alt="" />
                 </div>
                 <div className='pl-[15%] justify-center '>
                 <span className='block  mb-5 font-bold'>
-                    1- De qui il s'agit dans le text 
+                {currentIndex + 1}- {currentQuestion?.question}
                 </span>
                 <form action="">
                  <div className='flex gap-5 mb-2'>
-                 <input type="radio" name="question" value="1" onClick={handleChange} id="option-a" />
-                 <label htmlFor="option-a">a- {question1}</label>
+                 <input type="radio" name="question" value="1"
+                  checked={selectedAnswer === "1"}
+                 onChange={handleChange} id="option-a" />
+                 <label htmlFor="option-a">a- {currentQuestion?.solution1}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                <input type="radio" name="question" value="2" onClick={handleChange} id="option-b" />
-                <label htmlFor="option-b">b- {question2}</label>
+                <input type="radio" name="question" value="2" 
+                 checked={selectedAnswer === "2"}
+                onChange={handleChange} id="option-b" />
+                <label htmlFor="option-b">b- {currentQuestion?.solution2}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                <input type="radio" name="question" value="3" onClick={handleChange} id="option-c" />
-                <label htmlFor="option-c">c- {question3}</label>
+                <input type="radio" name="question" value="3"  
+                 checked={selectedAnswer === "3"}
+                onChange={handleChange} id="option-c" />
+                <label htmlFor="option-c">c- {currentQuestion?.solution3}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" name="question" value="4" onClick={handleChange} id="option-d" />
-                    <label htmlFor="option-d">d- {question4}</label>
+                    <input type="radio" name="question" value="4" 
+                     checked={selectedAnswer === "4"}
+                    onChange={handleChange}id="option-d" />
+                    <label htmlFor="option-d">d- {currentQuestion?.solution4}</label>
                 </div>
                  </form>
                 </div>

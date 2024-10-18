@@ -83,7 +83,9 @@ const CO = () => {
           ...res.data.data.selectListeningA1,
           ...res.data.data.selectListeningA2,
           ...res.data.data.selectListeningB1,
-          ...res.data.data.selectListeningB2
+          ...res.data.data.selectListeningB2,
+          ...res.data.data.selectListeningC1,
+          ...res.data.data.selectListeningC2
         ];
         setAllQuestion(allQuestions)
        
