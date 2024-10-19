@@ -6,6 +6,27 @@ import { useState, useEffect } from 'react';
 import { FaTrophy, FaTimesCircle, FaChartLine, FaCommentAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 
+
+const getTCFLevel = (score: number) => {
+    switch (true) {
+      case score >= 5 && score <= 10:
+        return 'A1';
+      case score >= 11 && score <= 15:
+        return 'A2';
+      case score >= 16 && score <= 20:
+        return 'B1';
+      case score >= 21 && score <= 25:
+        return 'B2';
+      case score >= 26 && score <= 28:
+        return 'C1';
+      case score >= 29 :
+        return 'C2';
+      default:
+        return 'Inconnu';
+    }
+  };
+
+
 export const Result = () => {
     const location = useLocation();
   const { score, index, echou } = location.state || { score: 0, index: 0 , echou:[]}; // Default to 0 if undefined
@@ -45,7 +66,7 @@ export const Result = () => {
 
   const level = determineLevel(score);
   const message = afficheMessage(level)
-
+  const level2 = getTCFLevel(score);
   const [animatedScore, setAnimatedScore] = useState(0)
   const [animatedEchec, setAnimatedEchec] = useState(0)
 console.log(echou)

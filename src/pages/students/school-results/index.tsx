@@ -15,7 +15,7 @@ import { deletePassExamContent } from '../../../services/passExams';
 import { getStudentSolutions, getStudentsClasses, getAcceptedClasses, getStudentTimetables, getStudentAnnouncements } from '../../../services/student';
 
 import BeatLoader from "react-spinners/BeatLoader";
-
+import { FaTimesCircle } from 'react-icons/fa';
 import moment from 'moment';
 import { getTotalAssessments } from '../../../services/assessment';
 import { VideoPlayerModal } from '../../../components';
@@ -25,6 +25,7 @@ import { getStudentResults } from '../../../services/results';
 import { getMyResults } from '../../../services/assessment';
 import { getMyResultsEcrit } from '../../../services/assessment';
 import { HandPlatter } from 'lucide-react';
+import { BiTime } from 'react-icons/bi';
 const rows: any = [
     {
         label: '#',
@@ -63,13 +64,16 @@ const override = {
   };
 
 
-const showModal1 = ( data : any) => {
+function showModal1( {data , onClose} : any) {
 
 
      return(
-        <div>
-                {data}
-        </div>
+        
+        <div className='py-5 bg-primary text-white absolute top-0 px-5 py-2'>
+        <span className='top-2 absolute right-2 text-2xl' onClick={onClose}><FaTimesCircle/></span>
+        <h1 className='font-bold text-gray-200 mx-5 my-2 underline'>Appreciation</h1>
+    {data}
+        </div> 
      )
 
 }
@@ -83,6 +87,9 @@ function Index() {
     const [loading1, setLoading1] = useState(false);
     const [userSolution, SetUserSolution] = useState<any>();
     const [user, SetUser] = useState<any>();
+    const [modalData, setModalData] = useState<string | null>(null);
+    const [note, setNote] = useState<string | null>(null);
+    const [decision, setDecision] = useState<string | null>(null);
 
 
     
@@ -103,9 +110,12 @@ function Index() {
         })
     }
 
-const handleToggle = () =>{
-    setShowModal(!showmodal)
-}
+    const handleToggle = (commentaire: string, note: string) => {
+        setModalData(commentaire); // Passe le commentaire dans le modal
+        setShowModal(!showmodal); // Affiche ou cache le modal
+        setNote(note)
+
+    };
 
     const handleShowResults2 = () =>{
         setLoading1(true)
@@ -170,8 +180,10 @@ const handleToggle = () =>{
                                     <td>
                                         <p>{data?.contenu1_id?.TypeElement}</p>
                                     </td>
-                                    <td onClick={handleToggle} className='text-blue-500 hover:underline cursor-pointer'>
-                                        <p>{data?.commentaire}</p>
+                                    <td onClick={() => handleToggle(data?.commentaire, data?.note)} className='text-blue-500 hover:underline cursor-pointer'>
+                                        <p>{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
+    ? data.commentaire.split(' ').slice(0, 2).join(' ') + '...'
+    : "non commentaire"}</p>
                                     </td>
                                     <td>
                                         <p>{data?.note ? "corrected" : "pending"}</p>
@@ -236,8 +248,10 @@ const handleToggle = () =>{
                                     <td>
                                         <p>{data?.contenu1_id?.TypeElement}</p>
                                     </td>
-                                    <td className='text-blue-500 hover:underline cursor-pointer'>
-                                        <p>{data?.commentaire  ? "non commentaire": `${data?.commentaire}`}</p>
+                                    <td onClick={() => handleToggle(data?.commentaire, data?.note)} className='text-blue-500 hover:underline cursor-pointer'>
+                                        <p>{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
+    ? data.commentaire.split(' ').slice(0, 2).join(' ') + '...'
+    : "non commentaire"}</p>
                                     </td>
                                     <td>
                                         <p>{data?.note ? "corrected" : "pending"}</p>
@@ -269,7 +283,38 @@ const handleToggle = () =>{
                                 </table>
 
                              </div>
-                           
+                             {showmodal && (
+                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                    <div className="py-5 bg-primary text-white relative px-5 py-2 rounded">
+                                        <span className="absolute top-2 right-2 text-2xl cursor-pointer" onClick={() => setShowModal(false)}>
+                                            <FaTimesCircle />
+                                        </span>
+                                        <h1 className="font-bold text-white mx-5 my-2 underline text-3xl uppercase text-center">Appreciation</h1>
+                                        <p className='text-white'>vous avez un niveau <span className='text-2xl my-2 text-green-500 font-semibold '>{note}</span></p>
+                                        <p className='bg-white text-gray-500 px-3 py-5 rounded-sm'>correcteur : {modalData}</p>
+                                        <p className='bg-white py-5 px-3'><span className=' mr-2 bg-white font-semibold my-2 '>Conclusion:</span>
+                                        {(() => {
+    switch(note) {
+        case 'A1':
+            return 'Peut comprendre et utiliser des expressions familières  et quotidiennes ainsi que des énoncés très simples.';
+          case 'A2':
+            return 'Peut communiquer dans des tâches simples et routinières. Peut décrire son environnement et exprimer ses besoins.';
+          case 'B1':
+            return 'Peut produire un discours simple et cohérent et raconter des événements sur des sujets familiers.';
+          case 'B2':
+            return 'Peut s\'exprimer de manière claire et détaillée, avec une certaine aisance.';
+          case 'C1':
+            return 'Peut s\'exprimer de façon fluide et spontanée, avec aisance dans des contextes sociaux ou professionnels.';
+          case 'C2':
+            return 'Peut comprendre et résumer pratiquement tout, et s\'exprimer avec précision et aisance.';
+          default:
+            return 'Note non disponible';
+    }
+  })()}
+                                         </p>
+                                    </div>
+                                </div>
+                            )}
                     </div>
 
                 </div>
