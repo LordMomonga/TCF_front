@@ -42,7 +42,17 @@ const CE = () => {
         const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
     const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
+
+
     const locate = useNavigate();
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleImageToggle = () => {
+        setIsOpen(!isOpen);
+    };
+
+
     useEffect(() => {
         let usr = getUser();
         setUser(usr);
@@ -259,7 +269,7 @@ const CE = () => {
                     <div className='mt-2 text-[13px] font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span>Temps restant :</span></div>
                 </div>
         </div>      
-        <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-2 px-[10%] '>
+        <div className='z-5 fixed bottom-0 bg-prim w-screen flex justify-between py-2 px-[10%] '>
         <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center'><NavLink to='/Eorale' className='flex items-center gap-2'><BiSkipNext className='text-md bg-green-500 text-white'></BiSkipNext>skip this test</NavLink></div>
         <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div>
         </div>
@@ -270,7 +280,8 @@ const CE = () => {
             </div>
             <div className='w-full relative'>
                 <div className='flex justify-center'>
-                <img className=' w-[50%] ' src={currentQuestion?.imageUrl} alt="" />
+                <img className=' w-[50%] z-0' onClick={handleImageToggle}  src={currentQuestion?.imageUrl} alt="" />
+               
                 </div>
                 <div className='pl-[15%] justify-center '>
                 <span className='block  mb-5 font-bold'>
@@ -309,6 +320,13 @@ const CE = () => {
            
             
         </div>
+        {isOpen && (
+                <div 
+                    className='fixed inset-0 z-10 bg-black bg-opacity-75 flex justify-center items-center' 
+                    onClick={handleImageToggle}>
+                    <img className='max-h-full max-w-full' src={currentQuestion?.imageUrl} alt="" />
+                </div>
+            )}
     
     </div>
 
