@@ -224,11 +224,11 @@ const CE = () => {
 
   return (
     <div className='w-screen relative'>
-      <nav className=' px-5 py-5 flex items-center bg-prim '>
+      <nav className=' px-5 py-2 flex items-center bg-prim '>
         <span className=' font-bold text-3xl text-white'>Tolkin</span>
         </nav>
         
-       <div className='z-10 fixed left-0 px-2 bg-prim h-[80%]'>
+       <div className='z-10 fixed left-0 px-2 bg-prim h-[85%]'>
            <span className='mt-8 block font-bold  text-sm uppercase text-white '>comprehension Ecrite </span>
             <div className='mt-5 px-1 bg-white  py-2'>
               
@@ -242,7 +242,7 @@ const CE = () => {
                     <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiError className=' text-white bg-red-500 rounded-full font-bold  '></BiError><span>Aucune  :</span></div>
                 </div>
         </div>      
-        <div className=' z-10 fixed right-0 px-4 bg-prim h-[80%]'>
+        <div className=' z-10 fixed right-0 px-4 bg-prim h-[85%]'>
               <div className='bg-white px-5  text-gray-600  text-sm text-center rounded-md py-2'>
                 <h1 className='font-bold underline underline-offset-4 '>Mon profil</h1>
                 <div className=' py-3 text-left'>
@@ -259,9 +259,10 @@ const CE = () => {
                     <div className='mt-2 text-[13px] font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span>Temps restant :</span></div>
                 </div>
         </div>      
-        <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center'><NavLink to='/Eorale' className='flex items-center gap-2'><BiSkipNext className='text-md bg-green-500 text-white'></BiSkipNext>skip this test</NavLink></div>
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
+        <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-2 px-[10%] '>
+        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center'><NavLink to='/Eorale' className='flex items-center gap-2'><BiSkipNext className='text-md bg-green-500 text-white'></BiSkipNext>skip this test</NavLink></div>
+        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div>
+        </div>
        
         <div className='bg-white h-[80%] w-[68%] py-2 left-[14%] px-5 text-gray-700 fixed z-0'>
         <div className="text-sm font-bold text-center">
