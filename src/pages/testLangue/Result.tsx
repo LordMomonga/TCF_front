@@ -1,16 +1,20 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react';
 import { FaTrophy, FaTimesCircle, FaChartLine, FaCommentAlt } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 export const Result = () => {
     const location = useLocation();
-  const { score, index } = location.state || { score: 0, index: 0 }; // Default to 0 if undefined
+  const { score, index, echou } = location.state || { score: 0, index: 0 , echou:[]}; // Default to 0 if undefined
     const [resultat, setResultat] = useState<any>()
+    const locate = useNavigate();
 
-
+    const handleExit = () => {
+        locate("/students/passexams")
+      }
    
     const afficheMessage = (level: string)=> {
         switch (level) {
@@ -44,7 +48,7 @@ export const Result = () => {
 
   const [animatedScore, setAnimatedScore] = useState(0)
   const [animatedEchec, setAnimatedEchec] = useState(0)
-
+console.log(echou)
   useEffect(() => {
     const scoreTimer = setInterval(() => {
       setAnimatedScore(prev => Math.min(prev + 1, score))
@@ -79,7 +83,7 @@ export const Result = () => {
   return (
       <div className="min-h-screen  text-white">
       <nav className="px-5 py-5 flex items-center bg-blue-500 ">
-        <span className="font-bold text-3xl text-white">Tolkin</span>
+        <span className="font-bold text-3xl text-white" onClick={handleExit}>Tolkin</span>
       </nav>
       <motion.div
         className="container mx-auto px-4 py-12"
@@ -88,7 +92,7 @@ export const Result = () => {
         animate="visible"
       >
         <motion.h1 
-          className="text-4xl md:text-5xl font-bold mb-12 text-center"
+          className="text-4xl md:text-4xl text-blue-500 font-bold mb-12 text-center"
           variants={itemVariants}
         >
           Vos Résultats
@@ -96,48 +100,81 @@ export const Result = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <motion.div 
-            className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-lg"
+            className="bg-white  rounded-lg p-6 backdrop-blur-lg"
             variants={itemVariants}
           >
             <div className="flex items-center mb-4">
               <FaTrophy className="text-3xl text-yellow-400 mr-4" />
-              <h2 className="text-2xl font-semibold">Questions Réussies</h2>
+              <h2 className="text-2xl font-semibold text-green-500">Questions Réussies</h2>
             </div>
-            <p className="text-5xl font-bold text-center">{animatedScore}</p>
+            <p className="text-5xl font-bold text-center text-green-400">{animatedScore}</p>
           </motion.div>
 
           <motion.div 
-            className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-lg"
+            className="bg-white  rounded-lg p-6 backdrop-blur-lg"
             variants={itemVariants}
           >
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 ">
               <FaTimesCircle className="text-3xl text-red-400 mr-4" />
-              <h2 className="text-2xl font-semibold">Questions Échouées</h2>
+              <h2 className="text-2xl font-semibold text-red-500">Questions Échouées</h2>
             </div>
-            <p className="text-5xl font-bold text-center">{animatedEchec}</p>
+            <p className="text-5xl font-bold text-center text-red-500">{animatedEchec}</p>
           </motion.div>
         </div>
 
         <motion.div 
-          className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-lg mb-8"
+          className="bg-white  rounded-lg p-6 backdrop-blur-lg mb-8"
           variants={itemVariants}
         >
           <div className="flex items-center mb-4">
             <FaChartLine className="text-3xl text-green-400 mr-4" />
-            <h2 className="text-2xl font-semibold">Votre Niveau</h2>
+            <h2 className="text-2xl font-semibold text-blue-500">Votre Niveau</h2>
           </div>
-          <p className="text-4xl font-bold text-center">{level}</p>
+          <p className="text-4xl font-bold text-center text-blue-500">{level}</p>
         </motion.div>
 
         <motion.div 
-          className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-lg"
+          className="bg-white rounded-lg p-6 backdrop-blur-lg"
           variants={itemVariants}
         >
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 justify-center">
             <FaCommentAlt className="text-3xl text-blue-400 mr-4" />
-            <h2 className="text-2xl font-semibold">Conclusion</h2>
+            <h2 className="text-2xl font-semibold text-green-500">Conclusion</h2>
           </div>
           <p className="text-xl text-center italic">{message}</p>
+        </motion.div>
+
+        <motion.div 
+          className="bg-white rounded-lg p-6 backdrop-blur-lg mt-5"
+          variants={itemVariants}
+        >
+          <div className="flex items-center mb-5 text-center justify-center ">
+            <FaTimesCircle className="text-3xl text-blue-400 mr-4" />
+            <h2 className="text-2xl font-semibold text-red-500">questions échouée</h2>
+          </div>
+          {echou?.map((question:any, idx:number) => (
+         <li key={idx} className="bg-gray-100 p-4 mt-3 rounded-lg shadow-md">
+           
+            <div className='flex justify-between items-center px-10'>
+         <div >
+                <p className="font-medium">Question:</p>
+         <p className="text-green-700 font-semibold">{question.currentQuestion.question}</p>
+         <p className="font-medium mt-2">Your Answer:</p>
+         <p className="text-gray-700 font-semibold text-red-500 text-2xl">{question.selectedAnswer}</p>
+         <p className="font-medium mt-2">Correct Answer:</p>
+         <p className="text-gray-700 text-green-500  text-2xl">{question.currentQuestion.response}</p>
+                </div>
+                <div>
+                    <h1 className='font-bold text-blue-500'> questions</h1>
+                 <p className="text gray 500">1- {question.currentQuestion.solution1}</p>
+                 <p className="text gray 500">2- {question.currentQuestion.solution2}</p>
+                 <p className="text gray 500">3- {question.currentQuestion.solution3}</p>
+                 <p className="text gray 500">4- {question.currentQuestion.solution4}</p>
+                </div>
+            </div>
+        
+       </li>
+        ))}
         </motion.div>
 
         <motion.button
@@ -145,6 +182,7 @@ export const Result = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           variants={itemVariants}
+          onClick={handleExit}
         >
           Retour à l'accueil
         </motion.button>

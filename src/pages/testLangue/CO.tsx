@@ -8,7 +8,7 @@ import { BiSkipNext } from 'react-icons/bi'
 import { NavLink, Outlet } from 'react-router-dom';
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectComprehensionOrale } from '../../services/assessment'
 import './test.css'
@@ -31,6 +31,8 @@ const CO = () => {
     const [user, setUser] = useState<any>(null);
     const [numb, setNumb] = useState(39)
     const [loading, setLoading] = useState(false)
+    const audioRef = useRef<HTMLAudioElement>(null);
+
     const [selectListeningA1, setSelectListeningA1]= useState([])
     const [selectListeningA2, setSelectListeningA2]= useState([])
     const [selectListeningB1, setSelectListeningB1]= useState([])
@@ -47,15 +49,18 @@ const CO = () => {
     const [response, setResponse] = useState<any>();
     const [hasAnswered, setHasAnswered] = useState<boolean>(false);
     const [qst, setqst] = useState("");
+    const [timeLeft, setTimeLeft] = useState(60); 
     const locate = useNavigate();
-
+    const [echou, setEchou] = useState<any[]>([]);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+const [selectedValue, setSelectedValue] = useState<any>('');
+const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
     const [question, setQuestion] = useState("")
     const [currentList, setCurrentList] = useState<any>([]);
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [Index, setIndex] = useState<number>(0);
     const [data, setData] = useState<any>({});
     const [array, setArray] = useState([])
-    const [selectedValue, setSelectedValue] = useState<any>('');
+    const [result, setResult] = useState(0);
 
     const handleExit = () => {
       locate("/students/passexams")
@@ -105,6 +110,72 @@ const CO = () => {
         setLoading(false);
       })
     }
+
+    const currentQuestion = allQuestion[currentIndex];
+    const index = allQuestion.length ;
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      //  setSelectedValue(e.target.value);
+        setSelectedAnswer(e.target.value);
+        setHasAnswered(true);
+        console.log('Selected Answer on change:', e.target.value);
+        console.log(selectedAnswer);
+        
+      };
+
+      const moveToNextQuestion = () => {
+        console.log('Selected Answer:', selectedAnswer);
+        console.log('Correct Solution:', currentQuestion.response);
+  
+        if ( selectedAnswer === currentQuestion.response) {
+          let point = 1
+         setScore(prevScore => prevScore + 1);
+         } else {
+          setEchou(prevEchou => [...prevEchou, {currentQuestion,
+            selectedAnswer
+          }]);
+          console.log('Incorrect answer. Correct answer was:', currentQuestion.response);
+         }
+    
+        setSelectedAnswer(null); // Reset selected answer
+        setTimeLeft(60); // Reset timer for the next question
+        
+        if (currentIndex < allQuestion.length - 1) {
+          
+          setCurrentIndex(currentIndex + 1);
+          console.log(currentIndex, score, result);
+           // Move to next question
+        } else {
+          console.log(score, result,"obtenu");
+          locate('/stud/results', { state: { score, index, echou } });
+        }
+        if (audioRef.current) {
+          audioRef.current.play();
+        }
+  
+      };
+      
+      useEffect(() => {
+        if (timeLeft === 0) {
+          moveToNextQuestion();
+          return;
+        }
+        const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+        return () => clearTimeout(timer);
+      }, [timeLeft]);
+      useEffect(() => {
+        // This will run each time the score is updated
+        console.log('Score updated:', score);
+      }, [score]);
+  
+
+      useEffect(() => {
+        // Play audio whenever the question changes
+        if (audioRef.current) {
+          audioRef.current.play();
+        }
+      }, [currentIndex]);
+    
     useEffect(() => {
       handleComprehensionOrale();
         let usr = getUser();
@@ -130,67 +201,10 @@ const CO = () => {
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
 
-     const nextVideo = () =>  {
-
-     }
+    
     
    
-     useEffect(() => {
-      let index = 0
-      const interval = setInterval(() => {
-        if(index == allQuestion.length + 1) return
-        index ++
-        setCO(allQuestion[index].question)
-        setQuestion1(allQuestion[index].solution1)
-        setQuestion2(allQuestion[index].solution2)
-        setQuestion3(allQuestion[index].solution3)
-        setQuestion4(allQuestion[index].solution4)
-        setqst(allQuestion[index].imageUrl)
-        
-        console.log("ou si ca marche",CO, question1, qst);
-        
-        
-
-      }, 10000); // 60000 ms = 1 minute
-  
-      return () => clearInterval(interval);
-    }, []);
-  
-   
-
- 
-
-
-const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
-  const target = e.target as HTMLInputElement;
-  setSelectedValue(target.value);
-  if (!hasAnswered) {
-    setHasAnswered(true);
-  }
-  console.log(target.value,score ); // Affiche la valeur sélectionnée
-};
-
-useEffect(() => {
-  // Timer to check the answer after 1 minute
-  const timer = setTimeout(() => {
-    if (hasAnswered && selectedValue) {
-      if (selectedValue === response) {
-        setScore((prevScore) => prevScore + 1);
-        
-        console.log(score, "this is the score");
-      } else {
-        console.log("Incorrect answer.");
-      }
-    }
     
-    // Reset the state after checking
-    setHasAnswered(false);
-    setSelectedValue(null); // Clear the selected value if needed
-  }, 10000); // 60000 ms = 1 minute
-
-  return () => clearTimeout(timer); // Cleanup the timer
-}, [hasAnswered, selectedValue]); // Dependency on hasAnswered and selectedValue
-
 
 
       useEffect(() => {
@@ -257,7 +271,6 @@ useEffect(() => {
         </div>      
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
            
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center'><NavLink to='/compecrite' className='flex items-center gap-2'><BiSkipNext className='text-md bg-green-500 text-white'></BiSkipNext>skip this test</NavLink></div>
         <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
        
         <div className='bg-white h-[80%] w-[68%] py-2 left-[13.5%] px-5 text-gray-700 fixed z-0'>
@@ -265,35 +278,44 @@ useEffect(() => {
                 Écoutez l'enregistrement  et  Choisissez la/les réponse/s qui correspond/ent à la question . 
             </div>
             <div className='w-full relative'>
-                <div className='flex justify-center'>
-                <img className=' w-[30%] ' src={qst} alt="" />
+            <div className='flex justify-center'>
+                <img className=' w-[50%] ' src={currentQuestion?.imageUrl} alt="" />
                 </div>
                 <div className='pl-[15%] justify-center '>
 
                 <span className='block  mb-5 font-bold'>
-                  {CO}
-                 </span>
+                {currentIndex + 1}- {currentQuestion?.question}
+                </span>
                  <form action="">
                  <div className='flex gap-5 mb-2'>
-                 <input type="radio" name="question" value="1" onClick={handleChange} id="option-a" />
-                 <label htmlFor="option-a">a- {question1}</label>
+                 <input type="radio" name="question" value="1"
+                  checked={selectedAnswer === "1"}
+                 onChange={handleChange} id="option-a" />
+                 <label htmlFor="option-a">a- {currentQuestion?.solution1}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                <input type="radio" name="question" value="2" onClick={handleChange} id="option-b" />
-                <label htmlFor="option-b">b- {question2}</label>
+                <input type="radio" name="question" value="2" 
+                 checked={selectedAnswer === "2"}
+                onChange={handleChange} id="option-b" />
+                <label htmlFor="option-b">b- {currentQuestion?.solution2}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                <input type="radio" name="question" value="3" onClick={handleChange} id="option-c" />
-                <label htmlFor="option-c">c- {question3}</label>
+                <input type="radio" name="question" value="3"  
+                 checked={selectedAnswer === "3"}
+                onChange={handleChange} id="option-c" />
+                <label htmlFor="option-c">c- {currentQuestion?.solution3}</label>
                 </div>
                 <div className='flex gap-5 mb-2'>
-                    <input type="radio" name="question" value="4" onClick={handleChange} id="option-d" />
-                    <label htmlFor="option-d">d- {question4}</label>
+                    <input type="radio" name="question" value="4" 
+                     checked={selectedAnswer === "4"}
+                    onChange={handleChange}id="option-d" />
+                    <label htmlFor="option-d">d- {currentQuestion?.solution4}</label>
                 </div>
                  </form>
-              
-                </div>
 
+                </div>
+                  {/* Audio element */}
+                  <audio ref={audioRef} src="/bruit.mp3" />
             </div>
            
             

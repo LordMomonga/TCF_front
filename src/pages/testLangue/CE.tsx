@@ -6,7 +6,7 @@ import { BiExit } from 'react-icons/bi'
 import { BiSkipNext } from 'react-icons/bi'
 import { NavLink, Outlet } from 'react-router-dom';
 import { useEffect } from 'react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import {Question} from './constant'
@@ -17,7 +17,7 @@ import { Console } from 'console'
 const CE = () => {
     const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
-
+    const audioRef = useRef<HTMLAudioElement>(null);
     const [question1, setQuestion1] = useState<any>("error network response charging");
     const [question2, setQuestion2] = useState<any>("error network response charging");
     const [score, setScore] = useState(0);
@@ -37,8 +37,9 @@ const CE = () => {
     const [timeLeft, setTimeLeft] = useState(60); 
     const [CO, setCO] = useState<any>("still");
     const [data, setData] = useState<any>();
-    const [result, setResult] = useState(0)
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [result, setResult] = useState(0);
+    const [echou, setEchou] = useState<any[]>([]);
+        const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
     const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
     const locate = useNavigate();
@@ -95,7 +96,7 @@ const CE = () => {
     }
 
     const currentQuestion = allQuestion[currentIndex];
-    const index = allQuestion.length - 1 ;
+    const index = allQuestion.length ;
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       //  setSelectedValue(e.target.value);
@@ -114,6 +115,11 @@ const CE = () => {
       if ( selectedAnswer === currentQuestion.response) {
         let point = 1
        setScore(prevScore => prevScore + 1);
+       } else {
+        setEchou(prevEchou => [...prevEchou, {currentQuestion,
+          selectedAnswer
+        }]);
+        console.log('Incorrect answer. Correct answer was:', currentQuestion.response);
        }
   
       setSelectedAnswer(null); // Reset selected answer
@@ -126,8 +132,12 @@ const CE = () => {
          // Move to next question
       } else {
         console.log(score, result,"obtenu");
-        locate('/stud/results', { state: { score, index } });
+        locate('/stud/results', { state: { score, index, echou } });
       }
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+
     };
     
     useEffect(() => {
@@ -155,6 +165,13 @@ const CE = () => {
       return () => clearInterval(intervalId); // Cleanup on unmount
     }, []);
 
+    useEffect(() => {
+      // Play audio whenever the question changes
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+    }, [currentIndex]);
+  
 
     const handleExit = () => {
       locate("/students/passexams")
@@ -285,7 +302,8 @@ const CE = () => {
                 </div>
                  </form>
                 </div>
-
+                   {/* Audio element */}
+               <audio ref={audioRef} src="/bruit.mp3" />
             </div>
            
             
