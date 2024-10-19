@@ -54,6 +54,7 @@ import CE from './pages/testLangue/CE';
 import CO from "./pages/testLangue/CO";
 import EE from "./pages/testLangue/EE";
 import EO from "./pages/testLangue/Eo";
+import { Result } from './pages/testLangue/Result';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Protected from './components/form/Protected';
@@ -112,6 +113,8 @@ function App() {
             <Route path="/CO" element={(<Protected><CO /></Protected>)} />
             <Route path="/EE" element={(<Protected><EE /></Protected>)} />
              <Route path="/EO" element={(<Protected><EO /></Protected>)} />
+             <Route path="/stud/results" element={(<Protected><Result /></Protected>)} />
+
              <Route path="/presentation" element={(<Protected><Presentation/></Protected>)} />
 
 

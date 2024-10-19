@@ -95,15 +95,26 @@ const CE = () => {
     }
 
     const currentQuestion = allQuestion[currentIndex];
+    const index = allQuestion.length - 1 ;
     
-    
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      //  setSelectedValue(e.target.value);
+        setSelectedAnswer(e.target.value);
+        setHasAnswered(true);
+        console.log('Selected Answer on change:', e.target.value);
+        console.log(selectedAnswer);
+        
+      };
     
 
     const moveToNextQuestion = () => {
-      if (selectedAnswer && selectedAnswer === currentQuestion.solution) {
-        setScore(score + 1);
-        
-      }
+      console.log('Selected Answer:', selectedAnswer);
+      console.log('Correct Solution:', currentQuestion.response);
+
+      if ( selectedAnswer === currentQuestion.response) {
+        let point = 1
+       setScore(prevScore => prevScore + 1);
+       }
   
       setSelectedAnswer(null); // Reset selected answer
       setTimeLeft(60); // Reset timer for the next question
@@ -115,9 +126,10 @@ const CE = () => {
          // Move to next question
       } else {
         console.log(score, result,"obtenu");
+        locate('/stud/results', { state: { score, index } });
       }
     };
-
+    
     useEffect(() => {
       if (timeLeft === 0) {
         moveToNextQuestion();
@@ -126,7 +138,6 @@ const CE = () => {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     }, [timeLeft]);
-
     useEffect(() => {
       // This will run each time the score is updated
       console.log('Score updated:', score);
@@ -167,13 +178,7 @@ const CE = () => {
       }
     };  
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //  setSelectedValue(e.target.value);
-      setSelectedAnswer(e.target.value);
-      setHasAnswered(true);
-      console.log(selectedAnswer);
-      
-    };
+    
 
     useEffect(() => {
         const intervalId = setInterval(() => {
