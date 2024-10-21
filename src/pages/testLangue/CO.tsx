@@ -242,7 +242,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
 
           index = (index + 1) % items.length;
         
-        }, 10000); // 60000 ms = 1 minute
+        }, 60000); // 60000 ms = 1 minute
     
         return () => clearInterval(interval);
       }, []);

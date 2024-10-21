@@ -69,7 +69,7 @@ export const Result = () => {
   const level2 = getTCFLevel(score);
   const [animatedScore, setAnimatedScore] = useState(0)
   const [animatedEchec, setAnimatedEchec] = useState(0)
-console.log(echou)
+console.log("cest lechec la ",echou)
   useEffect(() => {
     const scoreTimer = setInterval(() => {
       setAnimatedScore(prev => Math.min(prev + 1, score))
@@ -151,7 +151,7 @@ console.log(echou)
             <FaChartLine className="text-3xl text-green-400 mr-4" />
             <h2 className="text-2xl font-semibold text-blue-500">Votre Niveau</h2>
           </div>
-          <p className="text-4xl font-bold text-center text-blue-500">{level}</p>
+          <p className="text-4xl font-bold text-center text-blue-500">{level2}</p>
         </motion.div>
 
         <motion.div 
@@ -184,6 +184,9 @@ console.log(echou)
          <p className="text-gray-700 font-semibold text-red-500 text-2xl">{question.selectedAnswer}</p>
          <p className="font-medium mt-2">Correct Answer:</p>
          <p className="text-gray-700 text-green-500  text-2xl">{question.currentQuestion.response}</p>
+                </div>
+                <div>
+                  <img src={question.currentQuestion.imageUrl} alt="" />
                 </div>
                 <div>
                     <h1 className='font-bold text-blue-500'> questions</h1>
