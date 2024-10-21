@@ -256,18 +256,14 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         
        <div className='hidden md:fixed z-10 left-0 px-2 bg-prim h-[80%] md:block'>
            <span className='mt-8 block font-bold  text-sm uppercase text-white '>comprehension orale </span>
-            <div className='mt-5 px-1 bg-white  py-2'>
+            <div className='mt-5 px-1 bg-white max-h-[300px] overflow-y-auto py-2'>
               
             <ol className=''>{allQuestion?.map((item:any, index:any)=>(
                     <li className={`py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
                      ${index === currentIndex ? 'bg-green-500 py-2 border-[2px] border-black border-solid text-gray-600' : 'bg-gray-500'}`} key={index}>proposition {index + 1}</li>
                 ))} </ol>
             </div>
-            <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-1 md:px-5 py-2">
-                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> restant: {numb} </span> </div>
-                    <div className='mt-2  text-[10px] md:text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span> repondu :</span></div>
-                    <div className='mt-2  text-[10px] md:text-sm font-bold flex items-center gap-3 '><BiError className=' text-white bg-red-500 rounded-full font-bold  '></BiError><span>Aucune  :</span></div>
-                </div>
+            
         </div>      
         <div className='z-10 fixed hidden md:block  right-0  px-1 md:px-4 bg-prim h-[80%]'>
               <div className='bg-white md:px-5 px-1  text-gray-600   text-[10px] md:text-sm text-center rounded-md py-2'>
