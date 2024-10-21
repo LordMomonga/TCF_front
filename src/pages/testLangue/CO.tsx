@@ -51,6 +51,7 @@ const CO = () => {
     const [qst, setqst] = useState("");
     const [timeLeft, setTimeLeft] = useState(60); 
     const locate = useNavigate();
+    const audio1Ref = useRef<HTMLAudioElement>(null);
     const [echou, setEchou] = useState<any[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 const [selectedValue, setSelectedValue] = useState<any>('');
@@ -201,6 +202,12 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
 
+      useEffect(() => {
+        if (audio1Ref.current) {
+          audio1Ref.current.muted = false; // Mettre l'audio en mode muet
+          audio1Ref.current.play()
+        }
+      }, [currentQuestion?.audioUrl]);
     
     
    
@@ -263,6 +270,10 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
 
                 </div>
               </div>
+              <div>
+              <audio ref={audioRef} src={currentQuestion.audioUrl}  />     
+
+              </div>
               
             <div className="bg-white text-gray-500 mt-[30%] mb-5 rounded-md px-5 py-2">
                     <div className='text-[13px] font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> Temps : {formatTime(remainingTime)} </span> </div>
@@ -275,13 +286,14 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
        
         <div className='bg-white h-[80%] w-[68%] py-2 left-[13.5%] px-5 text-gray-700 fixed z-0'>
         <div className="text-sm font-bold text-center">
-                Écoutez l'enregistrement  et  Choisissez la/les réponse/s qui correspond/ent à la question . 
-            </div>
             <div className='w-full relative'>
             <div className='flex justify-center'>
                 <img className=' w-[50%] ' src={currentQuestion?.imageUrl} alt="" />
+
                 </div>
                 <div className='pl-[15%] justify-center '>
+                
+                 </div>
 
                 <span className='block  mb-5 font-bold'>
                 {currentIndex + 1}- {currentQuestion?.question}
@@ -314,8 +326,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                  </form>
 
                 </div>
-                  {/* Audio element */}
-                  <audio ref={audioRef} src="/bruit.mp3" />
+                  
             </div>
            
             
