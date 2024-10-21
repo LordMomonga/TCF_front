@@ -179,6 +179,16 @@ const CE = () => {
 
     };
     
+    const goToQuestion = (index: number) => {
+      // Vérifie si l'index est dans les limites du tableau allQuestion
+      if (index >= 0 && index < allQuestion.length) {
+        setCurrentIndex(index); // Met à jour l'index actuel pour la nouvelle question
+    
+        console.log(`Moved to question ${index + 1}`);
+      } else {
+        console.log('Index hors limite');
+      }
+    };
   /*useEffect(() => {
       if (timeLeft === 0) {
         moveToNextQuestion();
@@ -266,7 +276,9 @@ const CE = () => {
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
     
-     
+      const remainingQuestions = responses.filter((response) => response === null || response === undefined).length;
+      const answeredQuestions = responses.filter((response) => response !== null && response !== undefined).length;
+      
     
     
     
@@ -279,16 +291,16 @@ const CE = () => {
         
        <div className='hidden md:fixed z-10 left-0 px-2 bg-prim h-[80%] md:block'>
            <span className='mt-8 block font-bold  text-sm uppercase text-white '>comprehension Ecrite </span>
-            <div className='mt-5 px-1 bg-white  py-2'>
+            <div className='mt-5 px-1 max-h-[250px] overflow-y-auto bg-white  py-2'>
               
-                <ol className='text-white'>{Object.keys(Question).map((Question)=>(
-                    <li  className="question-item py-1 text-sm text-white font-bold text-center px-5 bg-gray-500 rounded-xl mt-1 " key={Question}>{Question}</li>
+            <ol className=''>{allQuestion?.map((item:any, index:any)=>(
+                    <li onClick={() => goToQuestion(index)} className={`question-item py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
+                       ${responses[index] === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid' :  'bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500' : 'bg-gray-500'}`} key={index}>proposition{index}</li>
                 ))} </ol>
             </div>
             <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
-                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white p-2 bg-blue-500 rounded-full font-bold  ' color={'white'}></BiQuestionMark ><span> restant:</span> </div>
-                    <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  p-2 '></BiAlarmExclamation><span> repondu :</span></div>
-                    <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiError className=' text-white bg-red-500 rounded-full font-bold  '></BiError><span>Aucune  :</span></div>
+                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white p-2 bg-blue-500 rounded-full font-bold  ' color={'white'}></BiQuestionMark ><span> restant:{remainingQuestions} </span> </div>
+                    <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  p-2 '></BiAlarmExclamation><span> repondu : {answeredQuestions}</span></div>
                 </div>
         </div>      
         <div className='z-10 fixed hidden md:block  right-0  px-1 md:px-4 bg-prim h-[80%]'>
