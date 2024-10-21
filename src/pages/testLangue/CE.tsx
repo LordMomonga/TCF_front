@@ -43,7 +43,7 @@ const CE = () => {
         const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
     const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
-    const [responses, setResponses] = useState(Array(22).fill(null));
+    const [responses, setResponses] = useState(Array(39).fill(null));
 
     const locate = useNavigate();
 
@@ -294,7 +294,7 @@ const CE = () => {
             <div className='mt-5 px-1 max-h-[250px] overflow-y-auto bg-white  py-2'>
               
             <ol className=''>{allQuestion?.map((item:any, index:any)=>(
-                    <li onClick={() => goToQuestion(index)} className={`question-item py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
+                    <li onClick={() => goToQuestion(index)} className={`question-item cursor-pointer py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
                        ${responses[index] === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid' :  'bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500 py-2' : 'bg-gray-500'}`} key={index}>proposition{index}</li>
                 ))} </ol>
             </div>

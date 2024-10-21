@@ -258,8 +258,9 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
            <span className='mt-8 block font-bold  text-sm uppercase text-white '>comprehension orale </span>
             <div className='mt-5 px-1 bg-white  py-2'>
               
-                <ol className=''>{Object.keys(Question).map((Question)=>(
-                    <li  className=" question-item py-1 text-white  text-[10px] md:text-sm font-bold text-center px-1 md:px-3 bg-gray-500 rounded-md mt-1 " key={Question}>{Question}</li>
+            <ol className=''>{allQuestion?.map((item:any, index:any)=>(
+                    <li className={`py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
+                     ${index === currentIndex ? 'bg-green-500 py-2 border-[2px] border-black border-solid text-gray-600' : 'bg-gray-500'}`} key={index}>proposition {index + 1}</li>
                 ))} </ol>
             </div>
             <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-1 md:px-5 py-2">
