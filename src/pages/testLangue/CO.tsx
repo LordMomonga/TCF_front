@@ -62,7 +62,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
     const [data, setData] = useState<any>({});
     const [array, setArray] = useState([])
     const [result, setResult] = useState(0);
-
+    const [isPlaying, setIsPlaying] = useState(false);
     const handleExit = () => {
       locate("/students/passexams")
     }
@@ -204,10 +204,19 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
 
       useEffect(() => {
         if (audio1Ref.current) {
-          audio1Ref.current.muted = false; // Mettre l'audio en mode muet
+       
           audio1Ref.current.play()
+          
         }
-      }, [currentQuestion?.audioUrl]);
+      }, []);
+      const handlePlay = () => {
+        if (audio1Ref.current) {
+            audio1Ref.current.play().catch(error => {
+                console.error("Audio playback failed:", error);
+            });
+            setIsPlaying(true); 
+        }
+    };
     
     
    
@@ -245,22 +254,22 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         <span className=' text-white font-bold text-3xl'>Tolkin</span>
         </nav>
         
-       <div className='fixed z-10 left-0 px-2 bg-prim h-[80%]'>
+       <div className='hidden md:fixed z-10 left-0 px-2 bg-prim h-[80%] md:block'>
            <span className='mt-8 block font-bold  text-sm uppercase text-white '>comprehension orale </span>
             <div className='mt-5 px-1 bg-white  py-2'>
               
                 <ol className=''>{Object.keys(Question).map((Question)=>(
-                    <li  className=" question-item py-1 text-white text-sm font-bold text-center px-5 bg-gray-500 rounded-xl mt-1 " key={Question}>{Question}</li>
+                    <li  className=" question-item py-1 text-white  text-[10px] md:text-sm font-bold text-center px-1 md:px-3 bg-gray-500 rounded-md mt-1 " key={Question}>{Question}</li>
                 ))} </ol>
             </div>
-            <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
+            <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-1 md:px-5 py-2">
                     <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> restant: {numb} </span> </div>
-                    <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span> repondu :</span></div>
-                    <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiError className=' text-white bg-red-500 rounded-full font-bold  '></BiError><span>Aucune  :</span></div>
+                    <div className='mt-2  text-[10px] md:text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span> repondu :</span></div>
+                    <div className='mt-2  text-[10px] md:text-sm font-bold flex items-center gap-3 '><BiError className=' text-white bg-red-500 rounded-full font-bold  '></BiError><span>Aucune  :</span></div>
                 </div>
         </div>      
-        <div className='z-10 fixed right-0 px-4 bg-prim h-[80%]'>
-              <div className='bg-white px-5  text-gray-600  text-sm text-center rounded-md py-2'>
+        <div className='z-10 fixed hidden md:block  right-0  px-1 md:px-4 bg-prim h-[80%]'>
+              <div className='bg-white md:px-5 px-1  text-gray-600   text-[10px] md:text-sm text-center rounded-md py-2'>
                 <h1 className='font-bold underline underline-offset-4 '>Mon profil</h1>
                 <div className=' py-3 text-left'>
                     <span className='font-bold'>Nom : <span className='text-prim font-bolder'>{user?.username}</span></span>
@@ -271,34 +280,37 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                 </div>
               </div>
               <div>
-              <audio ref={audioRef} src={currentQuestion.audioUrl}  />     
+              
 
               </div>
               
-            <div className="bg-white text-gray-500 mt-[30%] mb-5 rounded-md px-5 py-2">
-                    <div className='text-[13px] font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> Temps : {formatTime(remainingTime)} </span> </div>
-                    <div className='mt-2 text-[13px] font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span>Temps restant :</span></div>
+            <div className="bg-white text-gray-500 mt-[30%] mb-5 rounded-md px-1  text-[10px] md:text-sm md:px-5 py-2">
+                    <div className=' text-[10px] md:text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white bg-blue-500 rounded-full font-bold  '></BiQuestionMark><span> Temps : {formatTime(remainingTime)} </span> </div>
+                    <div className='mt-2  text-[10px] md:text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  '></BiAlarmExclamation><span>Temps restant :</span></div>
                 </div>
         </div>      
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
            
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
+        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='text-[10px] md:text-sm flex items-center gap-2'><BiExit className='text-[10px] md:text-sm bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
        
-        <div className='bg-white h-[80%] w-[68%] py-2 left-[13.5%] px-5 text-gray-700 fixed z-0'>
+        <div className='bg-white h-[80%] w-[100%] md:w-[68%] py-2 left-0 md:left-[13.5%] px-5 text-gray-700 fixed z-0'>
         <div className="text-sm font-bold text-center">
             <div className='w-full relative'>
             <div className='flex justify-center'>
                 <img className=' w-[50%] ' src={currentQuestion?.imageUrl} alt="" />
-
+                <audio ref={audio1Ref} className='md:text-sm text-[10px] border-[2px]  border-gray-500' src={currentQuestion?.audioUrl} autoPlay />     
                 </div>
-                <div className='pl-[15%] justify-center '>
-                
+                <div className='flex justify-start  '>
+                {!isPlaying && (
+                <button onClick={handlePlay} className='bg-blue-500 text-white px-2 py-1 rounded-md'>Cliquer ici pour commencer</button>
+            )}
+
                  </div>
 
                 <span className='block  mb-5 font-bold'>
                 {currentIndex + 1}- {currentQuestion?.question}
                 </span>
-                 <form action="">
+                 <form action="" className='mx-10'>
                  <div className='flex gap-5 mb-2'>
                  <input type="radio" name="question" value="1"
                   checked={selectedAnswer === "1"}

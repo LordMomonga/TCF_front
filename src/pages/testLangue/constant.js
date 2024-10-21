@@ -41,27 +41,8 @@ export const Question = {
 "rep": "il a pas assez mangé",
 
 },
-"proposition 6 ":{
-    "quest":["generer une autre question", "generer un autre probleme",
-    "une erreur lors de l'operation","je sais plus trop"
-],
-"rep": "il a pas assez mangé",
 
-},
-"proposition 7 ":{
-    "quest":["generer une autre question", "generer un autre probleme",
-    "une erreur lors de l'operation","je sais plus trop"
-],
-"rep": "il a pas assez mangé",
 
-},
-"proposition 8 ":{
-    "quest":["generer une autre question", "generer un autre probleme",
-    "une erreur lors de l'operation","je sais plus trop"
-],
-"rep": "il a pas assez mangé",
-
-}
 }
 
 export const Part = {
