@@ -27,10 +27,7 @@ const rows: any = [
         label: '#',
         name: 'num'
     },
-    {
-        label: 'Schhol\'s Name',
-        name: 'name'
-    },
+   
     {
         label: 'Speciality',
         name: 'name'
@@ -82,6 +79,8 @@ function Index() {
             if(res.ok) {
                 setReceipts(res.data.data);
             }
+            console.log(receipts);
+            
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -130,18 +129,16 @@ function Index() {
                                 {receipts?.map((data: any, index: any) => <tr>
                                     <td className="flex-center">{index + 1}</td>
                                     <td className="flex-start">
-                                        <p>{data?.school_id?.username}</p>
-                                    </td>
-                                    <td>
                                         <p>{data?.speciality?.name}</p>
                                     </td>
-                                    <td className="flex-start">{data?.amount}</td>
-
-                                    <td className="flex-start">{data?.status}</td>
-                                
-                                    <td className="flex-start">
-                                        <p>{convertDate(data?.createdAt)}</p>
+                                    <td>
+                                        <p>{data?.amount}</p>
                                     </td>
+                                    <td className="flex-start">{data?.status}</td>
+
+                                    <td className="flex-start">{convertDate(data?.createdAt)}</td>
+                                
+                                   
                                      
             
                                     <td className="flex-center">

@@ -110,11 +110,12 @@ function UploadPaymentReceipt({ onClose, contentAdded } : any) {
                     closeOnClick: true,
                 })
                 setLoading(false);
+                onClose();
                 contentAdded();
             }else {
                 console.log(res)
                 setLoading(false);
-                setError(res.data.message);
+                setError(res.data.message || 'An unexpected error occurred');
                 toast.error(res.data.message, {
                     pauseOnHover: false,
                     closeOnClick: true,
@@ -154,7 +155,6 @@ function UploadPaymentReceipt({ onClose, contentAdded } : any) {
                 <div className='modal-content'>
                 <form action="" className="auth-form">
 
-                {error && <ErrorMessage error={error} visible={true} />}
                 <Form 
                     initialValues={initialValues}
                     onSubmit={handleSubmitReceipt}

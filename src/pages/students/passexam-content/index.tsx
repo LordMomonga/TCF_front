@@ -80,13 +80,10 @@ function Index() {
 
         getStudentApplications().then((res:any) => {
             setShowTest(res.data.data[0].status);
-           console.log('bien recupéré',showTest)
-            setLoading(false)
 
         }).catch((error:any) => {
             setLoading(false)
 
-            console.log('error a la recuperation')
         })
     }  
     const handleExisted = ()=> {
@@ -98,6 +95,8 @@ function Index() {
             console.log('accepted')
         }else{
             console.log("error sur l'existence")
+            setLoading(false)
+
         }
        
     }
@@ -135,7 +134,7 @@ function Index() {
 
     useEffect(() => {
         handleExisted()
-        console.log('USER EFFECT RAN')
+        console.log('USER ', showTest);
     });
 
     return (
@@ -193,7 +192,7 @@ function Index() {
                       <div className='bg-gray-900 mx-auto mb-2 w-[80%] md:w-[220px] relative h-[120px] md:h-[130px] text-gray-500   px-2 md:px-5 py-3 md:py-5 rounded-md'>
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md '>Simulation Complete</h1>
       <div className='flex text-white justify-between mt-5 '>
-      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><NavLink to='/presentation'><BiPlay className="text-white"></BiPlay></NavLink></button>
+      <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 '><BiPlay className="text-white"></BiPlay></button>
       <span className='text-[12px] font-bold  text-prim'> Durée : </span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
@@ -227,16 +226,17 @@ function Index() {
                     </div>
                        </div>
 
-                       {!loading && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 items-center '>
-                    <BiBlock size={44} className='text-red-500'></BiBlock>  Désolé Votre candidature n'a pas été validée...  
-                 </span>}
+                     
             </div>
-
+            {!existed && <span className='text-3xl font-bold text-red-500 text-center w-[100%] flex gap-5 items-center '>
+                    <BiBlock size={44} className='text-red-500'></BiBlock>  Désolé Votre candidature n'a pas encore été validée...  
+                 </span>}
         </div>
 
     </div>
     
     </div>}
+
          </StudentLayout>
     );
 }
