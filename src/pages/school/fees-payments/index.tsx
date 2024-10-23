@@ -35,7 +35,7 @@ const rows: any = [
         name: 'num'
     },
     {
-        label: 'Student\'s Name',
+        label: 'User Name',
         name: 'name'
     },
     {
