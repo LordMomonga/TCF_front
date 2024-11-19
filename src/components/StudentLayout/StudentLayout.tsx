@@ -1,3 +1,6 @@
+import { AiOutlineLogout } from "react-icons/ai"; 
+import { AiOutlineMail } from "react-icons/ai"; 
+import { FcSettings } from "react-icons/fc"; 
 import React, { useState, useEffect, useContext } from 'react';
 import './StudentLayout.css';
 import { getAcademicYear, removeAcademicYear, removeToken, storeAcademicYear } from '../../utils/storage';
@@ -117,13 +120,13 @@ function StudentLayout({ title, children, pageTitle } : any) {
                     <div className="title">MAIN NAVIGATION</div>
                     <NavLink className="link" to="/students/home">
                     <i><MdDashboard size={20}/></i>
-                        <span>Dashboard</span>
+                        <span>{t('layout.dashboard')}</span>
                     </NavLink>
 
 
                     <NavLink className="link" to="/students/course-contents">
                     <i><MdContentPaste size={20}/></i>
-                        <span>Strategie Content</span>
+                        <span>{t('layout.strategie')}</span>
                     </NavLink>
 
                    
@@ -132,13 +135,13 @@ function StudentLayout({ title, children, pageTitle } : any) {
 
                     <NavLink className="link" to="/students/passexams">
                     <i><MdAssessment size={20}/></i>
-                        <span>Pass Simulation</span>
+                        <span>{t('layout.simulation')}</span>
                     </NavLink>
 
 
                     <NavLink className="link" to="/students/results">
                     <i><FaSchool size={20}/></i>
-                        <span>My Results</span>
+                        <span>{t('layout.results')}</span>
                     </NavLink>
                     
                     
@@ -146,7 +149,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
 
                     <NavLink className="link" to="/students/time-table">
                     <i><SlCalender size={20}/></i>
-                        <span>Time Table</span>
+                        <span>{t('layout.table')}</span>
                     </NavLink>
 
 
@@ -164,23 +167,23 @@ function StudentLayout({ title, children, pageTitle } : any) {
 
                     <NavLink className="link" to="/students/report">
                     <i><MdReportProblem size={20}/></i>
-                        <span>Submit Report</span>
+                        <span>{t('layout.report')}</span>
                     </NavLink>
 
                     <NavLink className="link" to="/students/fees-deadlines">
                     <i><GiTimeBomb size={20}/></i>
-                        <span>Fees Deadlines</span>
+                        <span>{t('layout.deadline')}</span>
                     </NavLink>
 
                     <NavLink className="link" to="/students/fees-payment">
                     <i><GiMoneyStack size={20}/></i>
-                        <span>Fees Payment</span>
+                        <span>{t('layout.payement')}</span>
                     </NavLink>
                     
                     
                     <NavLink className="link" to="/students/school-banks">
                     <i><BsBank2 size={20}/></i>
-                        <span> Payement Accounts</span>
+                        <span> {t('layout.compte')}</span>
                     </NavLink>
 
                 
@@ -211,7 +214,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
                         </a>
                         <div className="divider"></div>
                         <div className="profile-btn" onClick={() => setShowUserMenu(!showUserMenu)}>
-                            <div className="name">Hello</div>
+                            <div className="name">{t('layout.user')}</div>
                             {/* <img src="./assets/images/users/user-1.png" alt=""> */}
                         </div>
                     </span>
@@ -221,13 +224,14 @@ function StudentLayout({ title, children, pageTitle } : any) {
             <div className={`user-menu ${showUserMenu ? 'show' : ''}`}>
                 <div className="user-menu-top">
                     <i className="fa fa-times" onClick={() => setShowUserMenu(!showUserMenu)}></i>
-                    <img src={require("../../assets/images/users/avatar.jpg")} alt="" />
+                    <img src={require("../../assets/images/users/user.jpg")} alt="" />
                     <p>{user?.username}</p>
-                    <span>Utilisateur</span>
+                    <span className='text-[10px] my-1 text-gray-600  italic  flex items-center gap-2'><AiOutlineMail />{user?.email}</span>
+                    <span>{t('user')}</span>
                 </div>
                 <div className="user-menu-footer">
-                    <a><i className="fas fa-cog"></i> Settings</a>
-                    <a onClick={handleLogout} className="logout-link"><i className="fas fa-door-open"></i> Logout</a>
+                    <a className="flex items-center gap-2 "> <FcSettings />{t('layout.setting')}</a>
+                    <a onClick={handleLogout} className="logout-link flex items-center gap-2"> <AiOutlineLogout />{t('layout.logout')}</a>
                 </div>
             </div>
 
@@ -236,7 +240,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
                         <div className="page-title">
                             <p>{title}</p>
                             <div className="crumb">
-                                <NavLink to="/" className="crumb-item">Utilisateur</NavLink>
+                                <NavLink to="/" className="crumb-item">{t('layout.user')}</NavLink>
                                 <span>{'>'}</span>
                                 <a className="crumb-item">{pageTitle}</a>
                             </div>

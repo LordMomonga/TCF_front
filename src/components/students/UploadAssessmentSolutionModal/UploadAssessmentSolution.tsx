@@ -9,6 +9,7 @@ import { ImCancelCircle } from 'react-icons/im';
 import { FaCloudUploadAlt, FaTrashAlt } from  'react-icons/fa';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
+import { getPublicSpecialities } from '../../../services/public';
 import BeatLoader from "react-spinners/BeatLoader";
 import ProgressBar from '../../Progress/Progress';
 
@@ -54,6 +55,10 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string>('');
+
+    const [specialities, setSpecialities] = useState([]);
+    const [selectedCode, setSelectedCode] = useState('none');
+
     // ASSIGNMENT SOLUTION
     const [assessmentVideoUrl, setAssessmentVideoUrl] = useState('');
     const [audioUrl, setAudioUrl] = useState('')
@@ -82,6 +87,14 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
         solution3: Yup.string(),
         solution4: Yup.string(),
     });
+
+    const handleGetSpecialities = () => {
+        getPublicSpecialities().then((res: any) => {
+          setSpecialities(res.data.data);
+        }).catch((error: any) => {
+          console.log('ERROR');
+        })
+      }
 
         const handleUploadAudio = (e:any) => {
             setIsUploadingAudio(true);
@@ -196,7 +209,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 response: resp,
                 typeElement: selectTestType,
                 imageUrl: imageUrl,
-                audioUrl: audioUrl
+                audioUrl: audioUrl,
+                specialitie: selectedCode
                 
             }
 
@@ -260,6 +274,7 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
 
     useEffect(() => {
+        handleGetSpecialities();
     },[])
 
     
@@ -292,6 +307,13 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                             <option value="comprehension orale">COMPREHENSION ORALE</option>
                             <option value="comprehension ecrite">COMPREHENSION ECRITE</option>
                          </select>
+                         <p className="label-text">Test d'évaluation: </p>
+                         <select name="" id=""  className="select-field px-3 mb-2" onChange={(e: any) => setSelectedCode(e.target.value) } value={selectedCode} >
+                                <option value="all"  className='text-white'>Select évaluation</option>
+                               {specialities?.map((sp: any) => <option className='text-white' value={sp._id}>{sp?.name} </option>)
+                               
+                               }
+                            </select>
                         <p className="label-text">Questions (Obligatoire): </p>
                         <FormField  name="question" type="text" placeholder=" question ? (obligatoire)"/>
 

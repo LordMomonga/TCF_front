@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import BeatLoader from "react-spinners/BeatLoader";
 import ProgressBar from '../../Progress/Progress';
+import { getPublicSpecialities } from '../../../services/public';
 
 
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
@@ -65,6 +66,10 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     const [selectLevel, setSelectLevel] = useState("")
     const [showOrale,setShowOrale] =useState(false)
     const [showEcrite,setShowEcrite] =useState(false)
+
+    
+    const [specialities, setSpecialities] = useState([]);
+    const [selectedCode, setSelectedCode] = useState('none');
  
     // END OF ASSIGNEMTN
     const storage = getStorage(firebaseApp);
@@ -82,6 +87,14 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
         
     });
 
+    const handleGetSpecialities = () => {
+        getPublicSpecialities().then((res: any) => {
+          setSpecialities(res.data.data);
+        }).catch((error: any) => {
+          console.log('ERROR');
+        })
+      }
+
    
 
 
@@ -94,7 +107,8 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                 ...values,
                 TypeElement: selectTest,
                 NumeroSujet: selectTestType,
-                
+                specialitie: selectedCode
+
                
             }
 
@@ -153,8 +167,8 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
     }
 
 
-
     useEffect(() => {
+        handleGetSpecialities();
     },[])
 
     
@@ -187,7 +201,16 @@ function AddExpressionOrale({ onClose, onContentAdded } : any) {
                         <option value="expression ecrite">Expression ecrite</option>
                         <option value="expression orale">Expression Orale</option>
                     </select>
-                     <p className="label-text">Entrer le type  de sujet: </p>
+
+                    <p className="label-text">Test d'évaluation: </p>
+                         <select name="" id=""  className="select-field px-3 mb-2" onChange={(e: any) => setSelectedCode(e.target.value) } value={selectedCode} >
+                                <option value="all"  className='text-white'>Select évaluation</option>
+                               {specialities?.map((sp: any) => <option className='text-white' value={sp._id}>{sp?.name} </option>)
+                               
+                               }
+                            </select>
+
+                     <p className="label-text">Entrer le niveau  du sujet: </p>
                         <select onChange={(e: any) => setSelectTestType(e.target.value) } value = {selectTestType} className="select-field-modal">
                             <option value="all">Select</option>
                             <option value="sujet1">Sujet 1</option>

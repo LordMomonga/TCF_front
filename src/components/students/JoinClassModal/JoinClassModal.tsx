@@ -139,7 +139,7 @@ function JoinClassModal({ onClose, onClassAdded } : any) {
                 <form action="" className="auth-form">
                 <div className='mb-5 flex justify-between items-center'>
                         <select name="" id="" onChange={(e: any) => handleSelectedSchool(e.target.value)} value={selectedSchool} className="select-field px-3 ">
-                                <option value="all" className='text-white'>Select Abonnement</option>
+                                <option value="all"  className='text-white'>Select Abonnement</option>
                                {specialities?.map((sp: any) => <option value={sp._id}>{sp?.name} </option>)
                                
                                }

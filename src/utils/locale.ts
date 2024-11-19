@@ -53,9 +53,77 @@ i18n
          password_label: "Password",
          c_password_label: "Confirm Password",
          hello:"Hello",
+
          layout:{
              dashboard:"Dashboard",
-             home:"Home"
+             home:"Home",
+             strategie:"strategie content",
+             simulation: "pass simulation",
+             results:"My results",
+             table: "Time Table",
+             report:"Submit Report",
+            deadline: "Fees Deadlines",
+            payement:"Fees Payment",
+            compte:"Payement Accounts",
+            user:"User",
+            setting:"Settings",
+            logout:'Logout',
+            abonnement:"Subscription",
+            gererPay:"Make Payement",
+            title:"Add Subscription",
+            title_course:"Course Content",
+            button_cours:"Select Type Test",
+            secret:"The Secret",
+
+
+
+
+
+
+
+
+
+         },
+         secret:{
+            time:"Time",
+            heure:"Hours",
+            conseil:"Tips and tricks",
+            section:{
+                title1:"Task 1: Candidate Presentation (2 minutes)",
+                content1:{
+                    first1:"Prelude: Your name is requested",
+                    first2:"Brief and overall presentation of yourself",
+                    first3:"Civility",
+                    first4:"Origins",
+                    first5:"Studies",
+                    first6:"Profession",
+                    first7:"Hobbies",
+                    first8:"Food preferences",
+                    first9:"Projects",
+                    first10:"Stay serene, very calm, and composed",
+                    first11:"Make sure your interlocutor can hear you clearly"
+                },
+                title2:"Task 2: Exchange in Dialogue Form (5 minutes)",
+                content2: {
+                    first1:"2 minutes to prepare using a draft",
+                    first2:"3 minutes of dialogue",
+                    first3:"Ask the examiner at least 10 questions",
+                    first4:"Prioritize open-ended questions",
+                    first5:"Adapt to the context (informal or formal tone)",
+                    first6:"Follow up on the answers to ask new questions"
+                },
+                  title3:"Task 3: Argumentative Point of View (Time not specified)",
+                content3: {
+                    first1:"Defend your point of view on a given topic",
+                    first2:"Possible topics: current events, education, sports, etc.",
+                    first3:"Use multiple examples to support your arguments",
+                    first4:"Maintain a fluent speech",
+                    first5:"Use good vocabulary",
+                    first6:"Polish your linguistic style and tone"
+                }
+
+            }
+           
          },
          student_layout:{
             dashboard:"Dashboard",
@@ -212,7 +280,71 @@ i18n
             hello:"Salut",
             layout:{
                 dashboard:"Tableau de bord",
-                home:"Acceuil"
+                home:"Accueil",
+                strategie:"cours stratégie",
+                simulation: "Faire une simulation",
+                results:"mes resultats",
+                table: "Programme",
+                report:"Faire une Requète",
+                deadline: "Délais de Paiement",
+                payement:" Paiement des Frais",
+                compte:"Comptes de Paiement",
+                user:"utilisateur",
+                setting:"paramètre",
+                logout:'Déconnecter',
+                abonnement:"Abonnement",
+                gererPay:"Gérer Payement",
+                title:"Ajouter Un Abonnement",
+                title_course:"Cours A Savoir",
+                button_cours:"Type De Test",
+                secret:"LE SECRET",
+
+
+
+
+
+            },
+            secret:{
+            time:"Durée",
+            heure:"Heure",
+            conseil:"Conseils Et Astuces",
+            section:{
+                title1:"Task 1: Candidate Presentation (2 minutes)",
+                content1:{
+                    first1:"Prélude: Votre nom vous est demandé",
+                    first2: "Présentation brève et globale de votre personne",
+                    first3: "Civilité",
+                    first4: "Origines",
+                    first5: "Études",
+                    first6: "Profession",
+                    first7: "Hobbies",
+                    first8: "Préférences alimentaires",
+                    first9: "Projets",
+                    first10: "Restez serein, très calme et posé",
+                    first11:"Faites-vous entendre clairement par votre interlocuteur"
+                },
+                title2:"Tâche 2: Échange sous forme de dialogue (5 minutes)",
+                content2:{ 
+                    firt1:"2 minutes de préparation sur un brouillon",
+                    firt2:"3 minutes d'échange",
+                    firt3:"Posez des questions à l'examinateur (au moins 10)",
+                    firt4:"Privilégiez les questions ouvertes",
+                    firt5:"Adaptez-vous au contexte (tutoiement ou vouvoiement)",
+                    firt6:"Rebondissez sur les réponses pour poser de nouvelles questions"
+                },
+                  title3:"Tâche 3: Argumentaire d'un point de vue (Temps non spécifié)",
+                  content3:  {
+                    firt1:"Défendez votre point de vue sur un thème donné",
+                    firt2:"Thématiques possibles: actualités, éducation, sports, etc.",
+                    firt3:"Utilisez plusieurs exemples pour étayer vos arguments",
+                    firt4:"Maintenez un discours fluide",
+                    firt5:"Employez un bon vocabulaire",
+                    firt6:"Soignez votre style linguistique et le genre"
+                }
+  
+            }
+
+
             },
             student_layout:{
                 dashboard:"Tableau de bord",

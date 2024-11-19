@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import { useTranslation } from 'react-i18next';
 
 import { getStudentApplications, getStudentsClasses, joinClass } from '../../../services/student';
 
@@ -63,6 +64,9 @@ const override = {
 
 
 function Index() {
+    const { t, i18n } = useTranslation();
+    let [lang, setLang] = useState<any>(null);
+
     const [ showJoinModal, setShowJoinModal ] = useState(false);
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
     const [applications, setApplications] = useState([]);
@@ -71,6 +75,29 @@ function Index() {
     const toggleAddModal = () => {
         setShowJoinModal(!showJoinModal);
     }
+
+ const handleTrans = () => {
+        i18n.changeLanguage(lang);
+      };
+  
+      const handleLangInit = () => {
+        let lng = localStorage.getItem('locale');
+        console.log("locale", lng);
+        if(lng == null) {
+          localStorage.setItem('locale', 'fr')
+          setLang('fr');
+        }else {
+          setLang(lng);
+        }
+      }
+  
+      const changeLang = () => {
+        if(lang != null) {
+          localStorage.setItem('locale', lang)
+          handleTrans();
+        }
+      }
+
 
 
     const handleGetApplications = ()  => {
@@ -99,8 +126,13 @@ function Index() {
         handleGetApplications();
     },[activeAcademyYear]);
 
+    
+    useEffect(() => {
+        changeLang()
+      }, [lang]);
+
     return (
-        <StudentLayout title="Ajouter un abonnement " pageTitle="Home">
+        <StudentLayout title={t('layout.title')} pageTitle={t('layout.home')}>
              <div>
              <Link to="/students/school-banks"> 
               <motion.button 
@@ -114,7 +146,7 @@ function Index() {
                     repeatType: "loop", // Boucle l'animation
                     duration: 0.7, // Durée de chaque cycle de vibration
                   }}
-               className='mb-2  select-field px-2  flex text-white items-center gap-2'> <BiMoney className='text-white text-2xl'/>Gerer payement</motion.button></Link>
+               className='mb-2  select-field px-2  flex text-white items-center gap-2'> <BiMoney className='text-white text-2xl'/>{t('layout.gererPay')}</motion.button></Link>
             </div>
               <div className="section">
                         <div className="parent-con">
@@ -127,7 +159,7 @@ function Index() {
                                         <input type="search" name="" id="" placeholder="Find ..." />
                                         <button type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
                                     </form> */}
-                                    <button onClick={toggleAddModal} className="btn btn-primary btn-add student-button">Abonnement  <i className="fas fa-plus"></i></button>
+                                    <button onClick={toggleAddModal} className="btn btn-primary btn-add student-button">{t('layout.abonnement')}  <i className="fas fa-plus"></i></button>
                                 </div>
                                 <div className="table-con">
                                 <div style={{textAlign: 'center',}}>

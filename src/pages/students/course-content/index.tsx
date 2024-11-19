@@ -14,6 +14,7 @@ import { BiChevronDown } from 'react-icons/bi'
 import { FaLightbulb, FaBrain, FaCheckCircle } from 'react-icons/fa'
 import { FaExclamationTriangle, FaInfoCircle,  } from 'react-icons/fa'
 import { FaHeadphones, FaQuestionCircle, FaListUl } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next';
 
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -71,6 +72,10 @@ const override = {
 
 
 function Index() {
+
+  const { t, i18n } = useTranslation();
+    let [lang, setLang] = useState<any>(null);
+
     // NEW
     const [selectedClass, setSelectedClass] = useState("all");
 
@@ -105,43 +110,65 @@ function Index() {
 
     const [openSection, setOpenSection] = useState<number | null>(null)
 
+    const handleTrans = () => {
+      i18n.changeLanguage(lang);
+    };
+
+    const handleLangInit = () => {
+      let lng = localStorage.getItem('locale');
+      console.log("locale", lng);
+      if(lng == null) {
+        localStorage.setItem('locale', 'fr')
+        setLang('fr');
+      }else {
+        setLang(lng);
+      }
+    }
+
+    const changeLang = () => {
+      if(lang != null) {
+        localStorage.setItem('locale', lang)
+        handleTrans();
+      }
+    }
+
   const sections = [
     {
-      title: "Tâche 1: Présentation du candidat (2 minutes)",
+      title: `${t('secret.section.title1')}`,
       content: [
-        "Prélude: Votre nom vous est demandé",
-        "Présentation brève et globale de votre personne",
-        "Civilité",
-        "Origines",
-        "Études",
-        "Profession",
-        "Hobbies",
-        "Préférences alimentaires",
-        "Projets",
-        "Restez serein, très calme et posé",
-        "Faites-vous entendre clairement par votre interlocuteur"
+        `${t('secret.section.content1.first1')}`,
+        `${t('secret.section.content1.first2')}`,
+        `${t('secret.section.content1.first3')}`,
+        `${t('secret.section.content1.first4')}`,
+        `${t('secret.section.content1.first5')}`,
+        `${t('secret.section.content1.first6')}`,
+        `${t('secret.section.content1.first7')}`,
+        `${t('secret.section.content1.first8')}`,
+        `${t('secret.section.content1.first9')}`,
+        `${t('secret.section.content1.first10')}`,
+        `${t('secret.section.content1.first11')}`
       ]
     },
     {
-      title: "Tâche 2: Échange sous forme de dialogue (5 minutes)",
+      title: `${t('secret.section.title2')}`,
       content: [
-        "2 minutes de préparation sur un brouillon",
-        "3 minutes d'échange",
-        "Posez des questions à l'examinateur (au moins 10)",
-        "Privilégiez les questions ouvertes",
-        "Adaptez-vous au contexte (tutoiement ou vouvoiement)",
-        "Rebondissez sur les réponses pour poser de nouvelles questions"
+        `${t('secret.section.content2.first1')}`,
+        `${t('secret.section.content2.first2')}`,
+        `${t('secret.section.content2.first3')}`,
+        `${t('secret.section.content2.first4')}`,
+        `${t('secret.section.content2.first5')}`,
+        `${t('secret.section.content2.first6')}`
       ]
     },
     {
-      title: "Tâche 3: Argumentaire d'un point de vue (Temps non spécifié)",
+      title: `${t('secret.section.title3')}`,
       content: [
-        "Défendez votre point de vue sur un thème donné",
-        "Thématiques possibles: actualités, éducation, sports, etc.",
-        "Utilisez plusieurs exemples pour étayer vos arguments",
-        "Maintenez un discours fluide",
-        "Employez un bon vocabulaire",
-        "Soignez votre style linguistique et le genre"
+        `${t('secret.section.content3.first1')}`,
+        `${t('secret.section.content3.first2')}`,
+        `${t('secret.section.content3.first3')}`,
+        `${t('secret.section.content3.first4')}`,
+        `${t('secret.section.content3.first5')}`,
+        `${t('secret.section.content3.first6')}`
       ]
     }
   ]
@@ -149,13 +176,13 @@ function Index() {
   const [expandedSection1, setExpandedSection1] = useState<number | null>(null)
 
   const examInfo = [
-    { icon: FaClock, title: "Durée", content: "1 heure" },
+    { icon: FaClock, title: `${t('secret.time')}`, content: "1 heure" },
     { icon: FaFileAlt, title: "Questions", content: "39 questions" },
     { icon: FaBook, title: "Gestion du temps", content: "Libre (possibilité de revenir sur les questions)" },
   ]
   const tips = [
     {
-      title: "Conseils et astuces",
+      title: `${t('secret.conseil')}`,
       icon: FaLightbulb,
       content: [
         "Apprenez à lire très rapidement un texte en essayant de le comprendre le plus rapidement possible.",
@@ -361,6 +388,8 @@ function Index() {
         })
     }
 
+   
+
     const handleDeleteCourseExamContent = () => {
         console.log('DELETE COURSE CONTENT');
         console.log(deleteId)
@@ -417,8 +446,12 @@ function Index() {
         handleGetValidClasses();
     },[activeAcademyYear]);
 
+    useEffect(() => {
+      changeLang()
+    }, [lang]);
+
     return (
-        <StudentLayout title="Course Content" pageTitle="Course Content">
+        <StudentLayout title={t('layout.title_course')} pageTitle={t('layout.title_course')}>
       <div className="section">
             <div className="parent-con">
                 <div className="data-table">
@@ -428,7 +461,7 @@ function Index() {
                                 setSelectedClass(e.target.value);
                                 handleGetContent(e.target.value);
                             }} className="select-field" id="student-select-new">
-                                <option value="all">Select Type Test</option>
+                                <option value="all">{t('layout.button_cours')}</option>
                                 {classes.map((classData: any, index: any) => <option key={index} value={classData?._id}>{classData?.name}</option>)}
                             </select>
                         </div>
@@ -491,8 +524,7 @@ function Index() {
         </div>
         <div className='text-center  bg-white py-4  '>
            <h1 className='font-bold text-4xl underline underline-offset-2 mb-5  '>
-           LE SECRET
-            </h1> 
+           {t('layout.secret')}            </h1> 
             <span className='flex flex-col items-stretch space-y-2 p-4'>
       <button
         onClick={toggleModal}

@@ -3,6 +3,7 @@ import './reports.css';
 
 import StudentLayout from '../../../components/StudentLayout/StudentLayout';
 import { StudensReportmodal } from '../../../components/index';
+import { useTranslation } from 'react-i18next';
 
 import { AiFillEye } from 'react-icons/ai';
 
@@ -61,6 +62,9 @@ const override = {
 
 
 function Index() {
+    const { t, i18n } = useTranslation();
+    let [lang, setLang] = useState<any>(null);
+
     const [ showAddModal, setShoowAddModal ] = useState(false);
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
    
@@ -76,6 +80,28 @@ function Index() {
     const toggleOpenModal = () => {
         setOpenModal(!openModal);
     }
+    const handleTrans = () => {
+        i18n.changeLanguage(lang);
+      };
+  
+      const handleLangInit = () => {
+        let lng = localStorage.getItem('locale');
+        console.log("locale", lng);
+        if(lng == null) {
+          localStorage.setItem('locale', 'fr')
+          setLang('fr');
+        }else {
+          setLang(lng);
+        }
+      }
+  
+      const changeLang = () => {
+        if(lang != null) {
+          localStorage.setItem('locale', lang)
+          handleTrans();
+        }
+      }
+
     
     const handleShowResults = () =>{
         setLoading(true)
@@ -107,6 +133,10 @@ function Index() {
     useEffect(() => {
        handleShowResults()
     },[activeAcademyYear]);
+    
+    useEffect(() => {
+        changeLang()
+      }, [lang]);
 
     return (
         <StudentLayout title="All Reports" pageTitle="Reports">
