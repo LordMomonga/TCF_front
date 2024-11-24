@@ -1,3 +1,4 @@
+import { AiTwotoneFolderAdd } from "react-icons/ai"; 
 import React, { useState, useEffect, useContext } from 'react';
 import './SchoolLayout.css';
 import { getAcademicYear, removeAcademicYear, removeToken, storeAcademicYear } from '../../utils/storage';
@@ -63,6 +64,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
     const toggleNav = () => {
         console.log('toggle nav')
         setShowStudNav(!showStudNav);
+        console.log(' nav comp')
     }
 
     const handleTrans = () => {
@@ -106,8 +108,8 @@ function SchoolLayout({ title, children, pageTitle } : any) {
     },[])
 
     return (
-        <div className="dashboard-grid school-dashboard">
-        <div className={`sidebar-student student school-dashboard-sidebar  ${!showStudNav ? 'show' : ''}`}>
+        <div className="dashboard-grid ">
+        <div className={`sidebar-student student student-dashboard-sidebar  ${!showStudNav ? 'show' : ''}`}>
             <div className="logo" style={{cursor: 'pointer'}}>
                 <a onClick={() => navigate('/')}><span className='font-bold text-3xl text-white'>Tolkin</span></a>
             </div>
@@ -118,8 +120,9 @@ function SchoolLayout({ title, children, pageTitle } : any) {
                     <i><MdDashboard size={20}/></i>
                         <span>Dashboard</span>
                     </NavLink>
+
                     <NavLink className="link" to="/add">
-                    <i><MdDashboard size={20}/></i>
+                    <i><AiTwotoneFolderAdd size={20}/></i>
                         <span>Add new element</span>
                     </NavLink>
 
@@ -133,7 +136,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
                     <i><BsFillPersonFill size={20}/></i>
                         <span>utilisateurs</span>
                     </NavLink>
-
+                    
                     <NavLink className="link" to="/school/result-types">
                     <i><GoMortarBoard size={20}/></i>
                         <span>Results Users</span>
@@ -191,10 +194,10 @@ function SchoolLayout({ title, children, pageTitle } : any) {
                     <div className="nav-toggler-btn" onClick={toggleNav}>
                         <i className="fa fa-bars" aria-hidden="true"></i>
                     </div>
+
                     <span>
-                    <select onChange={handleAccademicYearChange} value={activeAcademyYear} id="" className="language-dashboard md:px-2 px-1 rounded-md">
-                           {academicYears.map((acca: any) => <option value={acca._id}>{acca?.title}</option> )}
-                           {/* <option value='hghhfhffgggdgd'>Test</option> */}
+                    <select onChange={handleAccademicYearChange} value={activeAcademyYear} id="" className="language-dashboard ml-5 ">
+                           {academicYears.map((acca: any) => <option value={acca._id} className='text-[12px] font-bold' >{acca?.title}</option> )}
                     </select>
                     <div className="divider"></div>
                         <select value={lang} onChange={(e: any) => setLang(e.target.value)} id="" className="language-dashboard md:px-2 px-1 rounded-md">
@@ -207,7 +210,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
                         </a>
                         <div className="divider"></div>
                         <div className="profile-btn" onClick={() => setShowUserMenu(!showUserMenu)}>
-                            <div className="name">Hello Admin</div>
+                            <div className="name"> Admin</div>
                             {/* <img src="./assets/images/users/user-1.png" alt=""> */}
                         </div>
                     </span>

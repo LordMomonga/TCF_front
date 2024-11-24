@@ -546,7 +546,7 @@ section {
 
 @media screen and (max-width: 767px) {
     .main header .nav-toggler-btn {
-        font-size: 25px;
+        font-size: 15px;
     }
     .main header .con>span .link {
         width: 25px;

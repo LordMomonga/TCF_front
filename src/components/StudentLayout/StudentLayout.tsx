@@ -199,10 +199,11 @@ function StudentLayout({ title, children, pageTitle } : any) {
                     </div>
                     
                     <span>
-                    <select onChange={handleAccademicYearChange} value={activeAcademyYear} id="" className="language-dashboard">
+                    <select onChange={handleAccademicYearChange} value={activeAcademyYear} id="" className="language-dashboard ">
                            {academicYears.map((acca: any) => <option value={acca._id}>{acca?.title}</option> )}
-                           {/* <option value='hghhfhffgggdgd'>Test</option> */}
+
                     </select>
+
                     <div className="divider "></div>
                         <select value={lang} className ='language-dashboard px-1 rounded-md md:px-3' onChange={(e: any) => setLang(e.target.value)} id="" >
                             <option value="en">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EN</option>
