@@ -15,7 +15,7 @@ import './test.css'
 import { selectComprehensionEcrite } from '../../services/assessment'
 import { Console } from 'console'
 const CE = () => {
-    const [remainingTime, setRemainingTime] = useState<number>(39 * 60)
+    const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [question1, setQuestion1] = useState<any>("error network response charging");
@@ -34,11 +34,18 @@ const CE = () => {
     const [selectListeningC1, setSelectListeningC1]= useState<any>([])
     const [selectListeningC2, setSelectListeningC2]= useState<any>([])
     const [allQuestion, setAllQuestion] = useState<any>([])
+
+
+    const [Fscore, setFscore] = useState<any>();
+    const [Lose, setLose] = useState<any>();
+
+
     const [timeLeft, setTimeLeft] = useState(60); 
     const [CO, setCO] = useState<any>("still");
     const [data, setData] = useState<any>();
     const [result, setResult] = useState(0);
     const [echou, setEchou] = useState<any[]>([]);
+
     const [Lechec, setLechec] = useState<any[]>([]);
         const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
@@ -62,7 +69,6 @@ const CE = () => {
     const handleComprehensionOrale = () => {
       setLoading(true)
       selectComprehensionEcrite().then((res: any) => {
-        console.log('RESPONSE GET: ', res.data);
         setData(res.data.data);
         if(res.ok) {
          
@@ -90,7 +96,6 @@ const CE = () => {
         setAllQuestion(allQuestions)
        
      
-        console.log("le premier listening", allQuestions);
         setCO(allQuestions[0].question)
         setQuestion1(allQuestions[0].solution1)
         setQuestion2(allQuestions[0].solution2)
@@ -98,7 +103,6 @@ const CE = () => {
         setQuestion4(allQuestions[0].solution4)
         setqst(allQuestions[0].imageUrl)
         setResponse(allQuestions[0].response)
-        console.log("ou je veux en venir",CO, question1, qst);
         setLoading(false);
       }).catch(err => {
         console.log('error error', err)
@@ -119,7 +123,6 @@ const CE = () => {
         newResponses[currentIndex] = e.target.value; // Mettez à jour la réponse pour la question actuelle
         setResponses(newResponses);
         
-        console.log("le tableau changer est ",newResponses);
         
       };
     
@@ -130,10 +133,7 @@ const CE = () => {
     };
 
     const moveToNextQuestion = () => {
-      console.log("le tableau changer est ",responses);
-      console.log("le resultat changer est ",result);
-      console.log('Selected Answer:', selectedAnswer);
-      console.log('Correct Solution:', currentQuestion.response);
+      
 
       if ( selectedAnswer === currentQuestion.response) {
         let point = 1
@@ -143,34 +143,31 @@ const CE = () => {
           selectedAnswer
         }]);
         console.log('Incorrect answer. Correct answer was:', currentQuestion.response);
+
        }
   
       setSelectedAnswer(null); // Reset selected answer
       setTimeLeft(60); // Reset timer for the next question
-      
       if (currentIndex < allQuestion.length - 1) {
         
         setCurrentIndex(currentIndex + 1);
-        console.log(currentIndex, score);
          // Move to next question
       } else {
          // Vérifiez le contenu des tableaux
-         console.log("Responses:", responses);
          console.log("All Questions: recuperer", allQuestion);
         let finalScore = 0;
+
         responses.forEach((response:any, index:any) => {
           if (index < allQuestion.length && allQuestion[index]?.response) {
             if (response === allQuestion[index].response) {
                 finalScore++;
-                console.log(allQuestion[index])
+                setFscore(finalScore)
             }else{
               const Question = allQuestion[index].response;
               
             }
         }
         });
-
-        console.log(finalScore, "obtenu avec surcit");
         locate('/stud/results', { state: { score: finalScore, index: allQuestion.length, echou } });
       }
       if (audioRef.current) {
@@ -257,16 +254,29 @@ const CE = () => {
   }, [currentIndex]);
 
     useEffect(() => {
+
         const intervalId = setInterval(() => {
           
           if (remainingTime > 0) {
             setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
+            console.log("still ", remainingTime);
+
           } else {
             clearInterval(intervalId);
+            console.log("en cours ");
+            
           }
         }, 1000); // Update every second
     
         return () => clearInterval(intervalId); // Cleanup on unmount
+      }, []);
+
+
+      useEffect(() => {
+        if(remainingTime  <= 0) 
+          {                     
+            locate('/stud/results', { state: { score: Fscore, index: allQuestion.length, echou } });
+          }
       }, []);
 
       const formatTime = (seconds: number): string => {

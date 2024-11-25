@@ -70,6 +70,7 @@ export const Result = () => {
   const [animatedScore, setAnimatedScore] = useState(0)
   const [animatedEchec, setAnimatedEchec] = useState(0)
 console.log("cest lechec la ",echou)
+console.log("::", score)
   useEffect(() => {
     const scoreTimer = setInterval(() => {
       setAnimatedScore(prev => Math.min(prev + 1, score))

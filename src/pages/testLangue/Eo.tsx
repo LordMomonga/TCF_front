@@ -24,7 +24,7 @@ import { Link } from 'react-router-dom'
 const Eo : React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [record, setRecord] = useState(false)
-  const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
+  const [remainingTime, setRemainingTime] = useState<number>(15 * 60)
   const [selectedTask, setSelectedTask] = useState<string>('tache1'); // default task
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({})

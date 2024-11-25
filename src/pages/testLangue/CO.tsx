@@ -27,7 +27,7 @@ interface Question {
 }
 
 const CO = () => {
-     const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
+     const [remainingTime, setRemainingTime] = useState<number>(40 * 60)
     const [user, setUser] = useState<any>(null);
     const [numb, setNumb] = useState(39)
     const [loading, setLoading] = useState(false)
@@ -294,12 +294,12 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         <div className="text-sm font-bold text-center">
             <div className='w-full relative'>
             <div className='flex justify-center'>
-                <img className=' w-[50%] ' src={currentQuestion?.imageUrl} alt="" />
+                <img className=' w-[40%] ' src={currentQuestion?.imageUrl} alt="" />
                 <audio ref={audio1Ref} className='md:text-sm text-[10px] border-[2px]  border-gray-500' src={currentQuestion?.audioUrl} autoPlay />     
                 </div>
                 <div className='flex justify-start  '>
                 {!isPlaying && (
-                <button onClick={handlePlay} className='bg-blue-500 text-white px-2 py-1 rounded-md'>Cliquer ici pour commencer</button>
+                <button onClick={handlePlay} className='bg-blue-500 text-white px-2 py-1 rounded-md'> commencer l'extrait</button>
             )}
 
                  </div>
@@ -307,7 +307,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                 <span className='block  mb-5 font-bold'>
                 {currentIndex + 1}- {currentQuestion?.question}
                 </span>
-                 <form action="" className='mx-10'>
+                 <form action="" className='mx-10 h-[140px] max-h-[300px] overflow-y-auto'>
                  <div className='flex gap-5 mb-2'>
                  <input type="radio" name="question" value="1"
                   checked={selectedAnswer === "1"}

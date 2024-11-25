@@ -50,7 +50,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ message, onConf
 
 const EE: React.FC = () => {
   const [user, setUser] = useState<any>(null);
-  const [remainingTime, setRemainingTime] = useState<number>(35 * 60)
+  const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
 
