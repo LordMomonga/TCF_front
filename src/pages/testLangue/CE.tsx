@@ -37,7 +37,8 @@ const CE = () => {
 
 
     const [Fscore, setFscore] = useState<any>();
-    const [Lose, setLose] = useState<any>();
+    const [timer , setTimer] = useState<any>();
+    const timeRef = useRef(0); // Utilisation d'une ref pour `time`
 
 
     const [timeLeft, setTimeLeft] = useState(60); 
@@ -45,7 +46,7 @@ const CE = () => {
     const [data, setData] = useState<any>();
     const [result, setResult] = useState(0);
     const [echou, setEchou] = useState<any[]>([]);
-
+  
     const [Lechec, setLechec] = useState<any[]>([]);
         const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
@@ -142,7 +143,8 @@ const CE = () => {
         setEchou(prevEchou => [...prevEchou, {currentQuestion,
           selectedAnswer
         }]);
-        console.log('Incorrect answer. Correct answer was:', currentQuestion.response);
+        
+        console.log('Incorrect answer. Correct answer was:', currentQuestion.response, echou);
 
        }
   
@@ -151,6 +153,7 @@ const CE = () => {
       if (currentIndex < allQuestion.length - 1) {
         
         setCurrentIndex(currentIndex + 1);
+        
          // Move to next question
       } else {
          // Vérifiez le contenu des tableaux
@@ -161,13 +164,14 @@ const CE = () => {
           if (index < allQuestion.length && allQuestion[index]?.response) {
             if (response === allQuestion[index].response) {
                 finalScore++;
-                setFscore(finalScore)
             }else{
               const Question = allQuestion[index].response;
               
             }
         }
         });
+       
+        
         locate('/stud/results', { state: { score: finalScore, index: allQuestion.length, echou } });
       }
       if (audioRef.current) {
@@ -255,29 +259,48 @@ const CE = () => {
 
     useEffect(() => {
 
+
+        let time = 0
+        
         const intervalId = setInterval(() => {
-          
+
+          timeRef.current++; // Incrémentation directe dans la ref
+          time ++;
+
           if (remainingTime > 0) {
             setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
-            console.log("still ", remainingTime);
+            console.log( "this time ", timeRef.current);
+            console.log("All Questions: recuperer", allQuestion);
+
+              if (timeRef.current === 3600){
+                
+                let finalScore = 0;
+
+                responses.forEach((response:any, index:any) => {
+                  if (index < allQuestion.length && allQuestion[index]?.response) {
+                    if (response === allQuestion[index].response) {
+                        finalScore++;
+                    }else{
+                      const Question = allQuestion[index].response;
+                      
+                    }
+                }
+                });
+                
+                locate('/stud/results', { state: { score: finalScore, index: allQuestion.length, echou } });}
 
           } else {
             clearInterval(intervalId);
-            console.log("en cours ");
             
           }
+          
+
         }, 1000); // Update every second
-    
-        return () => clearInterval(intervalId); // Cleanup on unmount
-      }, []);
 
+        return () => clearInterval(intervalId); // Nettoyage
 
-      useEffect(() => {
-        if(remainingTime  <= 0) 
-          {                     
-            locate('/stud/results', { state: { score: Fscore, index: allQuestion.length, echou } });
-          }
-      }, []);
+        }, [allQuestion, echou, remainingTime, responses]);
+
 
       const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
