@@ -7,6 +7,7 @@ import { BiSkipNext } from 'react-icons/bi'
 import { NavLink, Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useRef } from 'react'
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
 import { selectExpresssionEcrite } from '../../services/assessment'
@@ -69,6 +70,8 @@ const EE: React.FC = () => {
   const [contenu3_id, setcontenu3_id] = useState<string | null>(null);
   const locate = useNavigate();
   const [sujet3, setSujet3]= useState([])
+  const timeRef = useRef(0); // Utilisation d'une ref pour `time`
+
 
   const handleExpressionEcrite = () => {
     setLoading(true)
@@ -117,9 +120,8 @@ const EE: React.FC = () => {
     setWordCount(words.filter(word => word.length > 0).length); // Filtrer les mots vides
   };
 
-  const handleSubmit =  (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleSubmit =  (event?: React.FormEvent) => {
+    if (event) event.preventDefault();
     const data = {
       contenu1,
       contenu2,
@@ -168,12 +170,30 @@ const EE: React.FC = () => {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
+  useEffect(() => {
+    let time = 0
+
+    const intervalId = setInterval(() => {
+     time ++
+      if(time === 3600) {
+        handleSubmit();
+        
+
+      }
+
+    }, 1000); // Update every second
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
 
     return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
   };
+
+
 
   useEffect(() => {
     let usr = getUser();

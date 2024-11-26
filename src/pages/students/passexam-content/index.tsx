@@ -150,7 +150,7 @@ function Index() {
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Comprehension Orale</h1>
       <div className='flex text-white justify-between mt-5 '>
       <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 ' onClick={() => setIsStartingcO(true)}><BiPlay className="text-white"></BiPlay></button>
-      <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
+      <span className='text-[12px] font-bold  text-white'> Durée : 40min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
       </div> 
@@ -160,7 +160,7 @@ function Index() {
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white '>Comprehension Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
       <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 ' onClick={() => setIsStartingce(true)}><BiPlay className="text-white"></BiPlay></button>
-      <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
+      <span className='text-[12px] font-bold  text-white'> Durée : 1h</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
       </div> 
@@ -170,7 +170,7 @@ function Index() {
 <h1 className=' text-center font-bold uppercase text-white  text-sm md:text-2md '>Expression Ecrite</h1>
       <div className='flex text-white justify-between mt-5 '>
       <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute text-white bottom-2 left-3 ' onClick={() => setIsStartingEe(true)}><BiPlay className="text-white"></BiPlay></button>
-      <span className='text-[12px] font-bold  text-white'> Durée : 45min</span>
+      <span className='text-[12px] font-bold  text-white'> Durée : 1h</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2  rounded-md absolute bottom-2 right-3 text-white'><BiBook></BiBook> </button>
       </div> 
@@ -180,7 +180,7 @@ function Index() {
 <h1 className=' text-center font-bold uppercase  text-sm md:text-2md text-white'>Expression orale</h1>
       <div className='flex text-white justify-between mt-5 '>
       <button className='test-[12px] md:test-md font-bold bg-blue-500 p-2 rounded-md absolute bottom-2 left-3 'onClick={() => setIsStartingEo(true)}><BiPlay className="text-white"></BiPlay></button>
-      <span className='text-[12px] font-bold   text-white'> Durée : 45min</span>
+      <span className='text-[12px] font-bold   text-white'> Durée : 15min</span>
 
       <button className=' test-[12px] md:test-md font-bold bg-green-500 p-2 text-white rounded-md absolute bottom-2 right-3'><BiBook></BiBook> </button>
       </div> 

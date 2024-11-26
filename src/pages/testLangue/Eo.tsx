@@ -8,6 +8,7 @@ import { BiSkipNext } from 'react-icons/bi'
 import { NavLink, Outlet } from 'react-router-dom';
 import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
+import { useRef } from 'react'
 import { useState } from 'react'
 import { AudioRecorder } from 'react-audio-voice-recorder';
 import { storage } from '../../utils/firebaseConfig'
@@ -39,6 +40,8 @@ const Eo : React.FC = () => {
   const [contenu3_id, setcontenu3_id] = useState<string | null>(null);
 
   const locate = useNavigate();
+  const timeRef = useRef(0); // Utilisation d'une ref pour `time`
+
 
 const handleExpressionOrale = () => {
   setLoading(true)
@@ -181,8 +184,9 @@ const handleExpressionOrale = () => {
   };
 // partie pour valider lenregistrement des donneee
 
-  const handleSubmit =  (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit =  (event?: React.FormEvent) => {
+    if (event) event.preventDefault();
+
     if (!audioUrl || !audioUrl1 || !audioUrl2) {
       toast.error("Tous les champs audio doivent être remplis", {
           pauseOnHover: false,
@@ -243,6 +247,21 @@ const handleExpressionOrale = () => {
 
     return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
   };
+   
+  useEffect(() => {
+    let time = 0
+
+    const intervalId = setInterval(() => {
+     time ++
+      if(time === 1000) {
+        handleSubmit();
+
+      }
+
+    }, 1000); // Update every second
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
 
   useEffect(() => {
     handleExpressionOrale();
