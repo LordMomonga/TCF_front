@@ -24,6 +24,8 @@ const CE = () => {
     const [question3, setQuestion3] = useState<any>("error network response charging");
     const [question4, setQuestion4] = useState<any>("error network response charging");
     const [response, setResponse] = useState<any>();
+    const [option, setOption] = useState<any>();
+
     const [hasAnswered, setHasAnswered] = useState<boolean>(false);
     const [qst, setqst] = useState("");
     const [loading, setLoading] = useState(false)
@@ -362,7 +364,7 @@ const CE = () => {
         </div>
        
         <div className='bg-white h-[80%] w-[100%] md:w-[68%] py-2 left-0 md:left-[13.5%] overflow-y-auto px-5 text-gray-700 fixed z-0'>
-        <div className="text-sm font-bold text-center">
+        <div className="text-sm font-bold text-center mb-5">
                 lisez le test et  Choisissez la bonne réponse en cochant sur la bonne reponse. 
             </div>
             <div className='w-full relative'>
@@ -374,33 +376,71 @@ const CE = () => {
                 <span className='block  mb-3 font-bold'>
                 {currentIndex + 1}- {currentQuestion?.question}
                 </span>
-                <form action="">
-                 <div className='flex gap-5'>
+                <form action="" className=''>
+                 <div className='flex gap-5 mb-1 items-center'>
                  <input type="radio" name="question" value="1"
                   checked={responses[currentIndex] === "1"}
                  onChange={handleChange} id="option-a" />
                  <label htmlFor="option-a">a- {currentQuestion?.solution1}</label>
                 </div>
-                <div className='flex gap-5 mb-1'>
+                <div className='flex gap-5 mb-1 items-center'>
                 <input type="radio" name="question" value="2" 
                  checked={responses[currentIndex] === "2"}
                 onChange={handleChange} id="option-b" />
                 <label htmlFor="option-b">b- {currentQuestion?.solution2}</label>
                 </div>
-                <div className='flex gap-5 mb-1'>
+                <div className='flex gap-5 mb-1 items-center'>
                 <input type="radio" name="question" value="3"  
                  checked={responses[currentIndex] === "3"}
                 onChange={handleChange} id="option-c" />
                 <label htmlFor="option-c">c- {currentQuestion?.solution3}</label>
                 </div>
-                <div className='flex gap-5 mb-1'>
+                <div className='flex gap-5 mb-1 items-center'>
                     <input type="radio" name="question" value="4" 
                      checked={responses[currentIndex] === "4"}
                     onChange={handleChange}id="option-d" />
                     <label htmlFor="option-d">d- {currentQuestion?.solution4}</label>
                 </div>
+
+                {currentQuestion?.options?.map((item:any, index:any)=>(
+                   <div className='my-2  justify-center'>
+                    <span className='block  mb-3 font-bold'> 
+                    {currentIndex + 1}.{currentIndex + index + 1}.a- {item?.question}
+                    </span>
+
+                    <div className='flex gap-5 items-center'>
+                 <input type="radio" name="question" value="1"
+                   id="option-a" />
+                 <label htmlFor="option-a">a- {item?.answer1}</label>
+                </div>
+                <div className='flex gap-5 mb-1 items-center'>
+                <input type="radio" name="question" value="2" 
+                 id="option-b" className=''
+                 
+                 />
+                <label htmlFor="option-b">b- {item?.answer2}</label>
+                </div>
+                <div className='flex gap-5 mb-1 items-center'>
+                <input type="radio" name="question" value="3"  
+                  id="option-c" />
+                <label htmlFor="option-c">c- {item?.answer3}</label>
+                </div>
+                <div className='flex gap-5 mb-1 items-center'>
+                    <input type="radio" name="question" value="4" 
+                    id="option-d" />
+                    <label htmlFor="option-d">d- {item?.answer4}</label>
+                </div>
+                   </div>
+                ))}
+
                  </form>
-                 <div className='w-[90%]'>
+
+                 
+
+
+                
+
+                 <div className='w-[90%] my-5'>
                  <div className="flex justify-between  mt-4">
                             <button className='bg-blue-500 text-white text-sm px-2 rounded-md' onClick={moveToPreviousQuestion} disabled={currentIndex === 0}>Précédent</button>
                             <button className='bg-blue-500 text-white text-sm px-2 rounded-md' onClick={moveToNextQuestion}>Suivant</button>

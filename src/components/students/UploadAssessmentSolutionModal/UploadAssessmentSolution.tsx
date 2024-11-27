@@ -78,6 +78,11 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
     
 
     // good
+    const [indexTable, setIndexTable] = useState<number>(0);
+    const [groups, setGroups] = useState<number[]>([]);
+    const [formData, setFormData] = useState<any>({}); // Stocke les données des inputs
+
+  
     const solutionFileRef: any = useRef(null);
     const solutionAudioRef: any = useRef(null);
     const validationSchema = Yup.object().shape({
@@ -95,6 +100,13 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
           console.log('ERROR');
         })
       }
+
+      const handleIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(event.target.value, 10) || 0;
+        const updatedGroups = Array.from({ length: value }, (_, i) => i);
+        setGroups(updatedGroups);
+      };
+
 
         const handleUploadAudio = (e:any) => {
             setIsUploadingAudio(true);
@@ -177,6 +189,9 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
 
   }
 
+
+
+
     const handleGetAssessments = (classId: any)  => {
 
         studentGetAssessments(classId).then((res: any) => {
@@ -201,8 +216,35 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
         handleGetAssessments(classId);
     }
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData: any) => ({
+          ...prevData,
+          [name]: value,
+        }));
+
+        console.log(formData);
+        
+      };
+
+
+
+
     const handleSubmitSolution = (values: any) => {
      
+
+        const options = groups.map((index) => ({
+            question: formData[`question-${index}`] || "",
+            answer1: formData[`solution1-${index}`] || "",
+            answer2: formData[`solution2-${index}`] || "",
+            answer3: formData[`solution3-${index}`] || "",
+            answer4: formData[`solution4-${index}`] || "",
+            solution: parseInt(formData[`response-${index}`], 10) || null, // La solution correcte (optionnelle)
+          }));
+           
+          console.log("l'option a ajouter", options);
+          
+
             let data = {
                 ...values,
                 level: selectLevel,
@@ -210,7 +252,8 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                 typeElement: selectTestType,
                 imageUrl: imageUrl,
                 audioUrl: audioUrl,
-                specialitie: selectedCode
+                specialitie: selectedCode,
+                options:options
                 
             }
 
@@ -314,6 +357,9 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                                
                                }
                             </select>
+                            <p className='mt-2'>Entrer le nombre d'élément pour se groupe</p>
+                               <input type="number" className="border-[1px] rounded-md border-black border-solid  py-2 my-3" placeholder='index du group'   onChange={handleIndexChange} />
+
                         <p className="label-text">Questions (Obligatoire): </p>
                         <FormField  name="question" type="text" placeholder=" question ? (obligatoire)"/>
 
@@ -323,11 +369,32 @@ function UploadAssessmentSolutionModal({ onClose, onContentAdded } : any) {
                         <FormField  name="solution1" type="text" placeholder="question 1) ? "/>
                         <FormField  name="solution2" type="text" placeholder="solution 2)? "/>
              </div>
-                        <div className="flex gap-5 justiy7">
+                        <div className="flex gap-5 justify-between">
                         <FormField  name="solution3" type="text" placeholder="solution 3) ? "/>
                         <FormField  name="solution4" type="text" placeholder="solution 4) ? "/>
 
                         </div>
+
+         {groups.map(( index) => (
+        <div key={index} className="mb-4 p-4 border rounded">
+          <p className="label-text">Questions {index + 2} (Obligatoire):</p>
+          <input name={`question-${index}`} type="text" className='border-[1px] border-gray-500 w-[100%] border-solid py-2 ' placeholder={`Question ${index + 1} (obligatoire)`} onChange={handleInputChange}/>
+
+          <p className="label-text mt-3">Entrer les réponses:</p>
+          <div className="flex gap-5 justify-between"> 
+            <input name={`solution1-${index }`} type="text" className='border-[1px] border-gray-500 border-solid py-2 my-2 ' placeholder="Solution 1" onChange={handleInputChange} />
+            <input name={`solution2-${index}`} type="text" placeholder="Solution 2" onChange={handleInputChange} className='border-[1px] my-2  border-gray-500 border-solid py-2'/>
+          </div>
+          <div className="flex gap-5 justify-between">
+            <input name={`solution3-${index}`} type="text" placeholder="Solution 3" onChange={handleInputChange} className='border-[1px] my-2 border-gray-500 border-solid py-2'/>
+            <input name={`solution4-${index}`} type="text" placeholder="Solution 4" onChange={handleInputChange} className='border-[1px] my-2  border-gray-500 border-solid py-2'/>
+          </div>
+          <div className="flex gap-3 items-center justify-center">
+            <p className='my-5 '> La reponse de cette élément:  </p>
+            <input name={`response-${index}`} type="text" placeholder="response" onChange={handleInputChange} className='border-[1px] my-5 border-gray-500 border-solid py-2'/>
+          </div>
+        </div>
+      ))}
                            
 
                         <div className="flex gap-5 justify-between">

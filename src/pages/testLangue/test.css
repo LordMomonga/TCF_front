@@ -1,3 +1,22 @@
 .border-highlight {
     border: 2px solid purple;
   }
+  input[type="radio"] {
+    appearance: none; /* Supprime le style par défaut */
+    -webkit-appearance: none; /* Support pour Safari */
+
+    width: 15px; /* Largeur du carré */
+    height: 15px; /* Hauteur du carré */
+    border: 2px solid gray; /* Bordure noire */
+    border-radius: 0; /* Coins carrés */
+    appearance: "none";
+    background-color: "white";
+    cursor: "pointer";
+    display: inline-block; /* Évite les styles inattendus */
+    padding: 0; /* Supprime tout espace interne */
+    margin: 0; /* Supprime les marges par défaut */
+  }
+
+  input[type="radio"]:checked {
+    background-color: rgb(91, 88, 88); /* Fond noir quand sélectionné */
+  }
