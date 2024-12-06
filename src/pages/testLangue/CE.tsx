@@ -13,7 +13,7 @@ import {Question} from './constant'
 import { getUser } from '../../utils/storage'
 import './test.css'
 import { selectComprehensionEcrite } from '../../services/assessment'
-import { Console } from 'console'
+import { Console, log } from 'console'
 const CE = () => {
     const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
     const [user, setUser] = useState<any>(null);
@@ -47,13 +47,13 @@ const CE = () => {
     const [CO, setCO] = useState<any>("still");
     const [data, setData] = useState<any>();
     const [result, setResult] = useState(0);
-    const [echou, setEchou] = useState<any[]>([]);
+    const [echou, setEchou] = useState(Array().fill(null));
   
     const [Lechec, setLechec] = useState<any[]>([]);
         const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
     const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
-    const [responses, setResponses] = useState(Array(39).fill(null));
+    const [responses, setResponses] = useState(Array(39).fill({answer: null, option: Array().fill(null)}));
 
     const locate = useNavigate();
 
@@ -108,7 +108,6 @@ const CE = () => {
         setResponse(allQuestions[0].response)
         setLoading(false);
       }).catch(err => {
-        console.log('error error', err)
         setLoading(false);
       })
     }
@@ -116,15 +115,41 @@ const CE = () => {
     const currentQuestion = allQuestion[currentIndex];
     const index = allQuestion.length ;
     
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> , optionIndex?: number) => {
+      const { value } = e.target;
+      
       //  setSelectedValue(e.target.value);
         setSelectedAnswer(e.target.value);
         setHasAnswered(true);
-        console.log('Selected Answer on change:', e.target.value);
+       
 
-        const newResponses = [...responses];
-        newResponses[currentIndex] = e.target.value; // Mettez à jour la réponse pour la question actuelle
-        setResponses(newResponses);
+        setResponses((prevResponses) => {
+          // Créez une copie de l'état précédent
+          const updatedResponses = [...prevResponses];
+      
+          // Vérifiez si la mise à jour concerne une réponse principale ou une sous-option
+          if (optionIndex === undefined) {
+            // Met à jour la réponse principale
+            updatedResponses[currentIndex] = {
+              ...updatedResponses[currentIndex],
+              answer: value, // Met à jour la propriété `answer`
+            };
+          } else {
+            // Met à jour une sous-option dans `options`
+            const updatedOptions = [...(updatedResponses[currentIndex]?.option || [])];
+            updatedOptions[optionIndex] = value;
+      
+            updatedResponses[currentIndex] = {
+              ...updatedResponses[currentIndex],
+              option: updatedOptions, // Met à jour les sous-options
+            };
+          }
+      
+          return updatedResponses;
+        });
+      
+        console.log("Updated responses:", responses);
+        
         
         
       };
@@ -135,23 +160,172 @@ const CE = () => {
         }
     };
 
+
+
     const moveToNextQuestion = () => {
+
+      if (!responses[currentIndex]) {
+        console.error("Response for current index is undefined.");
+        return; // Empêche l'exécution si la réponse est inexistante
+      }
+      
+      let opti: { chosenIndex: any; correctIndex: any; question: any, index:any }[] =
+      []; // Tableau pour stocker les erreurs
+  
+      setSelectedAnswer (responses[currentIndex]?.answer)
+
+      
+      
+      if ( responses[currentIndex]?.answer === currentQuestion?.response) {
+
+        if(currentQuestion){ 
+        
+          currentQuestion?.options.forEach((response:any, index:number) => {
+            const chosenOption = String(responses[currentIndex]?.option[index]) ;
+            const correctSolution = String(response.solution);
+
+          if( chosenOption !== correctSolution ){
+           
+            opti.push({
+              chosenIndex: chosenOption,
+              correctIndex:correctSolution,
+              question: currentQuestion.options,
+              index:index
+             
+            });
+
+            console.log("verification OK ", response.solution, responses[currentIndex]?.option[index]);
+            console.log("voila les options ", opti );   
+          }
+          
+
+        })
+
       
 
-      if ( selectedAnswer === currentQuestion.response) {
-        let point = 1
-       setScore(prevScore => prevScore + 1);
-       } else {
-        setEchou(prevEchou => [...prevEchou, {currentQuestion,
-          selectedAnswer
-        }]);
-        
-        console.log('Incorrect answer. Correct answer was:', currentQuestion.response, echou);
 
+      }
+        
+      setEchou((prevEchou) => {
+
+        const alreadyExists = prevEchou.some(
+          (entry) =>
+            entry.question._id === currentQuestion._id &&
+            entry.correctAnswer === currentQuestion?.response 
+         
+        );
+
+        console.log("ca existe", alreadyExists);
+        
+ 
+       if (!alreadyExists) {
+        
+        return[
+        ...prevEchou,
+        {
+          question: currentQuestion,
+          selectedAnswer: responses[currentIndex]?.answer,
+          correctAnswer: currentQuestion?.response,
+          option:opti,
+
+        },
+      ]}
+
+    else
+    {
+      
+
+      return prevEchou.map((entry) =>
+        entry.question._id === currentQuestion._id
+          ? {
+              ...entry,
+              option: opti,
+            }
+          : entry
+      );
+
+    }
+    });
+      console.log("la liste des echecs", echou);
+      
+
+       } else {
+
+        if(currentQuestion){ 
+        
+          currentQuestion?.options.forEach((response:any, index:number) => {
+            const chosenOption = String(responses[currentIndex]?.option[index]) ;
+            const correctSolution = String(response.solution);
+
+          if( chosenOption !== correctSolution ){
+           
+            opti.push({
+              chosenIndex: chosenOption,
+              correctIndex:correctSolution,
+              question: currentQuestion.options,
+              index:index
+             
+            });
+
+            console.log("verification OK ", response.solution, responses[currentIndex]?.option[index]);
+            console.log("voila les options ", opti );   
+          }
+          
+
+        })
+
+      
+
+
+      }
+      setEchou((prevEchou) => {
+
+        const alreadyExists = prevEchou.some(
+          (entry) =>
+            entry.question._id === currentQuestion._id &&
+            entry.correctAnswer === currentQuestion?.response 
+         
+        );
+
+        console.log("ca existe", alreadyExists);
+        
+ 
+       if (!alreadyExists) {
+        
+        return[
+        ...prevEchou,
+        {
+          question: currentQuestion,
+          selectedAnswer: responses[currentIndex]?.answer,
+          correctAnswer: currentQuestion?.response,
+          option:opti,
+
+        },
+      ]}
+
+    else
+    {
+      
+
+      return prevEchou.map((entry) =>
+        entry.question._id === currentQuestion._id
+          ? {
+              ...entry,
+              selectedAnswer: responses[currentIndex]?.answer,
+              correctAnswer: currentQuestion?.response,
+              option: opti,
+            }
+          : entry
+      );
+
+    }
+    });
        }
   
       setSelectedAnswer(null); // Reset selected answer
       setTimeLeft(60); // Reset timer for the next question
+
+
       if (currentIndex < allQuestion.length - 1) {
         
         setCurrentIndex(currentIndex + 1);
@@ -159,22 +333,57 @@ const CE = () => {
          // Move to next question
       } else {
          // Vérifiez le contenu des tableaux
-         console.log("All Questions: recuperer", allQuestion);
-        let finalScore = 0;
+         let finalScore = 0;
 
-        responses.forEach((response:any, index:any) => {
-          if (index < allQuestion.length && allQuestion[index]?.response) {
-            if (response === allQuestion[index].response) {
-                finalScore++;
-            }else{
-              const Question = allQuestion[index].response;
-              
+         const levelPointsMap: { [key: string]: number } = {
+           A1: 3,
+           A2: 9,
+           B1: 15,
+           B2: 21,
+           C1: 26,
+           C2: 33,
+         };
+
+         responses.forEach((response:any, index:any) => {
+           if (index < allQuestion.length ) {
+
+            let points = 0; // Points gagnés ou perdus pour cette question
+
+             const question = allQuestion[index];
+             const levelPoints = levelPointsMap[question.level] || 0; // Récupère les points associés au niveau, 0 par défaut.  
+             const optionPenalty = levelPoints / currentQuestion.options.length; // Pénalité par option incorrecte
+
+             if (response?.answer === currentQuestion.response) {
+              points += levelPoints; // Ajoute les points du niveau si la réponse principale est correcte
             }
-        }
-        });
+
+
+             if (response?.answer === question?.response) {
+             finalScore += levelPoints; // Ajoute des points pour la réponse principale
+
+             if (question?.options && response?.option) {
+               currentQuestion.options.forEach((option: any, optIndex: number) => {
+                 const point = levelPoints / (optIndex + 1)
+                 const chosenOption = response.option?.[optIndex]
+
+                 if (String(chosenOption) !== String(option.solution)) {
+                  points -= optionPenalty;
+
+                }
+
+                 console.log("index en cours de changement", points);
+
+               });
+             }
+             }
+
+   
+         }
+         });
+
        
         
-        locate('/stud/results', { state: { score: finalScore, index: allQuestion.length, echou } });
+        locate('/stud/results', { state: { score: finalScore, index: allQuestion.length, echou:echou } });
       }
       if (audioRef.current) {
         audioRef.current.play();
@@ -192,6 +401,11 @@ const CE = () => {
         console.log('Index hors limite');
       }
     };
+
+    useEffect(() => {
+      console.log("echou a été mis à jour :", echou);
+    }, [echou]); 
+
   /*useEffect(() => {
       if (timeLeft === 0) {
         moveToNextQuestion();
@@ -271,21 +485,45 @@ const CE = () => {
 
           if (remainingTime > 0) {
             setRemainingTime((prevRemainingTime) => prevRemainingTime - 1);
-            console.log( "this time ", timeRef.current);
-            console.log("All Questions: recuperer", allQuestion);
+        
+
+
 
               if (timeRef.current === 3600){
                 
                 let finalScore = 0;
 
+                const levelPointsMap: { [key: string]: number } = {
+                  A1: 3,
+                  A2: 9,
+                  B1: 15,
+                  B2: 21,
+                  C1: 26,
+                  C2: 33,
+                };
+
                 responses.forEach((response:any, index:any) => {
-                  if (index < allQuestion.length && allQuestion[index]?.response) {
-                    if (response === allQuestion[index].response) {
-                        finalScore++;
-                    }else{
-                      const Question = allQuestion[index].response;
-                      
+                  if (index < allQuestion.length ) {
+
+                    
+                    const question = allQuestion[index];
+                    const levelPoints = levelPointsMap[question.level] || 0; // Récupère les points associés au niveau, 0 par défaut.  
+                   
+                    if (response.answer === question.response) {
+                    finalScore += levelPoints; // Ajoute des points pour la réponse principale
+
+                    if (question.options && response.option) {
+                      question.options.forEach((option: any, optIndex: number) => {
+                        const point = levelPoints / (index + 1)
+
+                        if (response.option[optIndex] !== option[optIndex].solution) {
+                          finalScore -= point; // Ajoute des points pour chaque option correcte
+                        }
+                      });
                     }
+                    }
+
+          
                 }
                 });
                 
@@ -345,7 +583,7 @@ const CE = () => {
                     <span className='font-bold'>Nom : <span className='text-prim font-bolder'>{user?.username}</span></span>
                     <span className='block mt-2 font-bold'>Adresse : <span className='text-prim font-bolder'>{user?.email}</span></span>
                     <span className='block mt-2 font-bold'>Partie : Comprehension Orale</span>
-                    <span className='block mt-2 font-bold'>Durée : 35min</span>
+                    <span className='block mt-2 font-bold'>Durée : 1h</span>
 
                 </div>
               </div>
@@ -373,61 +611,80 @@ const CE = () => {
                
                 </div>
                 <div className='pl-[15%] justify-center '>
-                <span className='block  mb-3 font-bold'>
-                {currentIndex + 1}- {currentQuestion?.question}
+                <span className='block  mb-3 font-semibold'>
+                {currentIndex + 1}- <span className=''>{currentQuestion?.question}</span>
                 </span>
                 <form action="" className=''>
                  <div className='flex gap-5 mb-1 items-center'>
                  <input type="radio" name="question" value="1"
-                  checked={responses[currentIndex] === "1"}
+                  checked={responses[currentIndex]?.answer === "1"}
                  onChange={handleChange} id="option-a" />
                  <label htmlFor="option-a">a- {currentQuestion?.solution1}</label>
                 </div>
                 <div className='flex gap-5 mb-1 items-center'>
                 <input type="radio" name="question" value="2" 
-                 checked={responses[currentIndex] === "2"}
+                 checked={responses[currentIndex]?.answer === "2"}
                 onChange={handleChange} id="option-b" />
                 <label htmlFor="option-b">b- {currentQuestion?.solution2}</label>
                 </div>
                 <div className='flex gap-5 mb-1 items-center'>
                 <input type="radio" name="question" value="3"  
-                 checked={responses[currentIndex] === "3"}
+                 checked={responses[currentIndex]?.answer === "3"}
                 onChange={handleChange} id="option-c" />
                 <label htmlFor="option-c">c- {currentQuestion?.solution3}</label>
                 </div>
                 <div className='flex gap-5 mb-1 items-center'>
                     <input type="radio" name="question" value="4" 
-                     checked={responses[currentIndex] === "4"}
+                     checked={responses[currentIndex]?.answer === "4"}
                     onChange={handleChange}id="option-d" />
                     <label htmlFor="option-d">d- {currentQuestion?.solution4}</label>
                 </div>
 
                 {currentQuestion?.options?.map((item:any, index:any)=>(
-                   <div className='my-2  justify-center'>
-                    <span className='block  mb-3 font-bold'> 
-                    {currentIndex + 1}.{currentIndex + index + 1}.a- {item?.question}
+                   <div 
+                  
+                   className='my-2  justify-center'>
+                    <span className='block  mb-3 font-semibold'> 
+                    {currentIndex + 1}.{currentIndex + index + 1}.a- <span className=''>{item?.question}</span> 
                     </span>
 
                     <div className='flex gap-5 items-center'>
-                 <input type="radio" name="question" value="1"
-                   id="option-a" />
+                 <input type="radio"  name={`option-${currentIndex}-${index}`}
+                  value='1'
+                 checked={responses[currentIndex]?.option[index] === "1"}
+                 id={`option-a-${index}`} 
+                 onChange={(e) => handleChange(e, index)}
+
+                 />
                  <label htmlFor="option-a">a- {item?.answer1}</label>
                 </div>
                 <div className='flex gap-5 mb-1 items-center'>
-                <input type="radio" name="question" value="2" 
-                 id="option-b" className=''
+                <input type="radio"  name={`option-${currentIndex}-${index}`} value='2'
+                checked={responses[currentIndex]?.option[index] === "2"}
+                id={`option-b-${index}`}
+                onChange={(e) => handleChange(e, index)}
+
+                className=''
                  
                  />
                 <label htmlFor="option-b">b- {item?.answer2}</label>
                 </div>
                 <div className='flex gap-5 mb-1 items-center'>
-                <input type="radio" name="question" value="3"  
-                  id="option-c" />
+                <input type="radio"  name={`option-${currentIndex}-${index}`} value='3'
+                checked={responses[currentIndex]?.option[index] === "3"}
+                id={`option-c-${index}`} 
+                onChange={(e) => handleChange(e, index)}
+
+                />
                 <label htmlFor="option-c">c- {item?.answer3}</label>
                 </div>
                 <div className='flex gap-5 mb-1 items-center'>
-                    <input type="radio" name="question" value="4" 
-                    id="option-d" />
+                    <input type="radio"  name={`option-${currentIndex}-${index}`} value="4"
+                    checked={responses[currentIndex]?.option[index] === "4"}
+                    id={`option-d-${index}`} 
+                    onChange={(e) => handleChange(e, index)}
+
+                    />
                     <label htmlFor="option-d">d- {item?.answer4}</label>
                 </div>
                    </div>
@@ -435,7 +692,7 @@ const CE = () => {
 
                  </form>
 
-                 
+                 <pre>{JSON.stringify(currentQuestion, null, 2)}</pre> {/* Pour déboguer */}
 
 
                 

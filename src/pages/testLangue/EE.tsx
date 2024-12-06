@@ -72,6 +72,17 @@ const EE: React.FC = () => {
   const [sujet3, setSujet3]= useState([])
   const timeRef = useRef(0); // Utilisation d'une ref pour `time`
 
+  const specialCharacters = ["é", "è", "ê", "à", "ù", "ç", "ô", "î", "œ","ç",, ";", ":", "!", "?","«", "»"];
+  const [text, setText] = useState<string>("");
+
+ // Fonction pour ajouter un caractère spécial au texte
+ const addCharacter = (char: string) => {
+  if(selectedTask === "tache1")setContenu1((prevText) => prevText + char);
+  if(selectedTask === "tache2")setContenu2((prevText) => prevText + char);
+  if(selectedTask === "tache3")setContenu3((prevText) => prevText + char);
+
+
+};
 
   const handleExpressionEcrite = () => {
     setLoading(true)
@@ -236,7 +247,7 @@ const EE: React.FC = () => {
             {sujet1?.map((data:any, index:any) => 
             <p className='w-[100%] text-center mt-5'>
            <span> {data?.titre}</span>
-              <span className='block mt-2 '>{data?.contenu}</span>
+              <span className='block mt-2 px-5'>{data?.contenu}</span>
             </p>
           )}
             <div>
@@ -260,7 +271,7 @@ const EE: React.FC = () => {
             {sujet2?.map((data:any, index:any) => 
               <p className='w-[100%] text-center mt-5'>
                 <span> {data?.titre}</span>
-                <span className='block mt-2 '>{data?.contenu}</span>
+                <span className='block mt-2 px-5'>{data?.contenu}</span>
               </p>
             )}
             <div>
@@ -282,13 +293,13 @@ const EE: React.FC = () => {
           <div>
             <h1 className='text-center font-bold text-xl'>Tache 3</h1>
             {sujet3?.map((data:any, index:any) => 
-            <p className='w-[100%] text-center mt-5  '>
+            <p className='w-[100%]  text-center mt-5  '>
            <span className='font-semibold mt-2'>{data?.titre}</span> 
               <span className='block mt-2  '>{data?.contenu}</span>
 
               <div>
-                <div className='mb-5'><span className='block font-semifold'>Document 1</span>{data?.document1}</div>
-                <div className=''><span className='block font-semifold'>Document 2</span>{data?.document2}</div>
+                <div className='mb-5 px-8 text-[14px] text-center w-[92%]'><span className='block font-bold'>Document 1</span>{data?.document1}</div>
+                <div className='px-8 text-[14px] text-center w-[92%]'><span className='block font-bold'>Document 2</span>{data?.document2}</div>
               </div>
             </p>
           )}
@@ -346,10 +357,24 @@ const EE: React.FC = () => {
             <span className='font-bold'>Nom: <span className='text-prim font-bolder'>{user?.username}</span></span>
             <span className='block mt-2 font-bold'>Adresse: <span className='text-prim font-bolder'>{user?.email}</span></span>
             <span className='block mt-2 font-bold'>Partie: Expression Ecrite</span>
-            <span className='block mt-2 font-bold'>Durée: 45min</span>
+            <span className='block mt-2 font-bold'>Durée: 1h</span>
           </div>
         </div>
-        <div className='bg-white text-gray-500 mt-[30%] mb-5 rounded-md px-5 py-2'>
+
+        <div className="mt-5 bg-white p-3 grid grid-cols-2 rounded-md sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 ">
+          
+        {specialCharacters.map((char:any, index:any) => (
+          <button
+            key={index}
+            onClick={() => addCharacter(char)}
+            className="px-1 text-[13px] py-1 bg-gray-300 rounded shadow hover:bg-gray-400"
+          >
+            {char}
+          </button>
+        ))}
+      </div>
+
+        <div className='bg-white text-gray-500 mt-[10%] mb-5 rounded-md px-5 py-2'>
           <div className='text-[13px] font-bold flex items-center gap-3'>
             <BiQuestionMark className='text-white bg-blue-500 rounded-full font-bold' />
             <span>Temps: {formatTime(remainingTime)}</span>

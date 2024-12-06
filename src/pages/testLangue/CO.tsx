@@ -164,6 +164,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
         return () => clearTimeout(timer);
       }, [timeLeft]);
+      
       useEffect(() => {
         // This will run each time the score is updated
         console.log('Score updated:', score);
@@ -212,7 +213,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
       const handlePlay = () => {
         if (audio1Ref.current) {
             audio1Ref.current.play().catch(error => {
-                console.error("Audio playback failed:", error);
+            console.error("Audio playback failed:", error);
             });
             setIsPlaying(true); 
         }
@@ -272,7 +273,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                     <span className='font-bold'>Nom : <span className='text-prim font-bolder'>{user?.username}</span></span>
                     <span className='block mt-2 font-bold'>Adresse : <span className='text-prim font-bolder'>{user?.email}</span></span>
                     <span className='block mt-2 font-bold'>Partie : Comprehension Orale</span>
-                    <span className='block mt-2 font-bold'>Durée : 35min</span>
+                    <span className='block mt-2 font-bold'>Durée : 40min</span>
 
                 </div>
               </div>

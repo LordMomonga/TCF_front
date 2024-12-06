@@ -389,7 +389,7 @@ const renderTaskContent = () => {
             <span className='font-bold'>Nom: <span className='text-prim font-bolder'>{user?.username}</span></span>
             <span className='block mt-2 font-bold'>Adresse: <span className='text-prim font-bolder'>{user?.email}</span></span>
             <span className='block mt-2 font-bold'>Partie: Comprehension Orale</span>
-            <span className='block mt-2 font-bold'>Durée: 45min</span>
+            <span className='block mt-2 font-bold'>Durée: 15min</span>
           </div>
         </div>
         <div className='bg-white text-gray-500 mt-[30%] mb-5 rounded-md px-5 py-2'>

@@ -9,17 +9,17 @@ import { useNavigate } from 'react-router-dom'
 
 const getTCFLevel = (score: number) => {
     switch (true) {
-      case score >= 5 && score <= 10:
+      case score >= 5 && score <= 330:
         return 'A1';
-      case score >= 11 && score <= 15:
+      case score >= 331 && score <= 368:
         return 'A2';
-      case score >= 16 && score <= 20:
+      case score >= 369 && score <= 457:
         return 'B1';
-      case score >= 21 && score <= 25:
+      case score >= 458 && score <= 522:
         return 'B2';
-      case score >= 26 && score <= 28:
+      case score >= 523 && score <= 548:
         return 'C1';
-      case score >= 29 :
+      case score >= 549 :
         return 'C2';
       default:
         return 'Inconnu';
@@ -55,11 +55,13 @@ export const Result = () => {
               return 'Score inconnu. Veuillez entrer un score valide.';
           }};
 
-          const echec = index - score ;
+          const echec = echou.length ;
   const determineLevel = (score: number) => {
-    if (score >= 90) return 'C2';
-    if (score >= 75) return 'C1';
-    if (score >= 60) return 'B2';
+    if (score >= 549) return 'C2';
+    if (score >= 523) return 'C1';
+    if (score >= 458) return 'B2';
+    if (score >= 369) return 'B1';
+    if (score >= 331) return 'A2';
     // Add more conditions here
     return 'A1';
   };
@@ -179,21 +181,21 @@ console.log("cest lechec la ",echou, score, index)
             <div className='flex justify-between items-center px-10'>
          <div >
                 <p className="font-medium">Question:</p>
-         <p className="text-green-700 font-semibold">{question.currentQuestion.question}</p>
+         <p className="text-green-700 font-semibold">{question.question.question}</p>
          <p className="font-medium mt-2">Your Answer:</p>
          <p className="text-gray-700 font-semibold text-red-500 text-2xl">{question.selectedAnswer}</p>
          <p className="font-medium mt-2">Correct Answer:</p>
-         <p className="text-gray-700 text-green-500  text-2xl">{question.currentQuestion.response}</p>
+         <p className="text-gray-700 text-green-500  text-2xl">{question.question.response}</p>
                 </div>
                 <div>
-                  <img src={question.currentQuestion.imageUrl} alt="" />
+                  <img src={question.question.imageUrl} alt="" />
                 </div>
                 <div>
                     <h1 className='font-bold text-blue-500'> questions</h1>
-                 <p className="text gray 500">1- {question.currentQuestion.solution1}</p>
-                 <p className="text gray 500">2- {question.currentQuestion.solution2}</p>
-                 <p className="text gray 500">3- {question.currentQuestion.solution3}</p>
-                 <p className="text gray 500">4- {question.currentQuestion.solution4}</p>
+                 <p className="text gray 500">1- {question.question.solution1}</p>
+                 <p className="text gray 500">2- {question.question.solution2}</p>
+                 <p className="text gray 500">3- {question.question.solution3}</p>
+                 <p className="text gray 500">4- {question.question.solution4}</p>
                 </div>
             </div>
         
