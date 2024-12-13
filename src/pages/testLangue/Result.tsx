@@ -179,14 +179,28 @@ console.log("cest lechec la ",echou, score, index)
          <li key={idx} className="bg-gray-100 p-4 mt-3 rounded-lg shadow-md">
            
             <div className='flex justify-between items-center px-10'>
-         <div >
-                <p className="font-medium">Question:</p>
-         <p className="text-green-700 font-semibold">{question.question.question}</p>
-         <p className="font-medium mt-2">Your Answer:</p>
-         <p className="text-gray-700 font-semibold text-red-500 text-2xl">{question.selectedAnswer}</p>
-         <p className="font-medium mt-2">Correct Answer:</p>
-         <p className="text-gray-700 text-green-500  text-2xl">{question.question.response}</p>
-                </div>
+         
+          {question.correctAnswer === question.selectedAnswer && (
+             <div >
+             <p className="font-medium">Question:</p>
+      <p className="text-green-700 font-semibold">{question.question.question}</p>
+      <p className="font-medium mt-2">Your Answer:</p>
+      <p className="text-gray-700 font-semibold text-red-500 text-2xl">{question.selectedAnswer}</p>
+      <p className="font-medium mt-2">Correct Answer:</p>
+      <p className="text-gray-700 text-green-500  text-2xl">{question.question.response}</p>
+             </div>
+          )}
+         
+
+                {question.option.map((opt:any, index:number) => (
+                  <div>
+                    <p className="text-green-700 font-semibold">{question.question.question}</p>
+                  <p className="font-medium mt-2">Your Answer:</p>
+                  <p className="text-gray-700 font-semibold text-red-500 text-2xl">{question.selectedAnswer}</p>
+                  <p className="font-medium mt-2">Correct Answer:</p>
+                  <p className="text-gray-700 text-green-500  text-2xl">{question.question.response}</p>
+                  </div>
+                ))}
                 <div>
                   <img src={question.question.imageUrl} alt="" />
                 </div>

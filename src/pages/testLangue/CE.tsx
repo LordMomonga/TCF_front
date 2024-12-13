@@ -197,7 +197,7 @@ const CE = () => {
             console.log("verification OK ", response.solution, responses[currentIndex]?.option[index]);
             console.log("voila les options ", opti );   
           }
-          
+           
 
         })
 
@@ -262,7 +262,7 @@ const CE = () => {
             opti.push({
               chosenIndex: chosenOption,
               correctIndex:correctSolution,
-              question: currentQuestion.options,
+              question: response,
               index:index
              
             });
@@ -691,11 +691,6 @@ const CE = () => {
                 ))}
 
                  </form>
-
-                 <pre>{JSON.stringify(currentQuestion, null, 2)}</pre> {/* Pour déboguer */}
-
-
-                
 
                  <div className='w-[90%] my-5'>
                  <div className="flex justify-between  mt-4">
