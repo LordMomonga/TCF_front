@@ -1,3 +1,6 @@
+import { BsFillPenFill } from "react-icons/bs"; 
+import { CgGoogleTasks } from "react-icons/cg"; 
+import { GrTask } from "react-icons/gr"; 
 import { BiAlarmExclamation } from 'react-icons/bi'
 import { BiQuestionMark } from 'react-icons/bi'
 import { Question } from './constant'
@@ -253,7 +256,7 @@ const EE: React.FC = () => {
             <div>
               <textarea
                 placeholder='ecrivez votre redaction ici'
-                className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
+                className='mx-[5%] min-h-[240px] border-solid text-black mt-10 text-center w-[90%] border-[1px] border-gray-200 rounded-sm'
                 value={contenu1}
                 onChange={handleTextareaChange1}
               >
@@ -277,7 +280,7 @@ const EE: React.FC = () => {
             <div>
               <textarea
                 placeholder='ecrivez votre redaction ici'
-                className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
+                className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-solid text-black border-gray-200'
                 value={contenu2}
                 onChange={handleTextareaChange2}
               >
@@ -306,7 +309,7 @@ const EE: React.FC = () => {
             <div>
               <textarea
                 placeholder='ecrivez votre redaction ici'
-                className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-gray-500'
+                className='mx-[5%] min-h-[240px] mt-10 text-center w-[90%] border-[1px] border-solid border-gray-200 text-black rounded-sm'
                 value={contenu3}
                 onChange={handleTextareaChange}
               >
@@ -330,24 +333,24 @@ const EE: React.FC = () => {
         <span className='font-bold text-3xl text-white'>Tolkin</span>
       </nav>
       <div className='z-10 fixed left-0 px-5 bg-prim h-[80%]'>
-        <span className='mt-8 block font-bold text-sm uppercase text-white '>Expression Ecrite</span>
+        <span className='mt-8 block font-bold text-sm uppercase text-white flex items-center gap-2 '> <span className="w-6 h-6 bg-white flex items-center justify-center rounded-full "> <BsFillPenFill /> </span> Expression Ecrite</span>
         <div
-          className={`mt-[30%] text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] text-gray-700 text-center pl-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache1')}
         >
-          tache 1
+          <CgGoogleTasks /> tache 1
         </div>
         <div
-          className={`mt-[30%] text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] flex items-center gap-1 pl-2 text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache2')}
         >
-          tache 2
+         <CgGoogleTasks />  tache 2
         </div>
         <div
-          className={`mt-[30%] text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] flex items-center gap-1 pl-2 text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache3')}
         >
-          tache 3
+         <CgGoogleTasks />  tache 3
         </div>
       </div>
       <div className='z-10 fixed right-0 px-4 bg-prim h-[80%]'>

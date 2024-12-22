@@ -525,31 +525,38 @@ function Index() {
         <div className='text-center  bg-white py-4  '>
            <h1 className='font-bold text-4xl underline underline-offset-2 mb-5  '>
            {t('layout.secret')}            </h1> 
-            <span className='flex flex-col items-stretch space-y-2 p-4'>
+            <span className='flex flex-col items-stretch space-y-3 p-4'>
       <button
         onClick={toggleModal}
-        className=" flex items-center gap-2  uppercase text-white rounded select-field hover:px-10 text-start px-5 hover:mb-5 "
+        className="select-field flex items-center gap-2  uppercase text-white px-3  hover:px-10  rounded hover:bg-blue-700 text-start hover:mb-5 "
       >
     ­  
-    <FaBrain></FaBrain>  comprehension Ecrite
+    <span className="w-7 h-7 bg-white flex justify-center items-center rounded-full p-1">
+    <FaBrain></FaBrain>
+      </span>  comprehension Ecrite
       </button>
       <button
         onClick={toggleco}
         className=" select-field flex items-center gap-2  uppercase text-white px-5  hover:px-10  rounded hover:bg-blue-700 text-start hover:mb-5"
       >
-       <FaHeadphones></FaHeadphones> comprehension orale
+        <span className="w-7 h-7 bg-white flex justify-center items-center rounded-full p-1"><FaHeadphones></FaHeadphones></span>
+        comprehension orale
       </button>
       <button
         onClick={toggleEE}
         className="flex items-center gap-2   uppercase text-white rounded px-5 select-field hover:px-10 text-start hover:mb-5 "
       >
-         <FaListUl></FaListUl>Expression Ecrite
+                <span className="w-7 h-7 bg-white flex justify-center items-center rounded-full p-1"> <FaListUl></FaListUl></span>
+
+        Expression Ecrite
       </button>
       <button
         onClick={toggleEo}
         className="flex items-center gap-2 uppercase  select-field text-white px-5 hover:px-10 rounded text-start hover:mb-5"
       >
-        <FaNewspaper></FaNewspaper> Expression Orale
+                <span className="w-7 h-7 bg-white flex justify-center items-center rounded-full p-1">  <FaNewspaper></FaNewspaper></span>
+
+        Expression Orale
       </button>
             </span>
         </div>

@@ -1,3 +1,4 @@
+import { BiPlusMedical } from "react-icons/bi"; 
 import React, { useState, useEffect, useContext } from 'react';
 import './landing.css';
 
@@ -14,6 +15,7 @@ import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
+import { selectResultat } from '../../../services/assessment';
 
 import { getStudentApplications, getStudentsClasses, joinClass } from '../../../services/student';
 
@@ -71,7 +73,8 @@ function Index() {
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [loadingElement , setLoadingElement] = useState(false);
+    const [allElement, setAllElement] = useState<any>([])
     const toggleAddModal = () => {
         setShowJoinModal(!showJoinModal);
     }
@@ -98,7 +101,22 @@ function Index() {
         }
       }
 
+     const handleGetElements =() => { 
+        setLoadingElement(true);
+        setAllElement([]);
 
+        selectResultat().then((res: any) => {
+            console.log('RESPONSE GET: ', res);
+            if(res.ok) {
+                setAllElement(res.data.data);
+            }
+            setLoadingElement(false);
+        }).catch(err => {
+            console.log('error: ', err);
+            setLoadingElement(false);
+        })
+
+        }
 
     const handleGetApplications = ()  => {
         setLoading(true);
@@ -126,6 +144,9 @@ function Index() {
         handleGetApplications();
     },[activeAcademyYear]);
 
+        useEffect(() => {
+            handleGetElements();
+        },[]);
     
     useEffect(() => {
         changeLang()
@@ -153,13 +174,13 @@ function Index() {
                             <div className="data-table">
                                 <div className="top">
                                     <div className="span">
-                                        <h1>Academic Years</h1>
+                                        <h1>Valide Years</h1>
                                     </div>
                                     {/* <form className="search">
                                         <input type="search" name="" id="" placeholder="Find ..." />
                                         <button type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
                                     </form> */}
-                                    <button onClick={toggleAddModal} className="btn btn-primary btn-add student-button">{t('layout.abonnement')}  <i className="fas fa-plus"></i></button>
+                                    <button onClick={toggleAddModal} className="btn btn-primary btn-add student-button">{t('layout.abonnement')}  <i className="fas fa-plus"><BiPlusMedical /></i></button>
                                 </div>
                                 <div className="table-con">
                                 <div style={{textAlign: 'center',}}>

@@ -1,3 +1,6 @@
+import { BsRecordCircle } from "react-icons/bs"; 
+import { MdRecordVoiceOver } from "react-icons/md"; 
+import { MdSettingsVoice } from "react-icons/md"; 
 import React from 'react'
 import { BiAlarmExclamation } from 'react-icons/bi'
 import { BiQuestionMark } from 'react-icons/bi'
@@ -272,19 +275,25 @@ const renderTaskContent = () => {
   switch (selectedTask) {
     case 'tache1':
       return (
-        <div>
-          <h1 className='text-center font-bold text-xl'>Tache 1</h1>
+        <div className=" mt-5 py-5">
+          <h1 className='text-center font-bold text-md'>Tache 1</h1>
+          <div className="flex justify-center w-full">
           {sujet1?.map((data:any, index:any) => 
-            <p className='w-[100%] text-center mt-5'>
-            {data?.titre}
-              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+            <p className='w-[70%] text-center block mt-5'>
+             <span className=" text-black px-2 text-md font-bold"> 
+             Titre: {data?.titre}
+              </span>
+              <span className='block mt-5  block mb-5 border-solid border-gray-200 border-2  '>{data?.contenu}</span>
             </p>
           )}
+          </div>
+        
          
-          <div>
-          <div>
-      <h1>Audio Recorder</h1>
-      <AudioRecorder 
+          
+          <div  className=" flex justify-center items-center gap-5">
+      <h1 className="flex items-center gap-2  mt-[5%]  mb-[5%] text-blue-500 text-sm">Enregistrement Audio <BsRecordCircle /></h1>
+    
+     <AudioRecorder 
         onRecordingComplete={addAudioElement}
         audioTrackConstraints={{
           noiseSuppression: true,
@@ -293,24 +302,37 @@ const renderTaskContent = () => {
         downloadOnSavePress={true}
         downloadFileExtension="webm"
       />
+     
+    
+     
     </div>
-          </div>
+          
         </div>
       );
     case 'tache2':
       return (
-        <div>
-          <h1 className='text-center font-bold text-xl'>Tache 2</h1>
+        <div className="  mt-5 py-5">
+            <h1 className='text-center font-semibold text-md '>Tache 2</h1>
+          <div className="flex justify-center w-full">
+        
           
           {sujet2?.map((data:any, index:any) => 
-            <p className='w-[100%] text-center mt-5'>
-            {data?.titre}
-              <span className='block mt-2 font-bold'>{data?.contenu}</span>
+            <p className='w-[70%] text-center mt-5 '>
+              <span className=" text-black px-2 text-md font-bold"> 
+             Titre: {data?.titre}
+              </span>
+            
+              <span className='block mt-5  block mb-5 border-solid border-gray-200 border-2  '>{data?.contenu}</span>
             </p>
           )}
+          </div>
+        
          
-          <div>
-      <h1>Audio Recorder</h1>
+          <div className=" flex justify-center items-center gap-5">
+          <h1 className="flex items-center gap-2 mt-[5%]  mb-[5%] text-blue-500 text-sm">Enregistrement Audio <BsRecordCircle /></h1>   
+    <div className="border-gray-100 flex justify-center items-center border-solid border-2 h-[150px] w-[150px] rounded-full">
+    <div className="border-gray-100 flex justify-center items-center border-solid border-2 h-[100px] w-[100px] rounded-full">
+     <div className="border-gray-100 flex justify-center items-center border-solid border-2 h-[70px] w-[70px] rounded-full">   
       <AudioRecorder 
         onRecordingComplete={addAudioElement1}
         audioTrackConstraints={{
@@ -320,22 +342,36 @@ const renderTaskContent = () => {
         downloadOnSavePress={true}
         downloadFileExtension="webm"
       />
+       </div>
+      
+      </div>
+     </div>
     </div>
         </div>
       );
     case 'tache3':
       return (
-        <div>
-          <h1 className='text-center font-bold text-xl'>Tache 3</h1>
-          {sujet3?.map((data:any, index:any) => 
-            <p className='w-[100%] text-center mt-5'>
-            {data?.titre}
-              <span className='block mt-2 font-bold'>{data?.contenu}</span>
-            </p>
-          )}
+        <div className=" mt-5 py-5">
+          <h1 className='text-center font-bold text-md'>Tache 3</h1>
+          <div className="flex justify-center w-full">
+        
+          
+        {sujet3?.map((data:any, index:any) => 
+          <p className='w-[70%] text-center mt-5 '>
+            <span className=" text-black px-2 text-md font-bold"> 
+           Titre: {data?.titre}
+            </span>
+          
+            <span className='block mt-5  block mb-5 border-solid border-gray-200 border-2  '>{data?.contenu}</span>
+          </p>
+        )}
+        </div>
          
-          <div>
-      <h1>Audio Recorder</h1>
+          <div className=" flex justify-center items-center gap-5">
+          <h1 className="flex items-center gap-2 mt-[5%]  mb-[5%] text-blue-500 text-sm">Enregistrement Audio <BsRecordCircle /></h1>
+          <div className="border-gray-100 flex justify-center items-center border-solid border-2 h-[150px] w-[150px] rounded-full">
+    <div className="border-gray-100 flex justify-center items-center border-solid border-2 h-[100px] w-[100px] rounded-full">
+     <div className="border-gray-100 flex justify-center items-center border-solid border-2 h-[70px] w-[70px] rounded-full">    
       <AudioRecorder 
         onRecordingComplete={addAudioElement2}
         audioTrackConstraints={{
@@ -345,6 +381,10 @@ const renderTaskContent = () => {
         downloadOnSavePress={true}
         downloadFileExtension="webm"
       />
+       </div>
+      
+      </div>
+     </div>
     </div>
         </div>
       );
@@ -359,24 +399,30 @@ const renderTaskContent = () => {
         <span className='font-bold text-3xl text-white'>Tolkin</span>
       </nav>
       <div className='z-10 fixed left-0 px-5 bg-prim h-[80%]'>
-        <span className='mt-8 block font-bold text-sm uppercase text-white '>Expression Ecrite</span>
+        <span className='mt-8 block font-bold text-sm uppercase text-white  '>
+          <div className="text-white flex items-center gap-2">
+          <div className=" text-white h-6 w-6 bg-white flex justify-center rounded-full items-center ">
+          <MdRecordVoiceOver />
+          </div>
+          Expression Orale
+          </div></span>
         <div
-          className={`mt-[30%] text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] flex items-center gap-2 pl-2   text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache1')}
         >
-          tache 1
+          <MdSettingsVoice /> tache 1
         </div>
         <div
-          className={`mt-[30%] text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] flex items-center gap-2 pl-2  text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache2')}
         >
-          tache 2
+         <MdSettingsVoice /> tache 2
         </div>
         <div
-          className={`mt-[30%] text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] flex items-center gap-2 pl-2  text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache3')}
         >
-          tache 3
+          <MdSettingsVoice />tache 3
         </div>
       </div>
      
@@ -418,7 +464,7 @@ const renderTaskContent = () => {
         </div></Link>
       </div>
      
-      <div className='bg-white h-[80%] w-[70%] py-2 left-[12%] px-5 text-gray-700 fixed z-0'>
+      <div className='bg-white h-[80%] w-[73%] py-2 left-[12%] px-5 text-gray-700 fixed z-0'>
         <div className='mt-5'>{renderTaskContent()}</div>
       </div>
     

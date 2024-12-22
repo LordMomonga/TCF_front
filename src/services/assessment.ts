@@ -39,6 +39,17 @@ const getCorrectionStudent = () => {
     return api.get("/getAudio");
 }
 
+// gestion des resultat de la comprehension orale et de la comprehension ecrite
+const setResultElement = (data:any) => {
+    return api.post('/student/type', data)
+}
+
+const selectResultat = ()=>{
+    return api.get('/student/type');
+
+}
+
+
 const getCorrectionStudentEcrit = () => {
     return api.get("/getEcrit");
 }
@@ -153,7 +164,9 @@ export {
     getEcritAndUpdate,
     getAudioAndUpdate,
     getMyResults,
-    getMyResultsEcrit
+    getMyResultsEcrit, 
+    setResultElement,
+    selectResultat
 
     
 }   

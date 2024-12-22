@@ -1,3 +1,5 @@
+import { HiOutlineSpeakerphone } from "react-icons/hi"; 
+import { FaTeamspeak } from "react-icons/fa"; 
 import React from 'react'
 import { BiAlarmExclamation } from 'react-icons/bi'
 import { BiQuestionMark } from 'react-icons/bi'
@@ -63,6 +65,14 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
     const [array, setArray] = useState([])
     const [result, setResult] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
+
+    const [responses, setResponses] = useState(Array(39).fill({answer: null, option: Array().fill(null)}));
+   
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleImageToggle = () => {
+        setIsOpen(!isOpen);
+    };
     const handleExit = () => {
       locate("/students/passexams")
     }
@@ -115,13 +125,39 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
     const currentQuestion = allQuestion[currentIndex];
     const index = allQuestion.length ;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> , optionIndex?: number) => {
+      const { value } = e.target;
+      
       //  setSelectedValue(e.target.value);
         setSelectedAnswer(e.target.value);
         setHasAnswered(true);
-        console.log('Selected Answer on change:', e.target.value);
-        console.log(selectedAnswer);
-        
+       
+
+        setResponses((prevResponses) => {
+          // Créez une copie de l'état précédent
+          const updatedResponses = [...prevResponses];
+      
+          // Vérifiez si la mise à jour concerne une réponse principale ou une sous-option
+          if (optionIndex === undefined) {
+            // Met à jour la réponse principale
+            updatedResponses[currentIndex] = {
+              ...updatedResponses[currentIndex],
+              answer: value, // Met à jour la propriété `answer`
+            };
+          } else {
+            // Met à jour une sous-option dans `options`
+            const updatedOptions = [...(updatedResponses[currentIndex]?.option || [])];
+            updatedOptions[optionIndex] = value;
+      
+            updatedResponses[currentIndex] = {
+              ...updatedResponses[currentIndex],
+              option: updatedOptions, // Met à jour les sous-options
+            };
+          }
+      
+          return updatedResponses;
+        });
+              
       };
 
       const moveToNextQuestion = () => {
@@ -147,8 +183,98 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
           console.log(currentIndex, score, result);
            // Move to next question
         } else {
-          console.log(score, result,"obtenu");
-          locate('/stud/results', { state: { score, index, echou } });
+          {
+            // Vérifiez le contenu des tableaux
+            let finalScore = 0;
+            let choixEchec = [{}]
+   
+            const levelPointsMap: { [key: string]: number } = {
+              A1: 3,
+              A2: 9,
+              B1: 15,
+              B2: 21,
+              C1: 26,
+              C2: 33,
+            };
+   
+            responses.forEach((response:any, index:any) => {
+              
+             if (index < allQuestion.length ) {
+   
+               let points = 0; // Points gagnés ou perdus pour cette question
+   
+                const question = allQuestion[index];
+                const levelPoints = levelPointsMap[question.level] || 0; // Récupère les points associés au niveau, 0 par défaut.  
+                const optionPenalty = levelPoints / (currentQuestion.options.length + 1); // Pénalité par option incorrecte
+                
+               
+
+                
+                let respAnswer = response?.answer
+                
+                points = levelPoints;
+   
+                if (respAnswer !== question.response) {
+               
+
+                 if (response.option?.length === 0) points = 0
+                 else  points -= optionPenalty
+
+                choixEchec.push( {
+                 question:question,
+                 selectedAnswer: respAnswer,
+                 correctedAnswer:question.response,
+                 index: index,
+                 opt: null
+               })
+   
+               console.log("l'echec est de taille", echou);
+               
+                
+   
+               }
+               console.log('verification du point', points, index, echou)
+   
+      
+                if (question?.option) {
+   
+                  question.options.forEach((option: any, optIndex: number) => {
+   
+                    
+                    const chosenOption = response?.option[optIndex]
+                     const laSol = String(option.solution)
+                    if (chosenOption !== laSol ) {
+                    
+                     points -= optionPenalty;
+                     
+                    choixEchec.push( {
+                     question:question,
+                     selectedAnswer: chosenOption,
+                     correctedAnswer:laSol,
+                     index: index,
+                     opt: option
+                   })
+                     
+                   }else{
+                     console.log("index en cours de changement", finalScore, String(chosenOption) !== String(option.solution));
+                   }
+                  
+                  
+   
+                  });
+                }
+                
+                
+                finalScore += points
+   
+      
+            }
+            });
+   
+          
+           
+           locate('/stud/results', { state: { score: finalScore, index: allQuestion.length, echou: choixEchec, type:allQuestion[0]?.typeElement, genre: allQuestion[0]?.specialitie } });
+         }
         }
         if (audioRef.current) {
           audioRef.current.play();
@@ -219,8 +345,22 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         }
     };
     
-    
-   
+    useEffect(() => {
+      if (currentIndex > 0) {
+          // Vérifiez la réponse de la question précédente
+          const previousQuestion = allQuestion[currentIndex - 1];
+          if (responses[currentIndex - 1] === previousQuestion.response) {
+              setResult(prevScore => prevScore + 1);
+          } else {
+            setResult(prevScore => prevScore - 1);
+          }
+      }
+  }, [currentIndex]);
+
+    useEffect(() => {
+      console.log("Updated responses nouveau:", responses); 
+    }, [responses]); 
+
     
 
 
@@ -247,26 +387,33 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
     
         return () => clearInterval(interval);
       }, []);
+
+      const remainingQuestions = responses.filter((response) => response === null || response === undefined).length;
+      const answeredQuestions = responses.filter((response) => response !== null && response !== undefined).length;
     
 
   return (
     <div className='w-screen relative'>
-      <nav className=' px-5 py-5 flex items-center bg-prim '>
-        <span className=' text-white font-bold text-3xl'>Tolkin</span>
+      <nav className=' px-5 py-1 md:py-2 flex items-center bg-prim '>
+        <span className=' font-bold text-3xl text-white'>Tolkin</span>
         </nav>
         
-       <div className='hidden md:fixed z-10 left-0 px-2 bg-prim h-[80%] md:block'>
-           <span className='mt-8 block font-bold  text-sm uppercase text-white '>comprehension orale </span>
-            <div className='mt-5 px-1 bg-white max-h-[300px] overflow-y-auto py-2'>
+        <div className='hidden md:fixed z-10 left-0 px-2 bg-prim h-[90%] md:block'>
+           <span className='mt-8 block font-bold  text-sm uppercase text-white  flex items-center gap-2 '><span className="w-6 h-6 bg-white flex justify-center items-center rounded-full p-1"><FaTeamspeak className="text-xl" /></span>Comprehension Orale </span>
+            <div className='mt-5 px-1 max-h-[250px] overflow-y-auto bg-white  py-2'>
               
             <ol className=''>{allQuestion?.map((item:any, index:any)=>(
-                    <li className={`py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
-                     ${index === currentIndex ? 'bg-green-500 py-2 border-[2px] border-black border-solid text-gray-600' : 'bg-gray-500'}`} key={index}>proposition {index + 1}</li>
+                    <li  className={`question-item cursor-pointer py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
+                       ${responses[index] === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid' :  'flex items-center gap-2 bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500 py-2' : 'bg-gray-500'}`} key={index}> <span className="w-6 h-6 bg-white flex justify-center items-center rounded-full p-1"><HiOutlineSpeakerphone /></span> proposition {index + 1}</li>
                 ))} </ol>
             </div>
-            
-        </div>      
-        <div className='z-10 fixed hidden md:block  right-0  px-1 md:px-4 bg-prim h-[80%]'>
+            <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
+                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white p-2 bg-blue-500 rounded-full font-bold  ' color={'white'}></BiQuestionMark ><span> restant:{remainingQuestions} </span> </div>
+                    <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  p-2 '></BiAlarmExclamation><span> repondu : {answeredQuestions}</span></div>
+                </div>
+        </div>   
+
+        <div className='z-10 fixed hidden md:block  right-0  px-1 md:px-4 bg-prim h-[90%]'>
               <div className='bg-white md:px-5 px-1  text-gray-600   text-[10px] md:text-sm text-center rounded-md py-2'>
                 <h1 className='font-bold underline underline-offset-4 '>Mon profil</h1>
                 <div className=' py-3 text-left'>
@@ -289,58 +436,121 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         </div>      
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
            
-        <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center '><span onClick={handleExit} className='text-[10px] md:text-sm flex items-center gap-2'><BiExit className='text-[10px] md:text-sm bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
+        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center '><span onClick={handleExit} className='text-[10px] md:text-sm flex items-center gap-2'><BiExit className='text-[10px] md:text-sm bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
        
-        <div className='bg-white h-[80%] w-[100%] md:w-[68%] py-2 left-0 md:left-[13.5%] px-5 text-gray-700 fixed z-0'>
-        <div className="text-sm font-bold text-center">
+        <div className='bg-white h-[90%] w-[100%] md:w-[68%] py-2 left-0 md:left-[13.5%] px-5 text-gray-700 fixed z-0'>
+       <div className="text-sm font-bold text-center mb-5">
+                Ecoutez l'extrait sonore et  Choisissez la bonne réponse. 
+            </div>
             <div className='w-full relative'>
             <div className='flex justify-center'>
-                <img className=' w-[40%] ' src={currentQuestion?.imageUrl} alt="" />
-                <audio ref={audio1Ref} className='md:text-sm text-[10px] border-[2px]  border-gray-500' src={currentQuestion?.audioUrl} autoPlay />     
-                </div>
-                <div className='flex justify-start  '>
-                {!isPlaying && (
-                <button onClick={handlePlay} className='bg-blue-500 text-white px-2 py-1 rounded-md'> commencer l'extrait</button>
+            {!isPlaying && (
+                <button onClick={handlePlay} className='bg-blue-500 text-sm text-white px-2 mb-2 '> commencer l'extrait</button>
             )}
-
-                 </div>
-
-                <span className='block  mb-5 font-bold'>
-                {currentIndex + 1}- {currentQuestion?.question}
+                <img className=' w-[30%] '  onClick={handleImageToggle}  src={currentQuestion?.imageUrl} alt="" />
+                </div>
+                
+                
+                  <div className='pl-[15%] justify-center '>
+                <span className='block  mb-3 font-bold bg-gray-300 shadow-md  pl-1 w-fit pr-10 rounded-sm py-2 text-black'>
+                {currentIndex + 1}- <span className='text-black'>{currentQuestion?.question}</span>
                 </span>
-                 <form action="" className='mx-10 h-[140px] max-h-[300px] overflow-y-auto'>
-                 <div className='flex gap-5 mb-2'>
+                <form action="" className='max-h-[50vh] overflow-y-auto  '>
+                 <div className='flex gap-5 mb-1 items-center '>
                  <input type="radio" name="question" value="1"
-                  checked={selectedAnswer === "1"}
+                  checked={responses[currentIndex]?.answer === "1"}
                  onChange={handleChange} id="option-a" />
                  <label htmlFor="option-a">a- {currentQuestion?.solution1}</label>
                 </div>
-                <div className='flex gap-5 mb-2'>
+                <div className='flex gap-5 mb-1 items-center'>
                 <input type="radio" name="question" value="2" 
-                 checked={selectedAnswer === "2"}
+                 checked={responses[currentIndex]?.answer === "2"}
                 onChange={handleChange} id="option-b" />
                 <label htmlFor="option-b">b- {currentQuestion?.solution2}</label>
                 </div>
-                <div className='flex gap-5 mb-2'>
+                <div className='flex gap-5 mb-1 items-center'>
                 <input type="radio" name="question" value="3"  
-                 checked={selectedAnswer === "3"}
+                 checked={responses[currentIndex]?.answer === "3"}
                 onChange={handleChange} id="option-c" />
                 <label htmlFor="option-c">c- {currentQuestion?.solution3}</label>
                 </div>
-                <div className='flex gap-5 mb-2'>
+                <div className='flex gap-5 mb-1 items-center'>
                     <input type="radio" name="question" value="4" 
-                     checked={selectedAnswer === "4"}
+                     checked={responses[currentIndex]?.answer === "4"}
                     onChange={handleChange}id="option-d" />
                     <label htmlFor="option-d">d- {currentQuestion?.solution4}</label>
                 </div>
+
+                {currentQuestion?.options?.map((item:any, index:any)=>(
+                   <div 
+                  
+                   className='my-2  justify-center'>
+                    <span className='block  mb-3 font-bold bg-gray-300 shadow-md  pl-1 w-fit pr-10 rounded-sm py-2 text-black'> 
+                    {currentIndex + 1}.{currentIndex + index + 1}- <span className='text-black first-letter:uppercase '>{item?.question}</span> 
+                    </span>
+
+                    <div className='flex gap-5 items-center'>
+                 <input type="radio"  name={`option-${currentIndex}-${index}`}
+                  value='1'
+                 checked={responses[currentIndex]?.option[index] === "1"}
+                 id={`option-a-${index}`} 
+                 onChange={(e) => handleChange(e, index)}
+
+                 />
+                 <label htmlFor="option-a">a- {item?.answer1}</label>
+                </div>
+                <div className='flex gap-5 mb-1 items-center'>
+                <input type="radio"  name={`option-${currentIndex}-${index}`} value='2'
+                checked={responses[currentIndex]?.option[index] === "2"}
+                id={`option-b-${index}`}
+                onChange={(e) => handleChange(e, index)}
+
+                className=''
+                 
+                 />
+                <label htmlFor="option-b">b- {item?.answer2}</label>
+                </div>
+                <div className='flex gap-5 mb-1 items-center'>
+                <input type="radio"  name={`option-${currentIndex}-${index}`} value='3'
+                checked={responses[currentIndex]?.option[index] === "3"}
+                id={`option-c-${index}`} 
+                onChange={(e) => handleChange(e, index)}
+
+                />
+                <label htmlFor="option-c">c- {item?.answer3}</label>
+                </div>
+                <div className='flex gap-5 mb-1 items-center'>
+                    <input type="radio"  name={`option-${currentIndex}-${index}`} value="4"
+                    checked={responses[currentIndex]?.option[index] === "4"}
+                    id={`option-d-${index}`} 
+                    onChange={(e) => handleChange(e, index)}
+
+                    />
+                    <label htmlFor="option-d">d- {item?.answer4}</label>
+                </div>
+                   </div>
+                ))}
+
                  </form>
+
+               
+                </div>
+                <audio ref={audio1Ref} className='md:text-sm text-[10px] border-[2px]  border-gray-500' src={currentQuestion?.audioUrl} autoPlay />     
+
 
                 </div>
                   
             </div>
            
             
-        </div>
+       
+        {isOpen && (
+                <div 
+                    className='fixed inset-0 z-10 bg-black bg-opacity-75 flex justify-center items-center' 
+                    onClick={handleImageToggle}>
+                    <img className='max-h-full max-w-full' src={currentQuestion?.imageUrl} alt="" />
+                </div>
+            )}
     </div>
   )
 }
