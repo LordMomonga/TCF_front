@@ -29,7 +29,7 @@ interface Question {
 }
 
 const CO = () => {
-     const [remainingTime, setRemainingTime] = useState<number>(40 * 60)
+    const [remainingTime, setRemainingTime] = useState<number>(40 * 60)
     const [user, setUser] = useState<any>(null);
     const [numb, setNumb] = useState(39)
     const [loading, setLoading] = useState(false)

@@ -76,6 +76,7 @@ const handleExpressionOrale = () => {
     setRecord(false);
   };
   const addAudioElement = async (blob: Blob) => {
+    
     if (!blob) {
       console.error("Blob is undefined or null");
       return;

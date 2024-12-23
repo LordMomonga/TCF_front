@@ -18,11 +18,28 @@ import { useTranslation } from 'react-i18next';
 import { selectResultat } from '../../../services/assessment';
 
 import { getStudentApplications, getStudentsClasses, joinClass } from '../../../services/student';
-
+import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import BeatLoader from "react-spinners/BeatLoader";
 import {convertDate} from '../../../utils/date';
-
+import {
+    Chart as ChartJS,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 import moment from 'moment';
+
+
+ChartJS.register(
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend
+);
 
 const rows: any = [
     {
@@ -68,7 +85,8 @@ const override = {
 function Index() {
     const { t, i18n } = useTranslation();
     let [lang, setLang] = useState<any>(null);
-
+    const [barData, setBarData] = useState<any>({});
+    const [pieData, setPieData] = useState<any>({});
     const [ showJoinModal, setShowJoinModal ] = useState(false);
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
     const [applications, setApplications] = useState([]);
@@ -78,6 +96,21 @@ function Index() {
     const toggleAddModal = () => {
         setShowJoinModal(!showJoinModal);
     }
+
+//phase de tesy
+const exampleBarData = {
+    labels: ['Label 1', 'Label 2'],
+    datasets: [
+        {
+            label: 'Scores',
+            data: [10, 20],
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+        },
+    ],
+};
+
 
  const handleTrans = () => {
         i18n.changeLanguage(lang);
@@ -118,6 +151,54 @@ function Index() {
 
         }
 
+ // Préparer les données pour les graphiques lorsque allElement change
+ useEffect(() => {
+    if (allElement.length === 0) return;
+
+    const labels = allElement.map(
+        (item: any) => `${item.typeTest} (${item.niveau})`
+    );
+    const avgScores = allElement.map((item: any) => item.avgScore);
+    const counts = allElement.map((item: any) => item.count);
+
+    // Données pour l'histogramme
+    setBarData({
+        labels,
+        datasets: [
+            {
+                label: 'Score Moyen',
+                data: [0,2],
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+            },
+        ],
+    });
+
+    // Données pour le diagramme circulaire
+    setPieData({
+        labels,
+        datasets: [
+            {
+                label: 'Proportion des Tests',
+                data: counts,
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40',
+                ],
+            },
+        ],
+    });
+}, [allElement]);
+
+
+
+
+
     const handleGetApplications = ()  => {
         setLoading(true);
         setApplications([]);
@@ -145,6 +226,7 @@ function Index() {
     },[activeAcademyYear]);
 
         useEffect(() => {
+            console.log('Bar Data:', barData);
             handleGetElements();
         },[]);
     
@@ -226,6 +308,26 @@ function Index() {
                                             </tr> )}
                                         </tbody>
                                     </table>
+                                    <div>
+
+                                         <div className="mt-10">
+            <h2 className="text-center">Analyse Statistique</h2>
+            {loadingElement ? (
+                  <BeatLoader
+                  color="#623d91" 
+                  loading={loadingElement}
+                  cssOverride={override}
+          />
+            ) : (
+                <>
+                     <div>
+                        <h3>Histogramme :</h3>
+                        <Bar data={exampleBarData} />
+                    </div>
+                </>
+            )}
+        </div>
+                                    </div>
                                 </div>
 
 

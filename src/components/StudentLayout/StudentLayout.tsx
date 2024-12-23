@@ -212,7 +212,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
                         </select>
                         <div className="divider"></div>
                         <a href="" className="link notify">
-                            <i className="fa fa-bell" aria-hidden="true"> <AiTwotoneBell /></i>
+                            <i className="" aria-hidden="true"> <AiTwotoneBell /></i>
                         </a>
                         <div className="divider"></div>
                         <div className="profile-btn" onClick={() => setShowUserMenu(!showUserMenu)}>
