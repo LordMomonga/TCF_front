@@ -289,7 +289,7 @@ const exampleBarData = {
                                         <input type="search" name="" id="" placeholder="Find ..." />
                                         <button type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
                                     </form> */}
-                                    <button onClick={toggleAddModal} className="btn btn-primary btn-add student-button">{t('layout.abonnement')}  <i className="fas fa-plus"><BiPlusMedical /></i></button>
+                                    <button onClick={toggleAddModal} className="btn btn-primary btn-add student-button">{t('layout.abonnement')}  <i className=""><BiPlusMedical /></i></button>
                                 </div>
                                 <div className="table-con">
                                 <div style={{textAlign: 'center',}}>
