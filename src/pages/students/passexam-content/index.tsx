@@ -143,7 +143,7 @@ function Index() {
     });
 
     return (
-        <StudentLayout title="Pass Simulations And Solutions" pageTitle="Pass Simulation">
+        <StudentLayout title="Pass Simulations " pageTitle="Pass Simulation">
            
       {existed  && <div className="section">
             <div className="parent-con">

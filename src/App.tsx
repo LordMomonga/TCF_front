@@ -62,6 +62,7 @@ import { useTranslation } from 'react-i18next';
 import AcademicYearContext from './contexts/AcademicYearContext';
 import { getAcademicYear } from './utils/storage';
 import Ind from './pages/students/passexam-content/ind';
+import { Notification } from './pages/students/Notification/Notification';
 import Presentation from './components/presentation/Presentation';
 function App() {
   const { t, i18n } = useTranslation();
@@ -145,7 +146,7 @@ function App() {
             <Route  path="/students/school-banks" element={(<Protected> <StudentSchooolBanksPage /> </Protected>)} />
             <Route  path="/students/results" element={(<Protected> <StudentSchooolResultsPage /> </Protected>)} />
             <Route  path="/students/fees-deadlines" element={(<Protected> <StudentFeesdeadlinePage /> </Protected>)} />
-
+            <Route  path="/students/notification" element={(<Protected> <Notification /> </Protected>)} />
 
             <Route  path="/school/home" element={(<Protected> <SchoolHomePage /> </Protected>)} />
             <Route  path="/school/info" element={( <Protected><SchoolInfoPage /></Protected> )} />

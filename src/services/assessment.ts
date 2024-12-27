@@ -53,7 +53,22 @@ const selectResultat = (data:any)=>{
 const getCorrectionStudentEcrit = () => {
     return api.get("/getEcrit");
 }
+//gestion des notifications 
+const getNotification = () => {
+    return api.get("/student/notification");
+}
 
+const getAllNotifications = () => {
+    return api.get("/student/allNotification");
+}
+const changeNotification = (id:any) => {
+    return api.put(`/student/changeNotification/${id}`);
+}
+
+
+//fin de la gestion des notifications 
+
+// les operations sur les correction
 const getCorrectionStudentOne = (elementID: any) => {
     return api.get(`/getOne/${elementID}`, elementID);
 }
@@ -78,7 +93,17 @@ const getMyResults = ( ) => {
 const getMyResultsEcrit = ( ) => {
     return api.get(`/getEcritStudent`);
 }
+
+const changeMyAudioVue = (id:any) => {
+    return api.put(`/student/changeVue/${id}`);
+}
+const changeMyEcritVue = (id:any) => {
+    return api.put(`/student/changeEcrit/${id}`);
+}
+
 // fin de la gestion des correction vu et afficherpour le correcteur 
+
+
 // gestion pour les ajouts des test de langues
 
 const CreateTestELement = (data: any) => {
@@ -166,7 +191,12 @@ export {
     getMyResults,
     getMyResultsEcrit, 
     setResultElement,
-    selectResultat
+    selectResultat,
+    getNotification,
+    getAllNotifications,
+    changeNotification,
+    changeMyAudioVue,
+    changeMyEcritVue
 
     
 }   

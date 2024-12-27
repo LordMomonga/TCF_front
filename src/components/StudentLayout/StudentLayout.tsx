@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { GoDeviceCameraVideo } from 'react-icons/go';
 import AcademicYearContext from '../../contexts/AcademicYearContext';
 import { BsBank2 } from 'react-icons/bs';
+import { getNotification } from "../../services/assessment";
 
 import { getUser } from '../../utils/storage';
 import { studentGetAcademicYears } from '../../services/student';
@@ -27,7 +28,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
 
     const [academicYears, setAcademicYears] = useState([]);
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
-
+    const [notification, setNotification] = useState<any>([])
 
     const navigate = useNavigate();
     const [user, setUser] = useState<any>(null);
@@ -49,7 +50,22 @@ function StudentLayout({ title, children, pageTitle } : any) {
             }
         })
     }
+    const handleNotification = () => {
+        getNotification().then((res:any)=> {
+            if(res.ok){
+                setNotification(res?.data)
+                console.log(res?.data, 'la notification a biue');
+                
+            } else {
+                console.log('erreur pour la notiffication ')
+            }
 
+        })
+    }
+
+    const goToNotification = () => {
+        navigate('/students/notification')
+    }
     const handleAccademicYearChange = (e: any) => {
         setActiveAcademyYear(e.target.value);
         storeAcademicYear(e.target.value);
@@ -107,6 +123,11 @@ function StudentLayout({ title, children, pageTitle } : any) {
 
     useEffect(() => {
         handleGetAcademicYears();
+        handleNotification();
+    },[])
+    useEffect(() => {
+      
+        handleNotification();
     },[])
 
 
@@ -114,7 +135,7 @@ function StudentLayout({ title, children, pageTitle } : any) {
         <div className="dashboard-grid">
         <div className={`sidebar-student student student-dashboard-sidebar  ${!showStudNav ? 'show' : ''}`}>
             <div className="logo" style={{cursor: 'pointer'}}>
-                <a onClick={() => navigate('/')}><span className='text-3xl text-white font-bold '>Tolkin</span></a>
+                <a onClick={() => navigate('/students/home')}><span className='text-3xl text-white font-bold '>Tolkin</span></a>
             </div>
             <div className="menu">
                 <div className="sub-menu">
@@ -211,8 +232,14 @@ function StudentLayout({ title, children, pageTitle } : any) {
                             <option value="fr">🇫🇷 FR</option>
                         </select>
                         <div className="divider"></div>
-                        <a href="" className="link notify">
+                        <a href="" className="pr-5 text-xl relative" onClick={() => goToNotification()}>
+                        <div className="absolute  left-2 text-white  ">
+                            <div className="flex w-6 h-6 transform scale-[0.5] font-bold rounded-full  bg-primary items-center justify-center text-[13px] text-white ">
+                                {notification.length}
+                            </div>
+                            </div>    
                             <i className="" aria-hidden="true"> <AiTwotoneBell /></i>
+                            
                         </a>
                         <div className="divider"></div>
                         <div className="profile-btn" onClick={() => setShowUserMenu(!showUserMenu)}>

@@ -1,3 +1,4 @@
+import { FaHandPointer } from "react-icons/fa"; 
 import React, { useState, useEffect, useContext }  from 'react';
 import './school-results.css';
 import { BiTrash } from 'react-icons/bi';
@@ -17,7 +18,7 @@ import { getStudentSolutions, getStudentsClasses, getAcceptedClasses, getStudent
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaTimesCircle } from 'react-icons/fa';
 import moment from 'moment';
-import { getTotalAssessments } from '../../../services/assessment';
+import { changeMyEcritVue, getTotalAssessments } from '../../../services/assessment';
 import { VideoPlayerModal } from '../../../components';
 import { convertDate } from '../../../utils/date';
 import AcademicYearContext from '../../../contexts/AcademicYearContext';
@@ -26,6 +27,7 @@ import { getMyResults } from '../../../services/assessment';
 import { getMyResultsEcrit } from '../../../services/assessment';
 import { HandPlatter } from 'lucide-react';
 import { BiTime } from 'react-icons/bi';
+import { changeMyAudioVue } from '../../../services/assessment';
 const rows: any = [
     {
         label: '#',
@@ -90,7 +92,7 @@ function Index() {
     const [modalData, setModalData] = useState<string | null>(null);
     const [note, setNote] = useState<string | null>(null);
     const [decision, setDecision] = useState<string | null>(null);
-
+    let changeValue = 0
 
     
     const handleShowResults = () =>{
@@ -110,11 +112,55 @@ function Index() {
         })
     }
 
+    const handleChangeEcrit = (id:any) => {
+
+        changeMyEcritVue(id).then((res:any)=> {
+           if(res.ok){
+              setLoading(true)
+              handleShowResults()
+              handleShowResults2()
+               console.log( 'la valeur a bien été changé');
+               
+           } else {
+               console.log('erreur pour la notiffication ')
+           }
+          
+       })
+       changeValue ++
+
+     
+   }
+
+   const handleChangeAudio = (id:any) => {
+
+    changeMyAudioVue(id).then((res:any)=> {
+       if(res.ok){
+        
+        console.log( 'la valeur a bien été changé');
+
+       } else {
+           console.log('erreur pour la notiffication ')
+       }
+
+   })
+   changeValue ++
+
+}
+
     const handleToggle = (commentaire: string, note: string) => {
         setModalData(commentaire); // Passe le commentaire dans le modal
         setShowModal(!showmodal); // Affiche ou cache le modal
         setNote(note)
 
+    };
+    const handleAudio = (commentaire: string, note: string, id:any) => {
+        handleToggle(commentaire, note)
+        handleChangeAudio(id) 
+       
+    };
+    const handleEcrit = (commentaire: string, note: string, id:any) => {
+        handleToggle(commentaire, note)
+        handleChangeEcrit(id)
     };
 
     const handleShowResults2 = () =>{
@@ -141,7 +187,7 @@ function Index() {
         handleShowResults()
         handleShowResults2()
     
-    },[activeAcademyYear]);
+    },[changeValue]);
 
     return (
         <StudentLayout title="My Results " pageTitle="Results test">
@@ -172,16 +218,16 @@ function Index() {
                             </thead>
                         
                             <tbody>
-                                {userSolution?.map((data: any, index: any) => <tr>
-                                    <td className="flex-center">{index + 1}</td>
+                                {userSolution?.map((data: any, index: any) => <tr className={`cursor-pointer ${data?.vue === false ? 'font-bold text-black shadow-md shadow-gray-200' :  'text-gray-200'} `} >
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-center`}>{index + 1}</td>
                                     <td className="flex-start font-bold text-black text-2xl">
-                                        <p>{data?.note}</p>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.note}</p>
                                     </td>
                                     <td>
-                                        <p>{data?.contenu1_id?.TypeElement}</p>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.contenu1_id?.TypeElement}</p>
                                     </td>
-                                    <td onClick={() => handleToggle(data?.commentaire, data?.note)} className='text-blue-500 hover:underline cursor-pointer'>
-                                        <p>{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
+                                    <td onClick={() =>{ handleAudio(data?.commentaire, data?.note, data?._id)}} className='text-blue-500 hover:underline cursor-pointer'>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
     ? data.commentaire.split(' ').slice(0, 2).join(' ') + '...'
     : "non commentaire"}</p>
                                     </td>
@@ -240,26 +286,26 @@ function Index() {
 
 
                            
-                                {user?.map((data: any, index: any) => <tr>
-                                    <td className="flex-center">{index + 1}</td>
-                                    <td className="flex-start font-bold text-black text-2xl">
-                                        <p>{data?.note ? "aucune note": `${data?.note}`}</p>
+                                {user?.map((data: any, index: any) => <tr  className={`cursor-pointer ${data?.vue === false ? 'font-bold text-black shadow-md shadow-gray-200' :  'text-gray-200'} `}>
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-center`}>{index + 1}</td>
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.note ? "aucune note": `${data?.note}`}</p>
                                     </td>
                                     <td>
-                                        <p>{data?.contenu1_id?.TypeElement}</p>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.contenu1_id?.TypeElement}</p>
                                     </td>
-                                    <td onClick={() => handleToggle(data?.commentaire, data?.note)} className='text-blue-500 hover:underline cursor-pointer'>
-                                        <p>{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
+                                    <td onClick={() =>  handleEcrit(data?.commentaire, data?.note, data?._id)} className='text-blue-500 hover:underline cursor-pointer'>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start flex items-center gap-2 hover:text-xl`}><FaHandPointer className=" transform rotate-90 text-blue-200 " />{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
     ? data.commentaire.split(' ').slice(0, 2).join(' ') + '...'
     : "non commentaire"}</p>
                                     </td>
                                     <td>
-                                        <p>{data?.note ? "corrected" : "pending"}</p>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.note ? "corrected" : "pending"}</p>
                                     </td>
                                     {/* <td className="flex-start">{data?.active_to}</td> */}
                                 
                                     <td className="flex-start">
-                                        <p>{convertDate(data?.createdAt)}</p>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{convertDate(data?.createdAt)}</p>
                                     </td>
                                      
             

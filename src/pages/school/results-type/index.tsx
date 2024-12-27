@@ -1,3 +1,5 @@
+import { MdOutlineUpdate } from "react-icons/md"; 
+import { AiFillSave } from "react-icons/ai"; 
 import React, { useState, useEffect, useContext }  from 'react';
 import './result-type.css';
 import { BsFillEyeFill } from 'react-icons/bs';
@@ -426,7 +428,7 @@ const handleSubmit = (event: React.FormEvent) => {
               </div>
               <form action="" onSubmit={handleSubmit} >
             <div className='mt-2 mb-3 flex justify-center'>
-                  <textarea  name="comment"  className='mt-2 px-3 py-2'  value={comment} onChange={handleCommentChange} id=""></textarea>
+                  <textarea  name="comment"  className='mt-2 px-3 py-2 border-2 border-solid border-gray-500 '  value={comment} onChange={handleCommentChange} id=""></textarea>
                   </div>
             <div className='flex justify-center items-center gap-2'>
                 note <select name="level" id="level" value={level}  onChange={handleLevelChange} className=' text-white bg-primary py-2 px-5'>
@@ -440,11 +442,11 @@ const handleSubmit = (event: React.FormEvent) => {
                 </select>
             </div>
             <div className='flex justify-between mt-5'>
-            <button  type="submit" className='bg-green-500 text-white px-2 rounded-md hover:bg-green-400 '>
-            Enregistrer
+            <button  type="submit" className='flex items-center gap-2 bg-green-500 text-white px-2 py-2  rounded-md hover:bg-green-400 '>
+            <AiFillSave />Enregistrer
            </button>
-           <button className='bg-gray-500 text-white px-2 rounded-md hover:bg-gray-400 '>
-            Modifier
+           <button className='bg-gray-500 text-white flex items-center gap-2 py-2  px-2 rounded-md hover:bg-gray-400 '>
+            <MdOutlineUpdate />Modifier
            </button>
 
             </div>
