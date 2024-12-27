@@ -396,40 +396,40 @@ const renderTaskContent = () => {
 
   return (
     <div className='bg-white'>
-       <nav className='px-5 py-5 flex items-center bg-prim'>
-        <span className='font-bold text-3xl text-white'>Tolkin</span>
+      <nav className='px-5 py-3 md:py-5 flex items-center bg-prim'>
+        <span className='font-bold text-xl md:text-3xl text-white'>Tolkin</span>
       </nav>
-      <div className='z-10 fixed left-0 px-5 bg-prim h-[80%]'>
+      <div className='z-10 fixed md:w-[13%] w-[18%] overflow-hidden left-0 px-2 md:px-5 bg-prim h-[90%]'>
         <span className='mt-8 block font-bold text-sm uppercase text-white  '>
           <div className="text-white flex items-center gap-2">
           <div className=" text-white h-6 w-6 bg-white flex justify-center rounded-full items-center ">
           <MdRecordVoiceOver />
           </div>
-          Expression Orale
+          <span className="hidden md:block uppercase text-white">Expression orale</span>
           </div></span>
         <div
-          className={`mt-[30%] flex items-center gap-2 pl-2   text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] text-sm md:text-md overflow-hidden flex items-center gap-2 pl-2   text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache1')}
         >
-          <MdSettingsVoice /> tache 1
+          <MdSettingsVoice className="hidden md:block"/> tache 1
         </div>
         <div
-          className={`mt-[30%] flex items-center gap-2 pl-2  text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] text-sm md:text-md overflow-hidden flex items-center gap-2 pl-2  text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache2')}
         >
-         <MdSettingsVoice /> tache 2
+         <MdSettingsVoice className="hidden md:block"/> tache 2
         </div>
         <div
-          className={`mt-[30%] flex items-center gap-2 pl-2  text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
+          className={`mt-[30%] text-sm md:text-md overflow-hidden flex items-center gap-2 pl-2  text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache3')}
         >
-          <MdSettingsVoice />tache 3
+          <MdSettingsVoice className="hidden md:block" />tache 3
         </div>
       </div>
      
 
 
-      <div className='z-10 fixed right-0 px-4 bg-prim h-[80%]'>
+      <div className='z-10 fixed md:w-[15%] w-[15%]  hidden md:block w-full right-0 px-1 md:px-4 bg-prim h-[80%]'>
         <div className='bg-white px-5 text-gray-600 text-sm text-center rounded-md py-2'>
           <h1 className='font-bold underline underline-offset-4'>Mon profil</h1>
           <div className='py-3 text-left'>
@@ -451,22 +451,22 @@ const renderTaskContent = () => {
         </div>
       </div>
 
-      <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-3 px-[10%]'>
+      <div className='z-10 fixed bottom-0 bg-prim w-screen  block md:flex  justify-between py-1 md:py-3 px-[10%]'>
         <div
         onClick={handleSubmit}
-          className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer' 
+          className='bg-white text-gray-600 px-5 py-2 rounded-sm text-sm md:text-md mb-2 font-bold flex gap-2 items-center cursor-pointer' 
         >
           <BiSkipNext className='text-md bg-green-500 text-white' />
           <span>submit this test</span>
         </div>
-    <Link to="/students/passexams">    <div className='bg-white text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer' >
+    <Link to="/students/passexams">    <div className='bg-white text-gray-600 px-5 py-2 rounded-sm font-bold flex gap-2 items-center cursor-pointer' >
           <BiExit className='text-md bg-red-500 text-white' />
           <span>quit the examination</span>
         </div></Link>
       </div>
      
-      <div className='bg-white h-[80%] w-[73%] py-2 left-[12%] px-5 text-gray-700 fixed z-0'>
-        <div className='mt-5'>{renderTaskContent()}</div>
+      <div className='bg-white h-[90%] w-[90%] md:w-[75%] py-2 left-[11%] text-sm md:text-md md:left-[12%] px-5 text-gray-700 fixed z-0'>
+        <div className='mt-5 max-h-[70vh] overflow-y-auto'>{renderTaskContent()}</div>
       </div>
     
 
