@@ -1,3 +1,7 @@
+import { SiBaremetrics } from "react-icons/si"; 
+import { GrDocumentPerformance } from "react-icons/gr"; 
+import { AiTwotoneFilter } from "react-icons/ai"; 
+import { AiTwotonePieChart } from "react-icons/ai"; 
 import { BiPlusMedical } from "react-icons/bi"; 
 import React, { useState, useEffect, useContext } from 'react';
 import './landing.css';
@@ -29,8 +33,11 @@ import {
     LinearScale,
     Tooltip,
     Legend,
+    ArcElement
+    
 } from 'chart.js';
 import moment from 'moment';
+import { log } from "console";
 
 
 ChartJS.register(
@@ -38,7 +45,8 @@ ChartJS.register(
     CategoryScale,
     LinearScale,
     Tooltip,
-    Legend
+    Legend,
+    ArcElement
 );
 
 const rows: any = [
@@ -93,17 +101,20 @@ function Index() {
     const [loading, setLoading] = useState(false);
     const [loadingElement , setLoadingElement] = useState(false);
     const [allElement, setAllElement] = useState<any>([])
+    const [selectionTest, setSelectionTest] = useState<any>()
+
+
     const toggleAddModal = () => {
         setShowJoinModal(!showJoinModal);
     }
 
 //phase de tesy
 const exampleBarData = {
-    labels: ['Label 1', 'Label 2'],
+    labels: ['none(A1)', ' none(A2)','none(B1)'],
     datasets: [
         {
             label: 'Scores',
-            data: [10, 20],
+            data: [10, 20, 30],
             backgroundColor: 'rgba(75, 192, 192, 0.6)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
@@ -118,7 +129,7 @@ const exampleBarData = {
   
       const handleLangInit = () => {
         let lng = localStorage.getItem('locale');
-        console.log("locale", lng);
+       
         if(lng == null) {
           localStorage.setItem('locale', 'fr')
           setLang('fr');
@@ -134,40 +145,56 @@ const exampleBarData = {
         }
       }
 
-     const handleGetElements =() => { 
+     const handleGetElements = (test:any) => { 
+        const fate = test
+        const testType = test
+        
         setLoadingElement(true);
-        setAllElement([]);
+        setAllElement([])
 
-        selectResultat().then((res: any) => {
-            console.log('RESPONSE GET: ', res);
+        selectResultat(fate).then((res: any) => {
+            
             if(res.ok) {
-                setAllElement(res.data.data);
+                
+
+            console.log('ca passe', fate);
+            
+            setAllElement(res?.data?.data); 
+
+            handleEffect(res?.data?.data);
             }
+           
+            console.log("je ne vois element nul part", allElement);
             setLoadingElement(false);
         }).catch(err => {
-            console.log('error: ', err);
             setLoadingElement(false);
         })
+     
 
         }
 
- // Préparer les données pour les graphiques lorsque allElement change
- useEffect(() => {
-    if (allElement.length === 0) return;
+        const handleSelectedTest = ((element:any) =>{
 
+        })
+
+ // Préparer les données pour les graphiques lorsque allElement change
+ const handleEffect = ((allElement:any) => {
+   
     const labels = allElement.map(
         (item: any) => `${item.typeTest} (${item.niveau})`
     );
     const avgScores = allElement.map((item: any) => item.avgScore);
     const counts = allElement.map((item: any) => item.count);
-
+        console.log('le nombre de tableau present',avgScores);
+        console.log('le nombre de fois que sa apparait',counts)
+        
     // Données pour l'histogramme
     setBarData({
-        labels,
+        labels:labels,
         datasets: [
             {
                 label: 'Score Moyen',
-                data: [0,2],
+                data: avgScores ,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 2,
@@ -176,12 +203,12 @@ const exampleBarData = {
     });
 
     // Données pour le diagramme circulaire
-    setPieData({
-        labels,
+   setPieData({
+         labels:labels,
         datasets: [
             {
                 label: 'Proportion des Tests',
-                data: counts,
+                data: counts ,
                 backgroundColor: [
                     '#FF6384',
                     '#36A2EB',
@@ -193,7 +220,7 @@ const exampleBarData = {
             },
         ],
     });
-}, [allElement]);
+});
 
 
 
@@ -203,17 +230,21 @@ const exampleBarData = {
         setLoading(true);
         setApplications([]);
         getStudentApplications().then((res: any) => {
-            console.log('RESPONSE GET: ', res);
+
             if(res.ok) {
                 setApplications(res.data.data);
             }
             setLoading(false);
         }).catch(err => {
-            console.log('error: ', err);
             setLoading(false);
         })
     }
 
+    useEffect(() => {
+        
+        
+        
+    },[]);
  
 
     const handleClassAdded = ()  => {
@@ -225,10 +256,6 @@ const exampleBarData = {
         handleGetApplications();
     },[activeAcademyYear]);
 
-        useEffect(() => {
-            console.log('Bar Data:', barData);
-            handleGetElements();
-        },[]);
     
     useEffect(() => {
         changeLang()
@@ -310,8 +337,11 @@ const exampleBarData = {
                                     </table>
                                     <div>
 
-                                         <div className="mt-10">
-            <h2 className="text-center">Analyse Statistique</h2>
+            
+            
+             <div className="mt-20">
+            <h2 className="text-center text-2xl text-blue-500 uppercase flex items-center gap-2 justify-center font-bold">Mes Performances<SiBaremetrics /></h2>
+            
             {loadingElement ? (
                   <BeatLoader
                   color="#623d91" 
@@ -320,10 +350,35 @@ const exampleBarData = {
           />
             ) : (
                 <>
-                     <div>
-                        <h3>Histogramme :</h3>
-                        <Bar data={exampleBarData} />
+                  <div className="mt-10 mb-2">
+                        <div className="flex items-center gap-2 ">
+                        <span className="flex items-center transform  translate-x-7"><AiTwotoneFilter /></span>
+                           <select name="" id="" onChange={(e: any) => handleGetElements(e.target.value)} value={selectionTest}  className="py-1 border-2 border-solid rounded-sm border-black px-5 select-field text-white"> 
+                           <option value="" className="text-white" >selectionnez un test</option>
+                           <option value="comprehension orale" className="text-white">Comprehension Orale</option>
+                           <option value="comprehension ecrite" className="text-white">Comprehension Ecrite</option>
+                           <option value="expression orale" className="text-white">Expression Orale</option>
+                           <option value="expression ecrite" className="text-white">Expression Ecrite </option>
+                           </select>
+                        </div>
+
                     </div>
+                    {barData?.labels && (<div>
+                        <h3>
+                            niveau Obtenu en {selectionTest} :</h3>
+                        <Bar data={barData} />
+                    </div>)}  
+
+                  
+                    {pieData?.labels && (<div className="mt-5 w-[100%] flex justify-center">
+                        
+                        <h3 className="text-blue-500 flex items-center gap-2"><AiTwotonePieChart />Diagramme Circulaire :</h3>
+                        <div className="w-[50%] mt-10 ">
+                        <Pie data={pieData?.labels ? pieData : exampleBarData}  className=""/>
+
+                        </div>
+                    </div>)} 
+
                 </>
             )}
         </div>

@@ -44,8 +44,8 @@ const setResultElement = (data:any) => {
     return api.post('/student/type', data)
 }
 
-const selectResultat = ()=>{
-    return api.get('/student/type');
+const selectResultat = (data:any)=>{
+    return api.get(`/student/type/${data}`);
 
 }
 
