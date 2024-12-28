@@ -43,7 +43,7 @@ const override = {
   const MessageValidation = ({pageUrl, message, onClose}: any) => {
 
     return(
-        <div className='absolute bg-white left-[25%] text-center border-gray-500 shadow-md shadow-gray-500   top-1 px-10 py-5 rounded-md'>
+        <div className='absolute bg-white left-2  md:left-[25%] text-center border-gray-500 shadow-md shadow-gray-500   top-1 px-10 py-5 rounded-md'>
             <div className='relative w-full text-center'>
             <p className='block mt-5 p-2 text-gray-500 uppercase font-bold'>{message}</p>  
           <span className='font-bold mt-2 text-[13px] text-blue-500 flex items-center gap-1 justify-center'>NB:<AiFillMeh className="text-2xl text-blue-500"/>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>

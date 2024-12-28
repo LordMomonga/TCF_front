@@ -64,6 +64,7 @@ import { getAcademicYear } from './utils/storage';
 import Ind from './pages/students/passexam-content/ind';
 import { Notification } from './pages/students/Notification/Notification';
 import Presentation from './components/presentation/Presentation';
+import { NotificationAdmin } from './pages/school/Notification/NotificationAdmin';
 function App() {
   const { t, i18n } = useTranslation();
   let [lang, setLang] = useState<any>(null);
@@ -149,6 +150,7 @@ function App() {
             <Route  path="/students/notification" element={(<Protected> <Notification /> </Protected>)} />
 
             <Route  path="/school/home" element={(<Protected> <SchoolHomePage /> </Protected>)} />
+            <Route  path="/school/notification" element={(<Protected> <NotificationAdmin /> </Protected>)} />
             <Route  path="/school/info" element={( <Protected><SchoolInfoPage /></Protected> )} />
             <Route  path="/school/speciality" element={(<Protected> <SchoolSpecialityPage /> </Protected>)} />
             <Route  path="/school/students" element={(<Protected> <SchoolStudentsPage /> </Protected>)} />

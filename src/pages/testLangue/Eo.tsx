@@ -399,7 +399,7 @@ const renderTaskContent = () => {
       <nav className='px-5 py-3 md:py-5 flex items-center bg-prim'>
         <span className='font-bold text-xl md:text-3xl text-white'>Tolkin</span>
       </nav>
-      <div className='z-10 fixed md:w-[13%] w-[18%] overflow-hidden left-0 px-2 md:px-5 bg-prim h-[90%]'>
+      <div className='z-10 fixed md:w-[13%] w-[18%] overflow-hidden md:block hidden left-0 px-2 md:px-5 bg-prim h-[90%]'>
         <span className='mt-8 block font-bold text-sm uppercase text-white  '>
           <div className="text-white flex items-center gap-2">
           <div className=" text-white h-6 w-6 bg-white flex justify-center rounded-full items-center ">
@@ -451,22 +451,38 @@ const renderTaskContent = () => {
         </div>
       </div>
 
-      <div className='z-10 fixed bottom-0 bg-prim w-screen  block md:flex  justify-between py-1 md:py-3 px-[10%]'>
+      <div className='z-10 fixed bottom-0 bg-prim w-screen  flex  justify-between items-center py-2 md:py-3 px-[10%]'>
         <div
         onClick={handleSubmit}
-          className='bg-white text-gray-600 px-5 py-2 rounded-sm text-sm md:text-md mb-2 font-bold flex gap-2 items-center cursor-pointer' 
+          className='bg-white text-gray-600 px-1 md:px-5 py-1 rounded-sm  font-bold flex gap-2 items-center cursor-pointer' 
         >
           <BiSkipNext className='text-md bg-green-500 text-white' />
           <span>submit this test</span>
         </div>
-    <Link to="/students/passexams">    <div className='bg-white text-gray-600 px-5 py-2 rounded-sm font-bold flex gap-2 items-center cursor-pointer' >
+    <Link to="/students/passexams">    
+    <div className='bg-white text-gray-600 px-1 md:px-5 py-1 rounded-sm font-bold flex gap-2 items-center cursor-pointer' >
           <BiExit className='text-md bg-red-500 text-white' />
-          <span>quit the examination</span>
+          <span>quit this test</span>
         </div></Link>
       </div>
      
-      <div className='bg-white h-[90%] w-[90%] md:w-[75%] py-2 left-[11%] text-sm md:text-md md:left-[12%] px-5 text-gray-700 fixed z-0'>
-        <div className='mt-5 max-h-[70vh] overflow-y-auto'>{renderTaskContent()}</div>
+      <div className='bg-white h-[90%] w-[100%] md:w-[75%] py-2 left-0 text-sm md:text-md md:left-[12%] px-5 text-gray-700 fixed z-0'>
+        <div className='mt-5 max-h-[70vh] overflow-y-auto'>{renderTaskContent()}
+
+        <div className="md:hidden block w-full mt-5 absolute bottom-[10%]">
+          <div className="flex justify-center gap-5">
+            <button className={` text-sm  text-gray-700 text-center px-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white border-[1px] border-solid border-gray-500'}`}  onClick={() => setSelectedTask('tache1')}> 
+            <MdRecordVoiceOver /> Tache 1
+              </button>
+              <button className={` text-sm  text-gray-700 text-center px-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white border-[1px] border-solid border-gray-500'}`}  onClick={() => setSelectedTask('tache2')}>
+              <MdRecordVoiceOver /> Tache 2
+                 </button>
+                <button className={` text-sm  text-gray-700 text-center px-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white border-[1px] border-solid border-gray-500'}`}  onClick={() => setSelectedTask('tache3')}>
+                <MdRecordVoiceOver /> Tache 3
+                </button>
+          </div>
+        </div>
+        </div>
       </div>
     
 

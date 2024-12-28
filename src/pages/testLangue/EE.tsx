@@ -335,13 +335,13 @@ const EE: React.FC = () => {
       <nav className='px-5 py-3 md:py-5 flex items-center bg-prim'>
         <span className='font-bold text-xl md:text-3xl text-white'>Tolkin</span>
       </nav>
-      <div className='z-10 fixed md:w-[13%] w-[18%] overflow-hidden left-0 px-2 md:px-5 bg-prim h-[90%]'>
+      <div className='z-10 fixed md:w-[13%] w-[18%] overflow-hidden left-0 px-2 md:px-5 bg-prim h-[90%] hidden md:block'>
         <span className='mt-8 block font-bold text-sm uppercase text-white flex items-center gap-2 '> <span className="w-6 h-6 bg-white flex items-center justify-center rounded-full "> <BsFillPenFill /> </span> <span className="hidden md:block uppercase text-white">Expression Ecrite</span> </span>
         <div
           className={`mt-[30%] text-sm md:text-md overflow-hidden text-gray-700 text-center pl-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
           onClick={() => setSelectedTask('tache1')}
         >
-          <CgGoogleTasks className="hidden md:block" /> tache 1
+          <CgGoogleTasks  /> tache 1
         </div>
         <div
           className={`mt-[30%] text-sm md:text-md overflow-hidden flex items-center gap-1 pl-2 text-gray-700 text-center rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white'}`}
@@ -391,25 +391,44 @@ const EE: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className='z-10 fixed bottom-0 bg-prim w-screen  block md:flex  justify-between py-1 md:py-3 px-[10%]'>
-       <div
-          className='bg-white text-gray-600 px-5 py-2 rounded-xl text-sm md:text-md mb-2 font-bold flex gap-2 items-center cursor-pointer'
+      <div className='z-10 fixed bottom-0 bg-prim w-screen   flex  justify-between py-2 md:py-3 px-[10%]'>
+        
+        <div
+          className='bg-white text-gray-600 px-2 md:px-5 py-2 rounded-xl text-sm md:text-md mb-2 font-bold flex gap-2 items-center cursor-pointer'
           onClick={handleSubmit}
         >
           <BiSkipNext className='text-md bg-green-500 text-white ' />
           <span>submit this test</span>
         </div> 
-        <Link to="/students/course-contents" className=" mt-0 md:mt-2 block">  
+       
+        <Link to="/students/passexams" className=" mt-0 md:mt-2 block">  
         
         <div
-          className='bg-white text-sm md:text-md text-gray-600 px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer'
+          className='bg-white text-sm md:text-md text-gray-600 px-2 md:px-5 py-2 rounded-xl font-bold flex gap-2 items-center cursor-pointer'
         >
           <BiExit className='text-md bg-red-500 text-white' />
-          <span>quit the examination</span>
+          <span>quit the test</span>
         </div></Link>
+        
+     
+
       </div>
-      <div className='bg-white h-[90%] w-[90%] md:w-[75%] py-2 left-[11%] text-sm md:text-md md:left-[12%] px-5 text-gray-700 fixed z-0'>
+      <div className='bg-white h-[90%] w-[100%] md:w-[75%] py-2 left-[0]  text-sm md:text-md md:left-[12%] px-5 text-gray-700 fixed z-0'>
         <div className='mt-5 max-h-[70vh] overflow-y-auto'>{renderTaskContent()}</div>
+        
+        <div className="md:hidden block w-full mt-5 absolute bottom-[10%]">
+          <div className="flex justify-center gap-5">
+            <button className={` text-sm  text-gray-700 text-center px-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache1' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white border-[1px] border-solid border-gray-500'}`}  onClick={() => setSelectedTask('tache1')}> 
+            <CgGoogleTasks  /> Tache 1
+              </button>
+              <button className={` text-sm  text-gray-700 text-center px-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache2' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white border-[1px] border-solid border-gray-500'}`}  onClick={() => setSelectedTask('tache2')}>
+              <CgGoogleTasks  />  Tache 2
+                 </button>
+                <button className={` text-sm  text-gray-700 text-center px-2 flex items-center gap-2 rounded-md py-1 cursor-pointer ${selectedTask === 'tache3' ? 'bg-blue-500 text-white border-white border-[1px]' : 'bg-white border-[1px] border-solid border-gray-500'}`}  onClick={() => setSelectedTask('tache3')}>
+                <CgGoogleTasks  /> Tache 3
+                </button>
+          </div>
+        </div>
       </div>
       {showConfirmation && (
         <ConfirmationDialog

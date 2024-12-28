@@ -64,7 +64,13 @@ const getAllNotifications = () => {
 const changeNotification = (id:any) => {
     return api.put(`/student/changeNotification/${id}`);
 }
+const changeNotificationAdmin = (id:any) => {
+    return api.put(`/admin/changeNotification/${id}`);
+}
 
+const getAdminNotification = () => {
+    return api.get("/admin/allNotification");
+}
 
 //fin de la gestion des notifications 
 
@@ -196,7 +202,9 @@ export {
     getAllNotifications,
     changeNotification,
     changeMyAudioVue,
-    changeMyEcritVue
+    changeMyEcritVue,
+    getAdminNotification,
+    changeNotificationAdmin
 
     
 }   

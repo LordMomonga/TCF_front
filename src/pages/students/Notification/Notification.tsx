@@ -97,14 +97,14 @@ export const Notification = () => {
                         <tbody>
                             {notification?.map((data:any, index:any) =>
                             
-                            <tr className={`cursor-pointer ${data?.vue === false ? 'font-bold text-black shadow-md shadow-gray-200' :  'text-gray-200'} `} onClick={() => handleChangeNotification(data?._id)}>
-                               <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-center`}>{index + 1}</td> 
-                               <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>
-                                <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.typeNotification}</p>
+                            <tr className={`cursor-pointer ${data?.vue === false ? 'font-bold text-black shadow-md shadow-gray-200' :  'text-gray-3   00'} `} onClick={() => handleChangeNotification(data?._id)}>
+                               <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-300'} flex-center`}>{index + 1}</td> 
+                               <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-300'} flex-start`}>
+                                <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-300'} flex-start`}>{data?.typeNotification}</p>
                                </td>
                               
                                <td className="flex-start">
-                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{convertDate(data?.createdAt)}</p>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-300'} flex-start`}>{convertDate(data?.createdAt)}</p>
                                     </td>
                                     <td className="flex-center">
                                         <div className="flex items-center gap-5">

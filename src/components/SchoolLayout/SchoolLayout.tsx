@@ -15,11 +15,12 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { GoMortarBoard } from 'react-icons/go';
 import { BsBank2 } from 'react-icons/bs';
 import { GiTimeBomb } from 'react-icons/gi';
-
+import { getAdminNotification } from "../../services/assessment";
 import { useTranslation } from 'react-i18next';
 import { getUser } from '../../utils/storage';
 import { schoolGetAcademicYears } from '../../services/school';
 import AcademicYearContext from '../../contexts/AcademicYearContext';
+import { AiTwotoneBell } from "react-icons/ai";
 
 function SchoolLayout({ title, children, pageTitle } : any) {
     const { t, i18n } = useTranslation();
@@ -33,6 +34,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
 
     const [showStudNav,setShowStudNav] = useState(true);
     const [showUserMenu, setShowUserMenu] = useState(false);
+    const [notification, setNotification] = useState<any>([])
 
     const handleGetAcademicYears = () => {
         schoolGetAcademicYears().then((res: any) => {
@@ -48,6 +50,22 @@ function SchoolLayout({ title, children, pageTitle } : any) {
         })
     }
 
+
+    const handleNotification = () => {
+        getAdminNotification().then((res:any)=> {
+            if(res.ok){
+                console.log(res?.data, 'la notification a biue');
+                setNotification(res?.data?.notification2)
+               
+                
+            } else {
+                console.log('erreur pour la notiffication ')
+            }
+
+        })
+    }
+
+
     const handleAccademicYearChange = (e: any) => {
         setActiveAcademyYear(e.target.value);
         storeAcademicYear(e.target.value);
@@ -62,18 +80,22 @@ function SchoolLayout({ title, children, pageTitle } : any) {
 
 
     const toggleNav = () => {
-        console.log('toggle nav')
+       
         setShowStudNav(!showStudNav);
-        console.log(' nav comp')
+       
     }
 
     const handleTrans = () => {
         i18n.changeLanguage(lang);
       };
+
+      const goToNotification = ()=> {
+        navigate("/school/notification")
+      }
   
       const handleLangInit = () => {
         let lng = localStorage.getItem('locale');
-        console.log("locale", lng);
+        
         if(lng == null) {
           localStorage.setItem('locale', 'fr')
           setLang('fr');
@@ -91,6 +113,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
       
       useEffect(() => {
         handleLangInit();
+        handleNotification()
       },[])
   
       useEffect(() => {
@@ -98,7 +121,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
       }, [lang]);
 
     useEffect(() => {
-        console.log("USER", getUser());
+       
         let usr = getUser();
         setUser(usr);
     }, [])
@@ -111,7 +134,7 @@ function SchoolLayout({ title, children, pageTitle } : any) {
         <div className="dashboard-grid ">
         <div className={`sidebar-student student student-dashboard-sidebar  ${!showStudNav ? 'show' : ''}`}>
             <div className="logo" style={{cursor: 'pointer'}}>
-                <a onClick={() => navigate('/')}><span className='font-bold text-3xl text-white'>Tolkin</span></a>
+                <a onClick={() => navigate('/school/home')}><span className='font-bold text-3xl text-white'>Tolkin</span></a>
             </div>
             <div className="menu">
                 <div className="sub-menu">
@@ -205,8 +228,15 @@ function SchoolLayout({ title, children, pageTitle } : any) {
                             <option value="fr">🇫🇷 FR</option>
                         </select>
                         <div className="divider"></div>
-                        <a href="" className="link notify">
-                            <i className="fa fa-bell" aria-hidden="true"></i>
+                        <a href="" className="pr-5 text-xl relative" onClick={() => goToNotification()}>
+                           
+                            <div className="absolute  left-2 text-white  ">
+                            <div className="flex w-6 h-6 transform scale-[0.5] font-bold rounded-full  bg-primary items-center justify-center text-[13px] text-white ">
+                                {notification.length}
+                            </div>
+                            </div> 
+                          <i className="" aria-hidden="true"> <AiTwotoneBell /></i>
+                                                      
                         </a>
                         <div className="divider"></div>
                         <div className="profile-btn" onClick={() => setShowUserMenu(!showUserMenu)}>

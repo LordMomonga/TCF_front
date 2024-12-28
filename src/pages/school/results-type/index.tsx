@@ -68,6 +68,8 @@ const SolutionModal = ({message1, solution, data,  onClose}: any) => {
   const [comment, setComment] = useState<any>();
     const [level, setLevel] = useState<any>();
     const [AudioId, setAudioId] = useState<any>();
+
+
     const status = "accepted"
 const handleAudio = () =>  {
 
@@ -334,6 +336,10 @@ const handleSubmit = (event: React.FormEvent) => {
         
     }
 };
+
+const handleSetElement = (nom:any) =>{
+
+}
     const handleSolutionStudentOne = () => {
     
         getCorrectionStudentOneEcrit(data).then((res:any)=> {
@@ -478,6 +484,7 @@ function Index() {
     const [content3, setContent3] = useState<any>()
     const [question, setQuestion] = useState<any>()
     const [solution, setSolution] = useState<any>()
+    const [selectCorrect, setSelectCorrect] = useState<any>();
     // NEW
     let [showCreateResultTypeModal, setShowCreateResultTypeModal] = useState(false);
     let [resultsTypes, setResultTypes] = useState<any>();
@@ -622,11 +629,15 @@ const handleSolutionStudent2 = () => {
             <div className="parent-con mt-5">
                 <div className="data-table">
                     <div className="top">
-                        <button>filtrer</button>
+                     
                         <div className="span">
-                            {/*  */}
+                            <select name="" id="" value={selectCorrect} onChange={(e:any) => setSelectCorrect(e.target.value)} className="select-field">
+                                <option value="All">filtrer par</option>
+                                <option value="pending" >Non corrigé</option>
+                                <option value="corrected">corrigé</option>
+                            </select>
                         </div>
-                          <h1 className='text-center uppercase text-2xl '>EXPRESSION ECRITE </h1>
+                          <h1 className='text-center uppercase text-2xl text-blue-500'>EXPRESSION ECRITE </h1>
                     </div>
                     <div className="table-con">
                     <div style={{textAlign: 'center',}}>
