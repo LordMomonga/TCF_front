@@ -245,12 +245,12 @@ const EE: React.FC = () => {
     switch (selectedTask) {
       case 'tache1':
         return (
-          <div>
-            <h1 className='text-center font-bold text-xl'>Tache 1</h1>
+          <div className=" mt-5 py-5">
+            <h1 className='text-center font-bold text-md md:text-xl'>Tache 1</h1>
             {sujet1?.map((data:any, index:any) => 
             <p className='w-[100%] text-center mt-5'>
-           <span> {data?.titre}</span>
-              <span className='block mt-2 px-5'>{data?.contenu}</span>
+           <span className=" text-black px-2 text-md font-bold">Titre: {data?.titre}</span>
+              <span className='block mt-2 mb-2 px-5 border-solid border-gray-200 border-2'>{data?.contenu}</span>
             </p>
           )}
             <div>
@@ -271,11 +271,11 @@ const EE: React.FC = () => {
       case 'tache2':
         return (
           <div>
-            <h1 className='text-center font-bold text-xl'>Tache 2</h1>
+            <h1 className='text-center font-bold text-md md:text-xl'>Tache 2</h1>
             {sujet2?.map((data:any, index:any) => 
               <p className='w-[100%] text-center mt-5'>
-                <span> {data?.titre}</span>
-                <span className='block mt-2 px-5'>{data?.contenu}</span>
+                <span className="text-black px-2 text-md font-bold">Titre: {data?.titre}</span>
+                <span className='block mt-2 mb-2 px-5 border-solid border-gray-200 border-2'>{data?.contenu}</span>
               </p>
             )}
             <div>
@@ -296,11 +296,11 @@ const EE: React.FC = () => {
       case 'tache3':
         return (
           <div>
-            <h1 className='text-center font-bold text-xl'>Tache 3</h1>
+            <h1 className='text-center font-bold text-md md:text-xl'>Tache 3</h1>
             {sujet3?.map((data:any, index:any) => 
             <p className='w-[100%]  text-center mt-5  '>
-           <span className='font-semibold mt-2'>{data?.titre}</span> 
-              <span className='block mt-2  '>{data?.contenu}</span>
+           <span className='text-black px-2 text-md font-bold'>Titre:{data?.titre}</span> 
+              <span className='block mt-2 mb-2 px-5 border-solid border-gray-200 border-2 '>{data?.contenu}</span>
 
               <div>
                 <div className='mb-5 px-8 text-[14px] text-center w-[92%]'><span className='block font-bold'>Document 1</span>{data?.document1}</div>

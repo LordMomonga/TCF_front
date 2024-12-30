@@ -284,7 +284,7 @@ const renderTaskContent = () => {
              <span className=" text-black px-2 text-md font-bold"> 
              Titre: {data?.titre}
               </span>
-              <span className='block mt-5  block mb-5 border-solid border-gray-200 border-2  '>{data?.contenu}</span>
+              <span className='block mt-5  mb-5 border-solid border-gray-200 border-2  '>{data?.contenu}</span>
             </p>
           )}
           </div>
