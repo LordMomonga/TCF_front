@@ -25,6 +25,12 @@ const selectComprehensionEcrite = ()=>{
     return api.get(`/school/select/compe`);
 
 }
+
+        //grap the result of the comprehension orale and comprehension Ecrite
+
+        const getComprehensionResultById = () =>{
+            return api.get('/student/comprehension')
+        }
 //gestion de recuperation des solutions des tests de langue 
 const setSolutionExpressionEcrite = (data:any) => {
     return api.post('/addEcrit', data);
@@ -204,7 +210,8 @@ export {
     changeMyAudioVue,
     changeMyEcritVue,
     getAdminNotification,
-    changeNotificationAdmin
+    changeNotificationAdmin,
+    getComprehensionResultById
 
     
 }   

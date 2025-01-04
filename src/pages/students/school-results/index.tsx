@@ -1,3 +1,7 @@
+import { FaHeadSideCough } from "react-icons/fa"; 
+import { AiFillRead } from "react-icons/ai"; 
+import { FaAssistiveListeningSystems } from "react-icons/fa"; 
+import { TbWriting } from "react-icons/tb"; 
 import { FaHandPointer } from "react-icons/fa"; 
 import React, { useState, useEffect, useContext }  from 'react';
 import './school-results.css';
@@ -14,7 +18,7 @@ import 'tippy.js/dist/tippy.css';
 
 import { deletePassExamContent } from '../../../services/passExams';
 import { getStudentSolutions, getStudentsClasses, getAcceptedClasses, getStudentTimetables, getStudentAnnouncements } from '../../../services/student';
-
+import { getComprehensionResultById } from "../../../services/assessment";
 import BeatLoader from "react-spinners/BeatLoader";
 import { FaTimesCircle } from 'react-icons/fa';
 import moment from 'moment';
@@ -28,6 +32,30 @@ import { getMyResultsEcrit } from '../../../services/assessment';
 import { HandPlatter } from 'lucide-react';
 import { BiTime } from 'react-icons/bi';
 import { changeMyAudioVue } from '../../../services/assessment';
+
+const rawsComprehension:any = [
+    {
+        label: '#',
+        name: 'num'
+    },
+    {
+        label: 'Niveau',
+        name: 'name'
+    },
+    {
+        label: 'Type Test',
+        name: 'name'
+    },
+    {
+        label: 'created Date',
+        name: 'name'
+    },
+    {
+        label: ' Action',
+        name: 'name'
+    }
+]
+
 const rows: any = [
     {
         label: '#',
@@ -92,6 +120,9 @@ function Index() {
     const [modalData, setModalData] = useState<string | null>(null);
     const [note, setNote] = useState<string | null>(null);
     const [decision, setDecision] = useState<string | null>(null);
+    const [dataOrale, SetDataOrale] = useState<any>();
+    const [dataEcrite, SetDataEcrite] = useState<any>();
+
     let changeValue = 0
 
     
@@ -119,7 +150,7 @@ function Index() {
               setLoading(true)
               handleShowResults()
               handleShowResults2()
-               console.log( 'la valeur a bien été changé');
+              
                
            } else {
                console.log('erreur pour la notiffication ')
@@ -129,6 +160,22 @@ function Index() {
        changeValue ++
 
      
+   }
+
+   const handleGraspResult =() =>{
+
+    getComprehensionResultById().then((res:any) => {
+        if(res.ok){
+        
+            console.log( 'la valeur a bien été changé', res.data.data);
+            SetDataEcrite(res.data.data.data1)
+            SetDataOrale(res.data.data.data2)
+    
+           } else {
+               console.log('erreur pour la notiffication ')
+           }
+    })
+
    }
 
    const handleChangeAudio = (id:any) => {
@@ -186,6 +233,7 @@ function Index() {
     useEffect(() => {
         handleShowResults()
         handleShowResults2()
+        handleGraspResult()
     
     },[changeValue]);
 
@@ -200,7 +248,10 @@ function Index() {
                         </div>
                 
                     </div>
-                    
+                    <div className='font-semibold text-blue-500 items-center gap-3 w-full text-center my-5 py-5 flex justify-center'>
+                             <FaHeadSideCough className="text-2xl" /> EXPRESSION ORALE 
+                                </div> 
+
                     <div className="table-con">
                     <div style={{textAlign: 'center',}}>
                         <BeatLoader
@@ -261,8 +312,8 @@ function Index() {
                                 </tbody>
                                 </table>
                               
-                              <div className='font-semibold text-blue-500  w-full text-center my-5 py-5 flex justify-center'>
-                                Expression ECRITE 
+                              <div className='font-semibold text-blue-500 items-center gap-3 w-full text-center my-5 py-5 flex justify-center'>
+                               <TbWriting  className="text-2xl"/> EXPRESSION ECRITE 
                                 </div>  
                             
                             
@@ -294,8 +345,8 @@ function Index() {
                                     <td>
                                         <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.contenu1_id?.TypeElement}</p>
                                     </td>
-                                    <td onClick={() =>  handleEcrit(data?.commentaire, data?.note, data?._id)} className='text-blue-500 hover:underline cursor-pointer'>
-                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start flex items-center gap-2 hover:text-xl`}><FaHandPointer className=" transform rotate-90 text-blue-200 " />{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
+                                    <td onClick={() =>  handleEcrit(data?.commentaire, data?.note, data?._id)} className='text-blue-500 hover:underline cursor-pointer hover:italic'>
+                                        <p className={`${data?.vue === false ? 'font-bold text-blue-500' :  'text-blue-200'} flex-start flex items-center gap-2 hover:italic`}>{typeof data?.commentaire === 'string' && data.commentaire.trim().length > 0
     ? data.commentaire.split(' ').slice(0, 2).join(' ') + '...'
     : "non commentaire"}</p>
                                     </td>
@@ -329,14 +380,138 @@ function Index() {
                                 </table>
 
                              </div>
+
+                             <div className='font-semibold text-blue-500 items-center gap-3 w-full text-center my-5 py-5 flex justify-center'>
+                               <FaAssistiveListeningSystems className="text-2xl" /> COMPREHENSION ORALE 
+                                </div> 
+
+                                <div className="table-con">
+                             <div style={{textAlign: 'center',}}>
+                        <BeatLoader
+                                color="#623d91" 
+                                loading={loading}
+                                cssOverride={override}
+                        />
+                    </div>        
+                                           
+                                            <table>
+                             <thead>
+                                <tr>
+                                    {rawsComprehension.map((row: any, index: any) => <th key={index} className={row.name}>{row.label}</th>)}
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                           
+                                {dataOrale?.map((data: any, index: any) => <tr  className={`cursor-pointer ${data?.vue === false ? 'font-bold text-black shadow-md shadow-gray-200' :  'text-gray-200'} `}>
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-center`}>{index + 1}</td>
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.niveau ? `${data?.niveau}` :"aucune note" }</p>
+                                    </td>
+                                    <td>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.genreTest}</p>
+                                    </td>
+                                 
+                                   
+                                    {/* <td className="flex-start">{data?.active_to}</td> */}
+                                
+                                    <td className="flex-start">
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{convertDate(data?.createdAt)}</p>
+                                    </td>
+                                     
+            
+                                    <td className="flex-center flex ">
+                                        <div className="action ">
+                                        <Tippy  content="Download Result Slip "  animation="fade">
+                                        <a target="_blank" href={data?.result_file} onClick={() => {
+                                               
+                                            }} className="see"> 
+                                            <IoMdCloudDownload onClick={() => null} size={14}/>
+                                            </a>
+                                        </Tippy>
+                                    </div>
+                                    <div className="action bg-red-500 px-2 rounded-md cursor-pointer">
+                                         <BiTrash onClick={() => null} size={14} color='#ffffff'/>
+                                    </div>
+                                    </td>
+
+                                </tr> )}
+                                </tbody>
+                                </table>
+
+                             </div>
+
+                                <div className='font-semibold text-blue-500 items-center gap-3 w-full text-center my-5 py-5 flex justify-center'>
+                               <AiFillRead className="text-2xl"/> COMPREHENSION ECRITE 
+                                </div> 
+                                <div className="table-con">
+                             <div style={{textAlign: 'center',}}>
+                        <BeatLoader
+                                color="#623d91" 
+                                loading={loading}
+                                cssOverride={override}
+                        />
+                    </div>        
+                                           
+                                            <table>
+                             <thead>
+                                <tr>
+                                    {rawsComprehension.map((row: any, index: any) => <th key={index} className={row.name}>{row.label}</th>)}
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                           
+                                {dataEcrite?.map((data: any, index: any) => <tr  className={`cursor-pointer ${data?.vue === false ? 'font-bold text-black shadow-md shadow-gray-200' :  'text-gray-200'} `}>
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-center`}>{index + 1}</td>
+                                    <td className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.niveau ? `${data?.niveau}` :"aucune note" }</p>
+                                    </td>
+                                    <td>
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{data?.genreTest}</p>
+                                    </td>
+                                 
+                                   
+                                    {/* <td className="flex-start">{data?.active_to}</td> */}
+                                
+                                    <td className="flex-start">
+                                        <p className={`${data?.vue === false ? 'font-bold text-black' :  'text-gray-200'} flex-start`}>{convertDate(data?.createdAt)}</p>
+                                    </td>
+                                     
+            
+                                    <td className="flex-center flex ">
+                                        <div className="action ">
+                                        <Tippy  content="Download Result Slip "  animation="fade">
+                                        <a target="_blank" href={data?.result_file} onClick={() => {
+                                               
+                                            }} className="see"> 
+                                            <IoMdCloudDownload onClick={() => null} size={14}/>
+                                            </a>
+                                        </Tippy>
+                                    </div>
+                                    <div className="action bg-red-500 px-2 rounded-md cursor-pointer">
+                                         <BiTrash onClick={() => null} size={14} color='#ffffff'/>
+                                    </div>
+                                    </td>
+
+                                </tr> )}
+                                </tbody>
+                                </table>
+
+                             </div>
+
                              {showmodal && (
                                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                                    <div className="py-5 bg-primary text-white relative px-5 py-2 rounded">
+                                    <div className="py-5 bg-prim text-white relative px-5 py-2 rounded">
                                         <span className="absolute top-2 right-2 text-2xl cursor-pointer" onClick={() => setShowModal(false)}>
                                             <FaTimesCircle />
                                         </span>
                                         <h1 className="font-bold text-white mx-5 my-2 underline text-3xl uppercase text-center">Appreciation</h1>
-                                        <p className='text-white'>vous avez un niveau <span className='text-2xl my-2 text-green-500 font-semibold '>{note}</span></p>
+                                        <p className='text-white'>vous avez un niveau <span className='text-3xl my-2 text-green-500 font-semibold ml-5'>{note}</span></p>
                                         <p className='bg-white text-gray-500 px-3 py-5 rounded-sm'>correcteur : {modalData}</p>
                                         <p className='bg-white py-5 px-3'><span className=' mr-2 bg-white font-semibold my-2 '>Conclusion:</span>
                                         {(() => {
