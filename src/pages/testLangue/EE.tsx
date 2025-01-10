@@ -19,6 +19,8 @@ import { toast } from 'react-toastify';
 import { Console, log } from 'console'
 import { Link } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners'
+import { useLocation } from "react-router-dom";
+
 interface ConfirmationDialogProps {
   message: string;
   onConfirm: () => void;
@@ -74,6 +76,8 @@ const EE: React.FC = () => {
   const locate = useNavigate();
   const [sujet3, setSujet3]= useState([])
   const timeRef = useRef(0); // Utilisation d'une ref pour `time`
+ const location = useLocation();
+    const { spec } = location.state || {}; // Récupérer spec (ou undefined s'il n'existe pas)
 
   const specialCharacters = ["é", "è", "ê", "à", "ù", "ç", "ô", "î", "œ","ç",, ";", ":", "!", "?","«", "»"];
   const [text, setText] = useState<string>("");
@@ -89,7 +93,7 @@ const EE: React.FC = () => {
 
   const handleExpressionEcrite = () => {
     setLoading(true)
-    selectExpresssionEcrite().then((res: any) =>{
+    selectExpresssionEcrite(spec).then((res: any) =>{
       console.log('RESPONSE GET: ', res);
       if(res.ok) {
         setData(res.data.data);

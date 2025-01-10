@@ -1,3 +1,6 @@
+import { MdNavigateNext } from "react-icons/md"; 
+import { TbFlagOff } from "react-icons/tb"; 
+import { TbFlag } from "react-icons/tb"; 
 import { HiOutlineSpeakerphone } from "react-icons/hi"; 
 import { FaTeamspeak } from "react-icons/fa"; 
 import React from 'react'
@@ -12,6 +15,7 @@ import { getUser } from '../../utils/storage'
 import { useEffect } from 'react'
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useLocation } from "react-router-dom";
 import { selectComprehensionOrale } from '../../services/assessment'
 import './test.css'
 
@@ -34,6 +38,8 @@ const CO = () => {
     const [numb, setNumb] = useState(39)
     const [loading, setLoading] = useState(false)
     const audioRef = useRef<HTMLAudioElement>(null);
+ const location = useLocation();
+    const { spec } = location.state || {}; // Récupérer spec (ou undefined s'il n'existe pas)
 
     const [selectListeningA1, setSelectListeningA1]= useState([])
     const [selectListeningA2, setSelectListeningA2]= useState([])
@@ -79,7 +85,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
 
     const handleComprehensionOrale = () => {
       setLoading(true)
-      selectComprehensionOrale().then((res: any) => {
+      selectComprehensionOrale(spec).then((res: any) => {
         console.log('RESPONSE GET: ', res.data);
         setData(res.data.data);
         if(res.ok) {
@@ -160,27 +166,26 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
               
       };
 
+        useEffect(() => {
+                console.log("Updated responses nouveau:", responses); 
+              }, [responses]); 
+
       const moveToNextQuestion = () => {
-        console.log('Selected Answer:', selectedAnswer);
-        console.log('Correct Solution:', currentQuestion.response);
+       
+        if (!responses[currentIndex]) {
+          console.error("Response for current index is undefined.");
+          return; // Empêche l'exécution si la réponse est inexistante
+        }
   
-        if ( selectedAnswer === currentQuestion.response) {
-          let point = 1
-         setScore(prevScore => prevScore + 1);
-         } else {
-          setEchou(prevEchou => [...prevEchou, {currentQuestion,
-            selectedAnswer
-          }]);
-          console.log('Incorrect answer. Correct answer was:', currentQuestion.response);
-         }
-    
+        
+        setSelectedAnswer (responses[currentIndex]?.answer)
         setSelectedAnswer(null); // Reset selected answer
         setTimeLeft(60); // Reset timer for the next question
         
         if (currentIndex < allQuestion.length - 1) {
           
           setCurrentIndex(currentIndex + 1);
-          console.log(currentIndex, score, result);
+   
            // Move to next question
         } else {
           {
@@ -208,15 +213,13 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                 const optionPenalty = levelPoints / (currentQuestion.options.length + 1); // Pénalité par option incorrecte
                 
                
-
-                
                 let respAnswer = response?.answer
                 
                 points = levelPoints;
    
                 if (respAnswer !== question.response) {
                
-
+                  
                  if (response.option?.length === 0) points = 0
                  else  points -= optionPenalty
 
@@ -236,13 +239,14 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                console.log('verification du point', points, index, echou)
    
       
-                if (question?.option) {
+                if (question?.options) {
    
                   question.options.forEach((option: any, optIndex: number) => {
    
                     
                     const chosenOption = response?.option[optIndex]
                      const laSol = String(option.solution)
+
                     if (chosenOption !== laSol ) {
                     
                      points -= optionPenalty;
@@ -388,8 +392,8 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         return () => clearInterval(interval);
       }, []);
 
-      const remainingQuestions = responses.filter((response) => response === null || response === undefined).length;
-      const answeredQuestions = responses.filter((response) => response !== null && response !== undefined).length;
+      const remainingQuestions = responses.filter((response) => response?.answer === null || response?.answer === undefined).length;
+      const answeredQuestions = 39 - remainingQuestions;
     
 
   return (
@@ -404,7 +408,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
               
             <ol className=''>{allQuestion?.map((item:any, index:any)=>(
                     <li  className={`question-item cursor-pointer py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
-                       ${responses[index] === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid' :  'flex items-center gap-2 bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500 py-2' : 'bg-gray-500'}`} key={index}> <span className="w-6 h-6 bg-white flex justify-center items-center rounded-full p-1"><HiOutlineSpeakerphone /></span> proposition {index + 1}</li>
+                       ${responses[index].answer === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid flex items-center gap-2 ' :  'flex items-center gap-2 bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500 py-2' : 'bg-gray-500'}`} key={index}> <span className="w-6 h-6 bg-white flex justify-center items-center rounded-full p-1"><HiOutlineSpeakerphone /></span> proposition {index + 1}</li>
                 ))} </ol>
             </div>
             <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
@@ -436,7 +440,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
         </div>      
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-5 px-[10%] '>
            
-        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center '><span onClick={handleExit} className='text-[10px] md:text-sm flex items-center gap-2'><BiExit className='text-[10px] md:text-sm bg-red-500 text-white'></BiExit>quit the examination</span></div></div>
+        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center cursor-pointer'><span onClick={handleExit} className='text-[10px] md:text-sm flex items-center gap-2'><BiExit className='text-[10px] md:text-sm bg-red-500 text-white'></BiExit>quitter le Test</span></div></div>
        
         <div className='bg-white h-[90%] w-[100%] md:w-[68%] py-2 left-0 md:left-[13.5%] px-5 text-gray-700 fixed z-0'>
        <div className="text-sm font-bold text-center mb-5">
@@ -455,6 +459,7 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                 <span className='block  mb-3 font-bold bg-gray-300 shadow-md  pl-1 w-fit pr-10 rounded-sm py-2 text-black'>
                 {currentIndex + 1}- <span className='text-black'>{currentQuestion?.question}</span>
                 </span>
+                
                 <form action="" className='max-h-[50vh] overflow-y-auto  '>
                  <div className='flex gap-5 mb-1 items-center '>
                  <input type="radio" name="question" value="1"
@@ -532,6 +537,14 @@ const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
                 ))}
 
                  </form>
+                 <div className="w-[90%] my-5 md:my-10  ">
+                  <div className="flex justify-end w-full">
+                  <button className="border-[2px] border-blue-300 shadow-xl shadow-gray-300 border-solid px-2 rounded-sm flex items-center text-sm  md:text-xl py-0 md:py-2 " onClick={moveToNextQuestion}> <MdNavigateNext /> <MdNavigateNext /></button>
+
+                  </div>
+
+
+                 </div>
 
                
                 </div>

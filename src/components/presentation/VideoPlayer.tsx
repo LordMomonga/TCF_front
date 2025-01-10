@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface VideoProps {
   videoUrl: string;
@@ -9,10 +10,14 @@ interface VideoProps {
 const VideoPlayer: React.FC<VideoProps> = ({ videoUrl, redirectTo }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const { spec } = location.state || {}; // Récupérer spec (ou undefined s'il n'existe pas)
+
 const [skip, setSkip] = useState(false)
   useEffect(() => {
     const handleVideoEnd = () => {
-      navigate(redirectTo);
+      navigate(redirectTo, { state: { spec } });
     };
 
     if (videoRef.current) {
@@ -31,7 +36,7 @@ const [skip, setSkip] = useState(false)
     if (videoRef.current) {
       videoRef.current.pause(); // Pause the video
     }
-    navigate(redirectTo);
+    navigate(redirectTo, { state: { spec } });
     
   };
 

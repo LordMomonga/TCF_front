@@ -1,3 +1,9 @@
+import { FcExpired } from "react-icons/fc"; 
+import { GrAdd } from "react-icons/gr"; 
+import { GrClose } from "react-icons/gr"; 
+import { GrAddCircle } from "react-icons/gr"; 
+import { TbFlag } from "react-icons/tb"; 
+import { TbFlagOff } from "react-icons/tb"; 
 import { FaPenAlt } from "react-icons/fa"; 
 import { BiPen } from "react-icons/bi"; 
 import { RiSoundcloudLine } from "react-icons/ri"; 
@@ -19,6 +25,9 @@ import { getUser } from '../../utils/storage'
 import './test.css'
 import { selectComprehensionEcrite } from '../../services/assessment'
 import { Console, log } from 'console'
+import { Divide } from "lucide-react";
+import { useLocation } from "react-router-dom";
+
 const CE = () => {
   
     const [remainingTime, setRemainingTime] = useState<number>(60 * 60)
@@ -43,12 +52,13 @@ const CE = () => {
     const [selectListeningC1, setSelectListeningC1]= useState<any>([])
     const [selectListeningC2, setSelectListeningC2]= useState<any>([])
     const [allQuestion, setAllQuestion] = useState<any>([])
-
+  
 
     const [Fscore, setFscore] = useState<any>();
     const [timer , setTimer] = useState<any>();
     const timeRef = useRef(0); // Utilisation d'une ref pour `time`
-
+    const location = useLocation();
+    const { spec } = location.state || {}; // Récupérer spec (ou undefined s'il n'existe pas)
 
     const [timeLeft, setTimeLeft] = useState(60); 
     const [CO, setCO] = useState<any>("still");
@@ -56,14 +66,18 @@ const CE = () => {
     const [result, setResult] = useState(0);
     const [echou, setEchou] = useState<any[]>([]);  
     const [Lechec, setLechec] = useState<any[]>([]);
-        const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [selectedValue, setSelectedValue] = useState<any>('');
     const [selectedAnswer, setSelectedAnswer] = useState<any>(null); 
     const [responses, setResponses] = useState(Array(39).fill({answer: null, option: Array().fill(null)}));
 
+    const [favoris, setFavoris] = useState<any[]>([]);  
     const locate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
+    const [toggle, setToggle] = useState(false);
+    
+
 
     const handleImageToggle = () => {
         setIsOpen(!isOpen);
@@ -77,7 +91,7 @@ const CE = () => {
 
     const handleComprehensionOrale = () => {
       setLoading(true)
-      selectComprehensionEcrite().then((res: any) => {
+      selectComprehensionEcrite(spec).then((res: any) => {
         setData(res.data.data);
         if(res.ok) {
          
@@ -166,6 +180,21 @@ const CE = () => {
         }
     };
 
+    const handleToggleOpen = (item:any) =>{
+      setToggle(!toggle)
+
+      setFavoris((prevItems) => {
+        if(prevItems.includes(item)){
+
+          return prevItems.filter((i) => i !== item )
+        }else {
+
+            return[...prevItems, item]
+        }
+
+      } )
+
+    }
 
 
     const moveToNextQuestion = () => {
@@ -244,10 +273,12 @@ const CE = () => {
                  
                  const chosenOption = response?.option[optIndex]
                   const laSol = String(option.solution)
-                 if (chosenOption !== laSol ) {
+               
+                  if (chosenOption !== laSol ) {
                   
                  
                   points -= optionPenalty;
+
                  choixEchec.push( {
                   question:question,
                   selectedAnswer: chosenOption,
@@ -505,10 +536,10 @@ const CE = () => {
         return `${minutes.toString().padStart(2, '0')}min ${remainingSeconds.toString().padStart(2, '0')}s`;
       };
     
-      const remainingQuestions = responses.filter((response) => response === null || response === undefined).length;
-      const answeredQuestions = responses.filter((response) => response !== null && response !== undefined).length;
+      const remainingQuestions = responses.filter((response) => response?.answer === null || response?.answer === undefined).length;
+      const answeredQuestions = 39 - remainingQuestions;
+      const ffv = favoris.filter((fav)=> fav === currentIndex + 1)
       
-    
     
     
 
@@ -524,11 +555,14 @@ const CE = () => {
               
             <ol className=''>{allQuestion?.map((item:any, index:any)=>(
                     <li onClick={() => goToQuestion(index)} className={`question-item cursor-pointer py-1 text-white text-[10px] md:text-sm font-bold text-center px-1 md:px-3 rounded-md mt-1 
-                       ${responses[index] === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid' :  ' flex items-center gap-2 bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500 py-2' : 'bg-gray-500'}`} key={index}> <span className="w-6 h-6 bg-white flex justify-center items-center rounded-full "><FaPenAlt className="text-sm"/></span>proposition {index + 1}</li>
+                       ${responses[index] === null ? 'bg-gray-500 border-[2px] border-yellow-500 border-solid' :  ' flex items-center gap-2 bg-gray-500 border-[2px] border-black  text-gray-500 border-solid '} ${index === currentIndex ? 'bg-green-500 py-2' : 'bg-gray-500'}`} key={index}> <span className="w-6 h-6 bg-white flex justify-center items-center rounded-full "><FaPenAlt className="text-sm"/></span>proposition {index + 1}
+                       {favoris.filter((fav)  => fav === index + 1).length !== 0 && (<span className=" bg-red-500 text-white px-2 rounded-full border-solid border-gray-200 border-2 shadow-sm shadow-red-500 "> ! </span>)}
+                       </li>
+
                 ))} </ol>
             </div>
             <div className="bg-white text-gray-500 mt-5 mb-5 rounded-md px-5 py-2">
-                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white p-2 bg-blue-500 rounded-full font-bold  ' color={'white'}></BiQuestionMark ><span> restant:{remainingQuestions} </span> </div>
+                    <div className='text-sm font-bold flex items-center gap-3 '> <BiQuestionMark className=' text-white p-2 bg-blue-500 rounded-full font-bold  ' color={'white'}></BiQuestionMark ><span> restant: </span>{remainingQuestions} </div>
                     <div className='mt-2 text-sm font-bold flex items-center gap-3 '><BiAlarmExclamation className=' text-white bg-green-500 rounded-full font-bold  p-2 '></BiAlarmExclamation><span> repondu : {answeredQuestions}</span></div>
                 </div>
         </div>      
@@ -554,11 +588,14 @@ const CE = () => {
                 </div>
         </div>
         <div className='z-10 fixed bottom-0 bg-prim w-screen flex justify-between py-6 px-[10%] '>
-        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2'><BiExit className='text-md bg-red-500 text-white'></BiExit>quit the examination</span></div>
+        <div className='bg-white text-gray-600 px-5 py-1 rounded-sm font-bold flex gap-2 items-center '><span onClick={handleExit} className='flex items-center gap-2 cursor-pointer'><BiExit className='text-md bg-red-500 text-white'></BiExit>quitter le test</span></div>
         </div>
        
+                {ffv.length !== 0 && ( <div className="h-3 w-full bg-red-500">
+
+                </div> )}
         <div className='bg-white h-[80%] w-[100%] md:w-[68%] py-2 left-0 md:left-[13.5%] overflow-y-auto px-5 text-gray-700 fixed z-0'>
-        <div className="text-sm font-bold text-center mb-5">
+        <div className="text-sm  font-bold text-center mb-5">
                 lisez le test et  Choisissez la bonne réponse en cochant sur la bonne reponse. 
             </div>
             <div className='w-full relative'>
@@ -566,10 +603,23 @@ const CE = () => {
                 <img className=' w-[30%] z-0' onClick={handleImageToggle}  src={currentQuestion?.imageUrl} alt="" />
                
                 </div>
+                <div className={`text-[15px] md:text-sm  border-gray-300 shadow-xl shadow-gray-300 cursor-pointer border-[1px] md:border-3  border-solid rounded-full p-1 md:p-2 text-center absolute left-0 md:left-5` }>
+                <span  onClick={() => handleToggleOpen(currentIndex + 1)} className="flex justify-center text-md md:text-xl">
+                 {ffv.length === 0 ? <GrAdd /> : <GrClose />}
+                  
+                </span>
+                {favoris.map((item:any, index:number)=>(
+                    <span className="block bg-red-500 mt-1 text-center rounded-full text-white px-2 border-2 border-gray-300 border-solid" onClick={() => goToQuestion(item - 1)}>
+                    {item}
+                  </span> 
+                ))}
+                </div>
+              
                 <div className='pl-[15%] justify-center '>
                 <span className='block  mb-3 font-bold bg-gray-300 shadow-md  pl-1 w-fit pr-10 rounded-sm py-2 text-black'>
                 {currentIndex + 1}- <span className='text-black'>{currentQuestion?.question}</span>
                 </span>
+                
                 <form action="" className='max-h-[60vh] overflow-y-auto'>
                  <div className='flex gap-5 mb-1 items-center '>
                  <input type="radio" name="question" value="1"
@@ -592,7 +642,7 @@ const CE = () => {
                 <div className='flex gap-5 mb-1 items-center'>
                     <input type="radio" name="question" value="4" 
                      checked={responses[currentIndex]?.answer === "4"}
-                    onChange={handleChange}id="option-d" />
+                    onChange={handleChange} id="option-d" />
                     <label htmlFor="option-d">d- {currentQuestion?.solution4}</label>
                 </div>
 
@@ -651,11 +701,11 @@ const CE = () => {
                  <div className='w-[90%] my-10'>
                  <div className="flex justify-between  mt-5">
                   <div>
-                  <button className='bg-blue-400 text-white text-sm px-2 rounded-sm flex items-center gap-2 py-1 uppercase hover:py-2 hover:bg-gray-300 hover:text-black' onClick={moveToPreviousQuestion} disabled={currentIndex === 0}><GrCaretPrevious />Précédent</button>
+                  <button className='border-2 border-blue-400 border-solid text-white text-sm px-2 rounded-sm flex items-center gap-2 shadow-xl shadow-gray-400 py-1 rounded-sm uppercase hover:py-2 hover:bg-gray-300 hover:text-black' onClick={moveToPreviousQuestion} disabled={currentIndex === 0}><GrCaretPrevious /><GrCaretPrevious /></button>
 
                   </div>
                   <div>
-                  <button className='bg-blue-400 text-white text-sm px-2 rounded-sm flex items-center gap-2 py-1 uppercase hover:py-2 hover:bg-gray-300 hover:text-black' onClick={moveToNextQuestion}><GrCaretNext />Suivant</button>
+                  <button className=' border-2 border-blue-400 border-solid text-white text-sm px-2 rounded-sm flex items-center gap-2 py-1 shadow-xl shadow-gray-400 rounded-sm uppercase hover:py-2 hover:bg-gray-300 hover:text-black' onClick={moveToNextQuestion}><GrCaretNext /> <GrCaretNext /></button>
 
                   </div>
                         </div>

@@ -63,7 +63,7 @@ const rows: any = [
         name: 'name'
     },
     {
-        label: 'Academic Year',
+        label: 'Name Year',
         name: 'name'
     },
     {

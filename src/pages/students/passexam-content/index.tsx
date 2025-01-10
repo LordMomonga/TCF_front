@@ -23,7 +23,7 @@ import { BiBook } from 'react-icons/bi';
 import 'tippy.js/dist/tippy.css';
 import { ImCancelCircle } from 'react-icons/im';
 import { getAcceptedClasses, getStudentsClasses, studentGetPassExams } from '../../../services/student';
-
+import { moveItemToFirst } from "../../../services/assessment";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import moment from 'moment';
@@ -34,22 +34,24 @@ import { convertDate } from '../../../utils/date';
 import AcademicYearContext from '../../../contexts/AcademicYearContext';
 import { getStudentApplications } from '../../../services/student';
 import { BiTime } from 'react-icons/bi';
+import { Option } from "lucide-react";
+import { log } from "console";
 const override = {
     marginTop: '20px'
   };
 
 
  
-  const MessageValidation = ({pageUrl, message, onClose}: any) => {
+  const MessageValidation = ({pageUrl, message, onClose, spec}: any) => {
 
     return(
         <div className='absolute bg-white left-2  md:left-[25%] text-center border-gray-500 shadow-md shadow-gray-500   top-1 px-10 py-5 rounded-md'>
             <div className='relative w-full text-center'>
-            <p className='block mt-5 p-2 text-gray-500 uppercase font-bold'>{message}</p>  
+            <p className='block mt-5 p-2 text-gray-500 uppercase font-bold'>{message}  </p>  
           <span className='font-bold mt-2 text-[13px] text-blue-500 flex items-center gap-1 justify-center'>NB:<AiFillMeh className="text-2xl text-blue-500"/>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
           <div className='w-full justify-between flex mt-5 '>
             <button onClick={onClose} className='bg-red-400 px-2 py-1  uppercase text-sm rounded-md text-white flex items-center gap-2'> <AiOutlineStop className="text-xl" />annuler </button>
-            < NavLink to={pageUrl}><button  className='bg-green-400 px-3 py-1 text-white text-sm rounded-md flex items-center gap-2 uppercase'><MdOutlineNotStarted className="text-xl" />Demarrer</button></NavLink>
+            < NavLink to={pageUrl} state={{ spec }} ><button  className='bg-green-400 px-3 py-1 text-white text-sm rounded-md flex items-center gap-2 uppercase'><MdOutlineNotStarted className="text-xl" />Demarrer</button></NavLink>
           </div>
          
             </div>
@@ -68,12 +70,18 @@ function Index() {
     const {activeAcademyYear, setActiveAcademyYear} = useContext<any>(AcademicYearContext);
     const [existed, setExisted] = useState(false);
     const [videoUrl, setVideoUrl] = useState('');
+    const [spec, setSpec] = useState<any>();
     const [isStartingCo, setIsStartingcO] = useState(false);
     const [isStartingCe, setIsStartingce] = useState(false);
     const [isStartingEo, setIsStartingEo] = useState(false);
     const [isStartingEe, setIsStartingEe] = useState(false);
-
+     const [applications, setApplications] = useState([]);
     const [classes, setClasses] = useState([]);
+    const [avoir, setAvoir] = useState<any[]>([]);  
+
+    const [pb, setPb] = useState(0); // Initialisation de la variable pb
+    const [errorMessage, setErrorMessage] = useState(''); // Message d'erreur
+
     const [loading, setLoading] = useState(false);
 
     const toggleAddModal = () => {
@@ -85,7 +93,7 @@ function Index() {
 
         getStudentApplications().then((res:any) => {
             setShowTest(res.data.data[0].status);
-
+            setAvoir(res.data.data)
         }).catch((error:any) => {
             setLoading(false)
 
@@ -105,7 +113,43 @@ function Index() {
         }
        
     }
+
+   
+      const handleGetApplications = ()  => {
+            setLoading(true);
+            setApplications([]);
+            getStudentApplications().then((res: any) => {
     
+                if(res.ok) {
+                    setApplications(res.data.data);
+                }
+                setLoading(false);
+            }).catch(err => {
+                setLoading(false);
+            })
+        }
+
+        useEffect(() => {
+        handleGetApplications();
+          },[]);
+
+const moveToFirstItem = (data:any) => {
+    console.log('la data que je veux voir ', data);
+    const valeur = {
+        data
+    }
+    setLoading(true)
+    
+    moveItemToFirst(valeur).then((res:any) => {
+        if(res.ok) {
+           setLoading(false)
+        } 
+    }).catch(err => {
+        console.log('error: ', err);
+        setLoading(false)
+    })
+}
+
     const handleGetClasses = ()  => {
 
         setClasses([]);
@@ -134,12 +178,25 @@ function Index() {
     }
 
 
-
+    const verification = avoir.filter((av)  => av?.status === "accepted" ).length
    
+ //debut de la gestion du message d'erreur 
+ useEffect(() => {
+    const timer = setTimeout(() => {
+      if (verification === 0) {
+        setErrorMessage("Désolé Votre compte n'a pas été activé");
+      }
+    }, 15000); // 30 secondes
+
+    // Nettoyage du timer au cas où le composant se démonte
+    return () => clearTimeout(timer);
+  }, [verification]);
+
+  //fin de la gestion
 
     useEffect(() => {
         handleExisted()
-        console.log('USER ', showTest);
+        console.log('USER ', avoir);
     });
 
     return (
@@ -148,6 +205,15 @@ function Index() {
       {existed  && <div className="section">
             <div className="parent-con">
                 <div className="data-table">
+                    <div className="my-5">
+                        
+                        <select name="" id="" className="px-2 select-field" onChange={(e: any) => setSpec(e.target.value)} value={spec}>
+                            <option value="all" >Selectionner Votre test</option>
+                            {applications.map((data:any, index:any)=> 
+                            data?.status ==='accepted' && ( <option value={data?.speciality_id?._id} className="text-white">{data?.speciality_id?.name}</option>)
+                            )}
+                        </select>
+                    </div>
                     <div className="top ">
                        
                       <div className="flex gap-2 justify-center w-full">
@@ -201,10 +267,10 @@ function Index() {
             </div>
         </div>
 }
-{isStartingCo && <MessageValidation  pageUrl='/play-co-video' message='voulez vous demarrer cette simulation de comprehension orale ?' onClose={() => setIsStartingcO(!isStartingCo)} />}
-{isStartingCe && <MessageValidation  pageUrl='/play-video' message='voulez vous demarrer cette simulation de comprehension ecrite ?' onClose={() => setIsStartingce(!isStartingCe)} />}
-{isStartingEe && <MessageValidation  pageUrl='/play-ee-video' message="voulez vous demarrer cette simulation d'expression ecrite ?" onClose={() => setIsStartingEe(!isStartingEe)} />}
-{isStartingEo && <MessageValidation  pageUrl='/play-eo-video' message="voulez vous demarrer cette simulation d'expression orale ?" onClose={() => setIsStartingEo(!isStartingEo)} />}
+{isStartingCo && <MessageValidation  pageUrl='/play-co-video' message='voulez vous demarrer cette simulation de comprehension orale ?' spec={spec} onClose={() => setIsStartingcO(!isStartingCo)} />}
+{isStartingCe && <MessageValidation  pageUrl='/play-video' message='voulez vous demarrer cette simulation de comprehension ecrite ?'  spec={spec} onClose={() => setIsStartingce(!isStartingCe)} />}
+{isStartingEe && <MessageValidation  pageUrl='/play-ee-video' message="voulez vous demarrer cette simulation d'expression ecrite ?" spec={spec}  onClose={() => setIsStartingEe(!isStartingEe)} />}
+{isStartingEo && <MessageValidation  pageUrl='/play-eo-video' message="voulez vous demarrer cette simulation d'expression orale ?" spec={spec}  onClose={() => setIsStartingEo(!isStartingEo)} />}
 
 {!existed && <div className='section'>
     
@@ -233,7 +299,7 @@ function Index() {
                         />
                        
                     </div>
-                    <span className='flex items-center text-red-500 text-center justify-center gap-5'> <BiBlock size={44} className='  '></BiBlock>  Désolé Votre candidature n'a pas encore été validée...<RiEmotionSadLine />  </span>
+                    <span className='flex items-center text-gray-500 text-center justify-center gap-5'>  {errorMessage !== '' ? <span className="text-red-500 flex items-center gap-5">{errorMessage} <RiEmotionSadLine /></span> :  <span>En cours... </span> }   </span>
                     
                  </span>}
         </div>

@@ -24,6 +24,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
 import { setConstantValue } from 'typescript'
 import { Link } from 'react-router-dom'
+import { useLocation } from "react-router-dom";
 
 const Eo : React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -41,6 +42,8 @@ const Eo : React.FC = () => {
   const [contenu1_id, setcontenu1_id] = useState<string | null>(null);
   const [contenu2_id, setcontenu2_id] = useState<string | null>(null);
   const [contenu3_id, setcontenu3_id] = useState<string | null>(null);
+ const location = useLocation();
+  const { spec } = location.state || {}; // Récupérer spec (ou undefined s'il n'existe pas)
 
   const locate = useNavigate();
   const timeRef = useRef(0); // Utilisation d'une ref pour `time`
@@ -49,7 +52,7 @@ const Eo : React.FC = () => {
 const handleExpressionOrale = () => {
   setLoading(true)
 
-  selectExpresssionOrale().then((res: any) => {
+  selectExpresssionOrale(spec).then((res: any) => {
       console.log('RESPONSE GET : ', res.data.data.selectedSubjects1);
 
       if(res.ok) {

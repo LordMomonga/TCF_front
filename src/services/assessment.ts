@@ -9,20 +9,20 @@ const createElement = (data: any) => {
 
 }
 //grap all the expression element 
-const selectExpresssionEcrite = () =>{
-    return api.get(`/school/elemEcrite`);
+const selectExpresssionEcrite = (data:any) =>{
+    return api.get(`/school/elemEcrite/${data}`);
 }
 
-const selectExpresssionOrale = () =>{
-    return api.get(`/school/elemOrale`);
+const selectExpresssionOrale = (data:any) =>{
+    return api.get(`/school/elemOrale/${data}`);
 }
 
 //grap all the comprehension test element
-const selectComprehensionOrale = () =>{
-    return api.get(`/school/select/compo`);
+const selectComprehensionOrale = (data:any) =>{
+    return api.get(`/school/select/compo/${data}`);
 }
-const selectComprehensionEcrite = ()=>{
-    return api.get(`/school/select/compe`);
+const selectComprehensionEcrite = (data:any)=>{
+    return api.get(`/school/select/compe/${data}`);
 
 }
 
@@ -172,7 +172,10 @@ const getStudentsAssessmentSolutions = () => {
 const getTotalAssessments = (classId: any) => {
     return api.get(`/student/total/assessment/${classId}`)
 }
-
+// gestion de specialité pour passer le test
+const moveItemToFirst = (data: any) => {
+    return api.post(`/student/speciality`, data);
+}
 
 export {
     createAssessment,
@@ -211,7 +214,8 @@ export {
     changeMyEcritVue,
     getAdminNotification,
     changeNotificationAdmin,
-    getComprehensionResultById
+    getComprehensionResultById,
+    moveItemToFirst
 
     
 }   
