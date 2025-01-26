@@ -51,11 +51,10 @@ const override = {
           <span className='font-bold mt-2 text-[13px] text-blue-500 flex items-center gap-1 justify-center'>NB:<AiFillMeh className="text-2xl text-blue-500"/>veuillez vous munir d'un ordinateur pour une meilleur simulation</span>
           <div className='w-full justify-between flex mt-5 '>
             <button onClick={onClose} className='bg-red-400 px-2 py-1  uppercase text-sm rounded-md text-white flex items-center gap-2'> <AiOutlineStop className="text-xl" />annuler </button>
-            < NavLink to={pageUrl} state={{ spec }} ><button  className='bg-green-400 px-3 py-1 text-white text-sm rounded-md flex items-center gap-2 uppercase'><MdOutlineNotStarted className="text-xl" />Demarrer</button></NavLink>
-          </div>
+        { spec && (< NavLink to={pageUrl} state={{ spec }} ><button  className='bg-green-400 px-3 py-1 text-white text-sm rounded-md flex items-center gap-2 uppercase'><MdOutlineNotStarted className="text-xl" />Demarrer</button></NavLink>  ) }          </div>
          
             </div>
-          
+          {!spec && ( <span className=" text-[11px] text-red-500 px-2 py-1 rounded-sm">veuillez sélectionner au préalable le Test</span> )}
         </div>
     )
   }
